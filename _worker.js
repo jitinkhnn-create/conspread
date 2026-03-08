@@ -39,10 +39,10 @@ function defaultCouncil() {
 
 async function callQwen(messages, token, model, opts) {
   opts = opts || {};
-  var res = await fetch('https://api-inference.huggingface.co/models/' + model + '/v1/chat/completions', {
+  var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
     method: 'POST',
     headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: model, messages: messages, max_tokens: opts.max_tokens || 600, temperature: opts.temperature || 0.72, stream: false })
+    body: JSON.stringify({ model: model + ':hf-inference', messages: messages, max_tokens: opts.max_tokens || 600, temperature: opts.temperature || 0.72, stream: false })
   });
   if (!res.ok) throw new Error('HF ' + res.status + ': ' + (await res.text()).slice(0, 200));
   var d = await res.json();
