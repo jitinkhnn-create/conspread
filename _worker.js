@@ -355,7 +355,7 @@ function rsz(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight
 function newChat(){
   cid=null;hist=[];var m=document.getElementById('msgs');m.innerHTML='';
   var es=document.createElement('div');es.id='es0';es.className='es';
-  es.innerHTML='<div class="esl">KWEN</div><h2>Convene Your Council</h2><p>Ask any question for critical multi-perspective analysis.</p>';
+  es.innerHTML='<div class="esl">KWEN<\/div><h2>Convene Your Council<\/h2><p>Ask any question for critical multi-perspective analysis.<\/p>';
   m.appendChild(es);document.getElementById('htt').textContent='Council Chamber';document.getElementById('cbadge').style.display='none';
 }
 async function send(){
@@ -382,18 +382,18 @@ async function send(){
     if(d.synthesis)mb.appendChild(mkSynth(d.synthesis));
     document.getElementById('htt').textContent=q.slice(0,50)+(q.length>50?'...':'');
     document.getElementById('cbadge').style.display='';stob();loadHist();
-  }catch(err){clearInterval(piv);lw.innerHTML='<p style="color:var(--err);padding:20px;text-align:center;font-family:var(--fb)">Error: '+h(err.message)+'<\/p>';}
+  }catch(err){clearInterval(piv);lw.innerHTML='<p style="color:var(--err);padding:20px;text-align:center;font-family:var(--fb)">Error: '+h(err.message)+'<'+'/p>';}
   busy=false;document.getElementById('sbtn').disabled=false;
 }
 function mkLoad(){
   var d=document.createElement('div');d.className='lw fi';
-  d.innerHTML='<div class="ltitle">Assembling your council</div><div class="lps"><div class="lph"><div class="pdot"></div>Analysing topic &amp; selecting specialists</div><div class="lph"><div class="pdot"></div>Locking epistemic identities</div><div class="lph"><div class="pdot"></div>Consulting each specialist independently</div><div class="lph"><div class="pdot"></div>Synthesising tensions &amp; open questions</div></div>';
+  d.innerHTML='<div class="ltitle">Assembling your council<\/div><div class="lps"><div class="lph"><div class="pdot"><\/div>Analysing topic &amp; selecting specialists<\/div><div class="lph"><div class="pdot"><\/div>Locking epistemic identities<\/div><div class="lph"><div class="pdot"><\/div>Consulting each specialist independently<\/div><div class="lph"><div class="pdot"><\/div>Synthesising tensions &amp; open questions<\/div><\/div>';
   return d;
 }
 function mkTable(council,responses){
   var wrap=document.createElement('div');wrap.className='cw fi';
   var hdr=document.createElement('div');hdr.className='ch2';
-  hdr.innerHTML='<span class="clb">&#9670; Council Perspectives</span><span class="ccnt">'+council.length+' Specialists</span>';
+  hdr.innerHTML='<span class="clb">&#9670; Council Perspectives<\/span><span class="ccnt">'+council.length+' Specialists<\/span>';
   wrap.appendChild(hdr);
   var scroll=document.createElement('div');scroll.className='ts';
   var tbl=document.createElement('table');tbl.className='ct';
@@ -401,14 +401,15 @@ function mkTable(council,responses){
   council.forEach(function(p,i){
     var c=CV[i%CV.length],th=document.createElement('th');th.className='pt';th.style.borderBottomColor=c.bg;
     var ini=p.avatar_initials||(p.name||'?').split(' ').map(function(w){return w[0]}).join('').slice(0,2).toUpperCase();
-    th.innerHTML='<div class="ph"><div class="pav" style="background:'+c.dk+';color:'+c.li+';border:1.5px solid '+c.bg+'">'+ini+'</div><div><div class="pnm">'+h(p.name)+'</div><div class="pti">'+h(p.title)+'</div></div></div><span class="ptr" style="color:'+c.li+';border-color:'+c.bg+'40;background:'+c.dk+'">'+h(p.intellectual_tradition)+'</span><div class="pbias">Bias: '+h(p.known_bias)+'</div>';
+    th.innerHTML='<div class="ph"><div class="pav" style="background:'+c.dk+';color:'+c.li+';border:1.5px solid '+c.bg+'">'+ini+'<\/div><div><div class="pnm">'+h(p.name)+'<\/div><div class="pti">'+h(p.title)+'<\/div><\/div><\/div><span class="ptr" style="color:'+c.li+';border-color:'+c.bg+'40;background:'+c.dk+'">'+h(p.intellectual_tradition)+'<\/span><div class="pbias">Bias: '+h(p.known_bias)+'<\/div>';
     hr.appendChild(th);
   });
   thead.appendChild(hr);tbl.appendChild(thead);
   var tbody=document.createElement('tbody'),rr=document.createElement('tr');
   responses.forEach(function(r,i){
     var c=CV[i%CV.length],td=document.createElement('td');td.className='rtd';td.style.borderLeftColor=c.bg;
-    td.innerHTML='<div class="rtx"><p>'+h(r).replace(/\n\n/g,'<\/p><p>').replace(/\n/g,'<br>')+'<\/p><\/div>';
+    var parts=r.split('\n\n').map(function(p){return p.split('\n').join('<br>')});
+    td.innerHTML='<div class="rtx"><p>'+parts.map(function(p){return h(p)}).join('<'+'/p><p>')+'<'+'/p><'+'/div>';
     rr.appendChild(td);
   });
   tbody.appendChild(rr);tbl.appendChild(tbody);scroll.appendChild(tbl);wrap.appendChild(scroll);return wrap;
@@ -417,13 +418,13 @@ function mkSynth(syn){
   var wrap=document.createElement('div');wrap.className='sw fi';
   wrap.appendChild(mkCard('&#9670;','rgba(201,164,74,.15)','var(--gold)','Council Summary','Agreements, tensions & positions',function(b){
     var d=document.createElement('div');d.className='ssum';
-    d.innerHTML=(syn.summary||'').split('\n\n').filter(Boolean).map(function(p){return '<p>'+h(p)+'<\/p>'}).join('');b.appendChild(d);
+    d.innerHTML=(syn.summary||'').split('\n\n').filter(Boolean).map(function(p){return '<p>'+h(p)+'<'+'/p>'}).join('');b.appendChild(d);
   }));
   var fw=syn.decision_framework||{};
   wrap.appendChild(mkCard('&#9671;','rgba(74,139,201,.12)','#4a8bc9','Decision Framework','Questions, evidence & red flags',function(b){
     [{l:'Critical Questions',it:fw.key_questions},{l:'Evidence That Would Shift Views',it:fw.evidence_that_would_change_views},{l:'Red Flags',it:fw.red_flags}].forEach(function(s){
       if(!s.it||!s.it.length)return;
-      var sec=document.createElement('div');sec.className='fwsec';sec.innerHTML='<div class="fwlbl">'+h(s.l)+'</div>';
+      var sec=document.createElement('div');sec.className='fwsec';sec.innerHTML='<div class="fwlbl">'+h(s.l)+'<\/div>';
       var ul=document.createElement('ul');ul.className='fwlist';
       s.it.forEach(function(it){var li=document.createElement('li');li.textContent=it;ul.appendChild(li)});
       sec.appendChild(ul);b.appendChild(sec);
@@ -433,7 +434,7 @@ function mkSynth(syn){
     var d=document.createElement('div');d.className='oqs';
     (syn.open_questions||[]).forEach(function(oq,i){
       var it=document.createElement('div');it.className='oqi';
-      it.innerHTML='<div class="oqn">QUESTION '+(i+1)+'</div><div class="oqq">'+h(oq.question)+'</div><div class="oqw">'+h(oq.why_unresolved)+'</div>';
+      it.innerHTML='<div class="oqn">QUESTION '+(i+1)+'<\/div><div class="oqq">'+h(oq.question)+'<\/div><div class="oqw">'+h(oq.why_unresolved)+'<\/div>';
       d.appendChild(it);
     });b.appendChild(d);
   }));
@@ -442,7 +443,7 @@ function mkSynth(syn){
 function mkCard(icon,ibg,ic,title,sub,fn){
   var card=document.createElement('div');card.className='scard';
   var hdr=document.createElement('div');hdr.className='scardh';
-  hdr.innerHTML='<div class="sico" style="background:'+ibg+';color:'+ic+'">'+icon+'</div><span class="stitle">'+title+'</span><span class="ssub">'+sub+'</span><svg class="schev o" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg>';
+  hdr.innerHTML='<div class="sico" style="background:'+ibg+';color:'+ic+'">'+icon+'<\/div><span class="stitle">'+title+'<\/span><span class="ssub">'+sub+'<\/span><svg class="schev o" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="18 15 12 9 6 15"/><\/svg>';
   var body=document.createElement('div');body.className='scardb o';fn(body);
   hdr.addEventListener('click',function(){body.classList.toggle('o');hdr.querySelector('.schev').classList.toggle('o')});
   card.appendChild(hdr);card.appendChild(body);return card;
@@ -450,7 +451,7 @@ function mkCard(icon,ibg,ic,title,sub,fn){
 async function loadHist(){
   try{var r=await fetch('/api/history',{credentials:'same-origin'});var d=await r.json();
     var list=document.getElementById('chl');
-    if(d.chats&&d.chats.length)list.innerHTML=d.chats.map(function(c){return '<div class="sci'+(c.id===cid?' a':'')+'" onclick="loadChat(\''+c.id+'\')"><div class="sci-t">'+h(c.first_question||'Session')+'</div><div class="sci-d">'+new Date(c.created_at).toLocaleDateString()+'</div></div>'}).join('');
+    if(d.chats&&d.chats.length)list.innerHTML=d.chats.map(function(c){return '<div class="sci'+(c.id===cid?' a':'')+'" onclick="loadChat(\''+c.id+'\')"><div class="sci-t">'+h(c.first_question||'Session')+'<\/div><div class="sci-d">'+new Date(c.created_at).toLocaleDateString()+'<\/div><\/div>'}).join('');
   }catch(x){}
 }
 async function loadChat(chatId){
