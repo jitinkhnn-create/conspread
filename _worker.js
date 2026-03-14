@@ -69,6 +69,14 @@ async function personaReply(persona, all, question, history, token, model) {
   return callQwen([{ role:'system', content:personaPrompt(persona, all) }].concat(hist).concat([{ role:'user', content:question }]), token, model, { max_tokens:450, temperature:0.74 });
 }
 
+async function normalReply(question, history, token, model) {
+  var hist = (history || []).slice(-3).flatMap(function(h) {
+    return [{ role:'user', content:h.question }, { role:'assistant', content:h.response || h.responses?.join(' ') || '' }];
+  });
+  var messages = [{ role:'system', content:'Provide a clear, concise answer to the user query. Keep it helpful and direct.' }].concat(hist).concat([{ role:'user', content: question }]);
+  return callQwen(messages, token, model, { max_tokens: 550, temperature: 0.72 });
+}
+
 async function buildSynthesis(question, council, responses, token, model) {
   try {
     var txt = await callQwen([{ role:'user', content:synthesisPrompt(question, council, responses) }], token, model, { max_tokens:1800, temperature:0.62 });
@@ -147,19 +155,47 @@ async function onChat(req, env) {
   var question = body.question, chatId = body.chatId, history = body.history;
   if (!question || !question.trim()) return jres({ error:'Question required' }, 400);
   if (question.length > 2000) return jres({ error:'Too long' }, 400);
-  var model = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
+  var model = body.model || env.HF_MODEL || 'Qwen/Qwen-3.5';
+  var mode = body.mode || 'critical';
   try {
-    var council = await buildCouncil(question.trim(), s.hf_token, model);
-    var responses = await Promise.all(council.map(function(p){ return personaReply(p, council, question, history, s.hf_token, model); }));
-    var synthesis = await buildSynthesis(question, council, responses, s.hf_token, model);
+    var council = [];
+    var responses = [];
+    var synthesis = null;
+    if (mode === 'normal') {
+      var normalResponse = await normalReply(question.trim(), history, s.hf_token, model);
+      responses = [normalResponse];
+      synthesis = { summary: normalResponse, decision_framework: { key_questions: [], evidence_that_would_change_views: [], red_flags: [] }, open_questions: [] };
+    } else {
+      council = await buildCouncil(question.trim(), s.hf_token, model);
+      responses = await Promise.all(council.map(function(p){ return personaReply(p, council, question, history, s.hf_token, model); }));
+      synthesis = await buildSynthesis(question, council, responses, s.hf_token, model);
+    }
     var cid = chatId || crypto.randomUUID();
     var key = 'chat:' + s.user.id + ':' + cid;
     var cd;
-    try { var ex = await env.CHATS.get(key); cd = ex ? JSON.parse(ex) : { messages:[], created_at:Date.now(), first_question:question }; }
-    catch(e) { cd = { messages:[], created_at:Date.now(), first_question:question }; }
-    cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, timestamp:Date.now() });
+    try { var ex = await env.CHATS.get(key); cd = ex ? JSON.parse(ex) : { messages:[], created_at:Date.now(), first_question:question, mode: mode }; }
+    catch(e) { cd = { messages:[], created_at:Date.now(), first_question:question, mode: mode }; }
+    cd.messages.push({ id:crypto.randomUUID(), question:question, mode:mode, council:council, responses:responses, response: mode === 'normal' ? responses[0] : undefined, synthesis:synthesis, timestamp:Date.now() });
     await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800 });
-    return jres({ chatId:cid, council:council, responses:responses, synthesis:synthesis });
+
+    var indexKey = 'chats:' + s.user.id;
+    var indexData = [];
+    try {
+      var rawIndex = await env.CHATS.get(indexKey);
+      indexData = rawIndex ? JSON.parse(rawIndex) : [];
+    } catch(e) { indexData = []; }
+    var existing = indexData.find(function(item){ return item.id === cid; });
+    if (!existing) {
+      indexData.push({ id: cid, first_question: question, created_at: Date.now(), mode: mode });
+    } else {
+      existing.mode = mode;
+    }
+    await env.CHATS.put(indexKey, JSON.stringify(indexData), { expirationTtl:604800 });
+
+    var ret = { chatId: cid, mode: mode, responses: responses, synthesis: synthesis };
+    if (mode === 'critical') ret.council = council;
+    if (mode === 'normal') ret.response = responses[0];
+    return jres(ret);
   } catch(err) { return jres({ error:err.message||'Processing failed' }, 500); }
 }
 
@@ -167,13 +203,19 @@ async function onHistory(req, env) {
   var s = await getSession(req, env);
   if (!s) return jres({ error:'Unauthorized' }, 401);
   var chatId = new URL(req.url).searchParams.get('chatId');
+  var mode = new URL(req.url).searchParams.get('mode') || 'critical';
   if (chatId) {
     try {
       var raw = await env.CHATS.get('chat:' + s.user.id + ':' + chatId);
       return raw ? new Response(raw, { headers:{'Content-Type':'application/json'} }) : jres({ messages:[] });
     } catch(e) { return jres({ messages:[] }); }
   }
-  return jres({ chats:[] });
+  try {
+    var rawIndex = await env.CHATS.get('chats:' + s.user.id);
+    var indexData = rawIndex ? JSON.parse(rawIndex) : [];
+    var filtered = indexData.filter(function(item){ return item.mode === mode; });
+    return jres({ chats: filtered });
+  } catch(e) { return jres({ chats:[] }); }
 }
 
 export default {

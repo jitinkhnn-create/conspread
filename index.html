@@ -146,6 +146,18 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       </button>
       <span class="mht" id="htt">Council Chamber</span>
       <span class="mhb" id="cbadge" style="display:none">Council Active</span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;">
+        <button id="modeCritical" class="bst" style="padding:4px 8px;" onclick="setMode('critical')">Critical</button>
+        <button id="modeNormal" class="bst" style="padding:4px 8px;" onclick="setMode('normal')">Normal</button>
+        <select id="modelSelect" onchange="setModel(this.value)" style="border-radius:8px;padding:4px 8px;background:var(--sur);color:var(--tx);border:1px solid var(--bor);">
+          <option value="Qwen/Qwen-3.5">Qwen/Qwen-3.5</option>
+          <option value="Qwen/Qwen-3.5-Chat">Qwen/Qwen-3.5-Chat</option>
+          <option value="Qwen/Qwen-2.5-72B-Instruct">Qwen/Qwen-2.5-72B-Instruct</option>
+          <option value="gpt-4o">gpt-4o</option>
+          <option value="gpt-4o-mini">gpt-4o-mini</option>
+        </select>
+        <button id="musicToggle" class="bst" style="padding:4px 8px;" onclick="toggleMusic()">Mute Music</button>
+      </div>
     </header>
     <div id="msgs">
       <div class="es" id="es0">
@@ -177,6 +189,11 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 </div>
 <script>
 var user=null,cid=null,hist=[],busy=false;
+var currentMode = localStorage.getItem('conspread_mode') || 'critical';
+var currentModel = localStorage.getItem('conspread_model') || 'Qwen/Qwen-3.5';
+var musicOn = localStorage.getItem('conspread_music') !== 'false';
+var voicePlaying = false;
+var voiceUtterance = null;
 var CV=[
   {bg:'#c9844a',li:'#e8a96a',dk:'#3d2010'},
   {bg:'#4a8bc9',li:'#6aaae8',dk:'#10203d'},
@@ -192,6 +209,52 @@ function esc(s) {
   r = r.split('>').join('&gt;');
   r = r.split('"').join('&quot;');
   return r;
+}
+
+function clearMarkdown(str) {
+  return String(str || '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/^\s*([#\-*]+\s*)/gm, '')
+    .replace(/\s*\n\s*/g, ' ') 
+    .replace(/\s+/g, ' ') 
+    .trim();
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  localStorage.setItem('conspread_mode', mode);
+  document.getElementById('modeCritical').style.opacity = mode === 'critical' ? '1' : '0.6';
+  document.getElementById('modeNormal').style.opacity = mode === 'normal' ? '1' : '0.6';
+  newChat();
+  loadHist();
+}
+
+function setModel(model) {
+  currentModel = model;
+  localStorage.setItem('conspread_model', model);
+}
+
+function toggleMusic() {
+  musicOn = !musicOn;
+  localStorage.setItem('conspread_music', musicOn);
+  document.getElementById('musicToggle').textContent = musicOn ? 'Mute Music' : 'Play Music';
+  var player = document.getElementById('musicPlayer');
+  if (player) { if (musicOn) player.play(); else player.pause(); }
+}
+
+function toggleVoicePlayback(text, button) {
+  if (voicePlaying) {
+    speechSynthesis.cancel();
+    voicePlaying = false;
+    button.textContent = '🔊 Listen';
+  } else {
+    speechSynthesis.cancel();
+    voiceUtterance = new SpeechSynthesisUtterance(text);
+    voiceUtterance.onend = function() { voicePlaying = false; button.textContent = '🔊 Listen'; };
+    speechSynthesis.speak(voiceUtterance);
+    voicePlaying = true;
+    button.textContent = '⏹ Stop';
+  }
 }
 
 function stob() { setTimeout(function(){ document.getElementById('msgs').scrollTop = 9999; }, 50); }
@@ -216,6 +279,19 @@ function showApp() {
   var ini = (user.name || user.username || 'U').split(' ').map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2);
   document.getElementById('uav').textContent = ini;
   document.getElementById('unm').textContent = user.name || user.username;
+  setMode(currentMode);
+  document.getElementById('modelSelect').value = currentModel;
+  document.getElementById('musicToggle').textContent = musicOn ? 'Mute Music' : 'Play Music';
+  var player = document.getElementById('musicPlayer');
+  if (!player) {
+    player = document.createElement('audio');
+    player.id = 'musicPlayer';
+    player.loop = true;
+    player.src = 'https://cdn.pixabay.com/audio/2024/03/24/audio_190687f1f1.mp3';
+    player.volume = 0.14;
+    document.body.appendChild(player);
+  }
+  if (musicOn) player.play(); else player.pause();
 }
 
 function logout() { window.location.href = '/api/auth/logout'; }
@@ -267,16 +343,40 @@ async function send() {
     var r = await fetch('/api/chat', {
       method: 'POST', credentials: 'same-origin',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({question: q, chatId: cid, history: hist.slice(-3)})
+      body: JSON.stringify({question: q, chatId: cid, history: hist.slice(-3), mode: currentMode, model: currentModel})
     });
     clearInterval(piv);
     var d = await r.json();
     if (!r.ok) throw new Error(d.error || 'Request failed');
     cid = d.chatId;
-    hist.push({question: q, responses: d.responses});
-    lw.remove();
-    mb.appendChild(mkTable(d.council, d.responses));
-    if (d.synthesis) mb.appendChild(mkSynth(d.synthesis));
+    if (currentMode === 'critical') {
+      hist.push({question: q, responses: d.responses, mode: 'critical'});
+      localStorage.setItem('conspread_hist_critical', JSON.stringify(hist));
+      lw.remove();
+      mb.appendChild(mkTable(d.council, d.responses));
+      if (d.synthesis) mb.appendChild(mkSynth(d.synthesis));
+      var voiceBtn = document.createElement('button');
+      voiceBtn.className = 'bsend'; voiceBtn.style.marginTop = '10px';
+      voiceBtn.textContent = '🔊 Listen';
+      voiceBtn.onclick = function(){ toggleVoicePlayback((d.synthesis ? d.synthesis.summary : d.responses.join(' ')), voiceBtn); };
+      mb.appendChild(voiceBtn);
+      mb.appendChild(mkMindMap(d.synthesis ? d.synthesis.summary : d.responses.join(' ')));
+    } else {
+      hist.push({question: q, response: d.response, mode: 'normal'});
+      localStorage.setItem('conspread_hist_normal', JSON.stringify(hist));
+      lw.remove();
+      var normalBox = document.createElement('div'); normalBox.className = 'cw fi';
+      var p = document.createElement('p'); p.className = 'rtx';
+      p.innerHTML = esc(clearMarkdown(d.response)).split('\n').join('<br>');
+      normalBox.appendChild(p);
+      var voiceBtn = document.createElement('button');
+      voiceBtn.className = 'bsend'; voiceBtn.style.marginTop = '10px';
+      voiceBtn.textContent = '🔊 Listen';
+      voiceBtn.onclick = function(){ toggleVoicePlayback(d.response, voiceBtn); };
+      normalBox.appendChild(voiceBtn);
+      mb.appendChild(normalBox);
+      mb.appendChild(mkMindMap(d.response));
+    }
     document.getElementById('htt').textContent = q.slice(0,50) + (q.length > 50 ? '...' : '');
     document.getElementById('cbadge').style.display = '';
     stob(); loadHist();
@@ -341,7 +441,9 @@ function mkTable(council, responses) {
     var c = CV[i % CV.length], td = document.createElement('td'); td.className = 'rtd';
     td.style.borderLeftColor = c.bg;
     var box = document.createElement('div'); box.className = 'rtx';
-    var parts = r.split('\n\n');
+    var cleaned = clearMarkdown(r);
+    var parts = cleaned.split(/\n\s*\n/).filter(Boolean);
+    if (!parts.length) parts = [cleaned];
     parts.forEach(function(part, pi2) {
       var p2 = document.createElement('p');
       p2.innerHTML = esc(part).split('\n').join('<br>');
@@ -389,6 +491,20 @@ function mkSynth(syn) {
   return wrap;
 }
 
+function mkMindMap(text) {
+  var wrap = document.createElement('div'); wrap.className = 'sw fi';
+  wrap.appendChild(mkCard('☉','rgba(48,123,163,.14)','#4ac98a','Oblivion Mind Map','Generated visual outline from response', function(b) {
+    var summary = clearMarkdown(text).split(/[.\n]+/).filter(Boolean).slice(0, 8);
+    var list = document.createElement('ul'); list.className = 'fwlist';
+    summary.forEach(function(item) {
+      var li = document.createElement('li'); li.textContent = item.trim().replace(/^\s*[-*•▸]+\s*/,'');
+      list.appendChild(li);
+    });
+    b.appendChild(list);
+  }));
+  return wrap;
+}
+
 function mkCard(icon, ibg, ic, title, sub, fn) {
   var card = document.createElement('div'); card.className = 'scard';
   var hdr = document.createElement('div'); hdr.className = 'scardh';
@@ -407,12 +523,16 @@ function mkCard(icon, ibg, ic, title, sub, fn) {
 
 async function loadHist() {
   try {
-    var r = await fetch('/api/history', {credentials:'same-origin'});
+    var r = await fetch('/api/history?mode=' + encodeURIComponent(currentMode), {credentials:'same-origin'});
     var d = await r.json();
     var list = document.getElementById('chl');
-    if (d.chats && d.chats.length) {
-      list.innerHTML = '';
-      d.chats.forEach(function(c) {
+    list.innerHTML = '';
+    var entries = d.chats || [];
+    if (!entries.length && localStorage.getItem('conspread_hist_' + currentMode)) {
+      entries = JSON.parse(localStorage.getItem('conspread_hist_' + currentMode));
+    }
+    if (entries.length) {
+      entries.forEach(function(c) {
         var item = document.createElement('div'); item.className = 'sci' + (c.id === cid ? ' a' : '');
         item.addEventListener('click', function(){ loadChat(c.id); });
         var t = document.createElement('div'); t.className = 'sci-t'; t.textContent = c.first_question || 'Session';
@@ -429,14 +549,24 @@ async function loadChat(chatId) {
     var d = await r.json();
     if (d && d.messages && d.messages.length) {
       cid = chatId;
-      hist = d.messages.map(function(m){ return {question:m.question,responses:m.responses}; });
+      currentMode = d.messages && d.messages.length ? (d.messages[0].mode || currentMode) : currentMode;
+      document.getElementById('modeCritical').style.opacity = currentMode === 'critical' ? '1' : '0.6';
+      document.getElementById('modeNormal').style.opacity = currentMode === 'normal' ? '1' : '0.6';
+      hist = d.messages.map(function(m){ return {question:m.question,responses:m.responses || [],response:m.response,mode:m.mode}; });
       var msgs = document.getElementById('msgs'); msgs.innerHTML = '';
       d.messages.forEach(function(m) {
         var mb = document.createElement('div'); mb.className = 'mb fi';
         var um = document.createElement('div'); um.className = 'um'; um.textContent = m.question;
         mb.appendChild(um);
-        if (m.council && m.responses) mb.appendChild(mkTable(m.council, m.responses));
-        if (m.synthesis) mb.appendChild(mkSynth(m.synthesis));
+        if (m.mode === 'normal' || (m.council && !m.council.length)) {
+          var normalBox = document.createElement('div'); normalBox.className = 'cw fi';
+          var p = document.createElement('p'); p.className = 'rtx';
+          p.innerHTML = esc(clearMarkdown(m.response || (m.responses && m.responses[0]) || '')); normalBox.appendChild(p);
+          msgs.appendChild(normalBox);
+        } else if (m.council && m.responses) {
+          mb.appendChild(mkTable(m.council, m.responses));
+          if (m.synthesis) mb.appendChild(mkSynth(m.synthesis));
+        }
         msgs.appendChild(mb);
       });
       var lq = d.messages[d.messages.length-1].question;
