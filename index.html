@@ -123,12 +123,9 @@ body::before {
 .mh-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .icon-btn { background: none; border: 1px solid var(--bor2); border-radius: var(--r); padding: 5px 12px; font-size: 12px; color: var(--tx2); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all var(--t); font-family: var(--fu); }
 .icon-btn:hover { background: var(--sur2); }
-.exp-wrap { position: relative; }
-#exp-menu { position: absolute; top: calc(100% + 6px); right: 0; background: var(--sur); border: 1px solid var(--bor2); border-radius: var(--r2); box-shadow: 0 8px 32px rgba(0,0,0,.1); min-width: 160px; display: none; z-index: 200; overflow: hidden; }
-#exp-menu.open { display: block; }
-#exp-menu button { display: block; width: 100%; padding: 10px 16px; background: none; border: none; border-bottom: 1px solid var(--bor); text-align: left; font-size: 13px; font-family: var(--fu); color: var(--tx); cursor: pointer; transition: background var(--t); }
-#exp-menu button:last-child { border-bottom: none; }
-#exp-menu button:hover { background: var(--sur2); }
+.model-wrap { position: relative; }
+#model-select { background: var(--sur); border: 1px solid var(--bor2); border-radius: var(--r); padding: 5px 12px; font-size: 12px; color: var(--tx2); cursor: pointer; font-family: var(--fu); min-width: 140px; }
+#model-select:focus { outline: none; border-color: var(--gold); }
 
 /* MESSAGES */
 #msgs { flex: 1; overflow-y: auto; padding: 28px 28px 16px; display: flex; flex-direction: column; gap: 24px; }
@@ -224,9 +221,7 @@ body::before {
 .disc { font-size: 11px; color: var(--tx3); text-align: center; padding: 7px 0 0; font-family: var(--fb); font-style: italic; }
 
 /* MUSIC */
-#music-btn { position: fixed; bottom: 24px; right: 24px; width: 46px; height: 46px; border-radius: 50%; background: var(--sur); border: 1px solid var(--bor2); box-shadow: 0 4px 16px rgba(0,0,0,.1); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; z-index: 200; transition: all .25s; color: var(--tx2); }
-#music-btn:hover { box-shadow: 0 6px 24px rgba(0,0,0,.15); transform: scale(1.05); }
-#music-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+#music-btn { display: none; }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -317,6 +312,15 @@ body::before {
       <span class="mh-title" id="mh-title">Conspread</span>
       <span class="badge badge-gold" id="mode-badge">8 Perspectives</span>
       <div class="mh-right">
+        <div class="model-wrap">
+          <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
+            <option value="Qwen/Qwen2.5-72B-Instruct">Qwen 2.5 72B</option>
+            <option value="Qwen/Qwen2.5-Coder-32B-Instruct">Qwen 2.5 Coder 32B</option>
+            <option value="microsoft/WizardLM-2-8x22B">WizardLM 2 8x22B</option>
+            <option value="meta-llama/Llama-3.1-70B-Instruct">Llama 3.1 70B</option>
+            <option value="mistralai/Mistral-7B-Instruct-v0.3">Mistral 7B</option>
+          </select>
+        </div>
         <div class="exp-wrap">
           <button class="icon-btn" id="exp-btn" onclick="toggleExp()">&#9660; Export</button>
           <div id="exp-menu">
@@ -349,14 +353,14 @@ body::before {
   </div>
 </div>
 
-<button id="music-btn" onclick="toggleMusic()" title="Ambient music">&#9835;</button>
+
 
 <script>
 // ===================== STATE =====================
 var ST = {
   user: null, mode: null, cid: null, hist: [], busy: false,
-  musicOn: false, voiceOn: false, audioCtx: null, masterGain: null,
-  wordFreq: {}, msgCount: 0
+  voiceOn: false, audioCtx: null, masterGain: null,
+  wordFreq: {}, msgCount: 0, selectedModel: 'Qwen/Qwen2.5-72B-Instruct'
 };
 
 var PCOLS = [
@@ -394,6 +398,9 @@ function showLanding() {
 
 function enterMode(mode) {
   ST.mode = mode; ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
+  // Load saved model or set default
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen2.5-72B-Instruct';
+  document.getElementById('model-select').value = ST.selectedModel;
   hide('landing'); show('app');
   var ini = getIni(ST.user);
   document.getElementById('sb-av').textContent = ini;
@@ -414,7 +421,11 @@ function enterMode(mode) {
 }
 
 function goBack() { hide('app'); show('landing'); }
-function logout() { window.location.href = '/api/auth/logout'; }
+function changeModel(model) {
+  ST.selectedModel = model;
+  // Save to localStorage for persistence
+  localStorage.setItem('selectedModel', model);
+}
 function show(id) { document.getElementById(id).classList.remove('h'); }
 function hide(id) { document.getElementById(id).classList.add('h'); }
 
@@ -459,7 +470,7 @@ async function doSend() {
     var r = await fetch('/api/chat', {
       method: 'POST', credentials: 'same-origin',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({question:q, chatId:ST.cid, history:ST.hist.slice(-4), mode:ST.mode})
+      body: JSON.stringify({question:q, chatId:ST.cid, history:ST.hist.slice(-4), mode:ST.mode, model:ST.selectedModel})
     });
     var d = await r.json();
     if (!r.ok) throw new Error(d.error || 'Request failed');
@@ -563,7 +574,14 @@ function renderCouncil(council, responses, synthesis, question) {
     var foot = document.createElement('div'); foot.className = 'p-foot';
     var spk = document.createElement('button'); spk.className = 'speak-btn';
     spk.textContent = '🔊 Speak';
-    (function(txt){ spk.onclick = function(){ speakText(txt); }; })(responses[i] || '');
+    (function(txt, btn){ 
+      btn.onclick = function(){ 
+        speakText(txt); 
+        setTimeout(function() {
+          btn.textContent = currentUtterance ? '⏹ Stop' : '🔊 Speak';
+        }, 100);
+      }; 
+    })(responses[i] || '', spk);
     var bias = document.createElement('span'); bias.className = 'p-bias';
     bias.textContent = 'Blind spot: ' + (p.known_bias || '').slice(0,80);
     foot.appendChild(spk); foot.appendChild(bias);
@@ -641,12 +659,21 @@ function buildSynthEl(syn) {
 }
 
 function renderNormal(text) {
+  // Clean up formatting artifacts
+  var cleanText = text.replace(/^\s*[*#]+\s*/gm, '').replace(/\s*[*#]+\s*$/gm, '').trim();
   var wrap = document.createElement('div'); wrap.className = 'ai-wrap fi';
-  var body = document.createElement('div'); body.className = 'ai-body'; body.textContent = text;
+  var body = document.createElement('div'); body.className = 'ai-body'; body.textContent = cleanText;
   var foot = document.createElement('div'); foot.className = 'ai-foot';
   var spk = document.createElement('button'); spk.className = 'speak-btn';
   spk.textContent = '🔊 Speak';
-  spk.onclick = function() { speakText(text); };
+  (function(txt, btn){ 
+    btn.onclick = function(){ 
+      speakText(txt); 
+      setTimeout(function() {
+        btn.textContent = currentUtterance ? '⏹ Stop' : '🔊 Speak';
+      }, 100);
+    }; 
+  })(cleanText, spk);
   foot.appendChild(spk); wrap.appendChild(body); wrap.appendChild(foot);
   document.getElementById('msgs').appendChild(wrap);
 }
@@ -657,69 +684,47 @@ function drawMindMap(canvas, question, council, responses) {
   var W = canvas.width, H = canvas.height, cx = W/2, cy = H/2;
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle = '#f8f5ef'; ctx.fillRect(0,0,W,H);
-  var n = council.length;
-  var r1 = Math.min(W,H)*0.24, r2 = Math.min(W,H)*0.43;
 
-  // Centre node
-  ctx.beginPath(); ctx.arc(cx,cy,46,0,Math.PI*2);
-  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#b8902a'; ctx.lineWidth = 2.5; ctx.fill(); ctx.stroke();
-  ctx.fillStyle = '#2d2820'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  var shortQ = question.length > 22 ? question.slice(0,20)+'...' : question;
-  var qw = shortQ.split(' '), ql = '', qls = [];
-  qw.forEach(function(w) {
-    if ((ql+' '+w).trim().length <= 14) ql=(ql+' '+w).trim();
-    else { if(ql) qls.push(ql); ql=w; }
-  });
-  if (ql) qls.push(ql);
-  qls = qls.slice(0,3);
-  qls.forEach(function(l,i){ ctx.fillText(l, cx, cy+(i-(qls.length-1)/2)*13); });
+  // Oblivion-style mind map: clean, minimal, focused on connections
+  ctx.strokeStyle = '#b8902a'; ctx.lineWidth = 2;
+  ctx.fillStyle = '#2d2820'; ctx.font = 'bold 14px serif'; ctx.textAlign = 'center';
+
+  // Central question node
+  ctx.beginPath(); ctx.arc(cx, cy, 50, 0, Math.PI*2);
+  ctx.fillStyle = '#fdf0cc'; ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#2d2820';
+  var lines = question.length > 30 ? question.match(/.{1,25}/g) : [question];
+  lines.slice(0,2).forEach(function(l,i){ ctx.fillText(l, cx, cy + (i-0.5)*16); });
 
   council.forEach(function(p, i) {
-    var angle = (i/n)*Math.PI*2 - Math.PI/2;
-    var px = cx+Math.cos(angle)*r1, py = cy+Math.sin(angle)*r1;
+    var angle = (i/council.length)*Math.PI*2 - Math.PI/2;
+    var px = cx + Math.cos(angle)*150, py = cy + Math.sin(angle)*120;
     var col = PCOLS[i % PCOLS.length];
 
-    // Line to centre
-    ctx.beginPath();
-    ctx.moveTo(cx+Math.cos(angle)*46, cy+Math.sin(angle)*46);
-    ctx.lineTo(px-Math.cos(angle)*26, py-Math.sin(angle)*26);
-    ctx.strokeStyle = col.bg+'80'; ctx.lineWidth = 1.5; ctx.stroke();
+    // Connection line
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py);
+    ctx.strokeStyle = col.bg; ctx.lineWidth = 2; ctx.stroke();
 
     // Persona node
-    ctx.beginPath(); ctx.arc(px,py,26,0,Math.PI*2);
-    ctx.fillStyle = col.lt+'cc'; ctx.strokeStyle = col.bg; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
-    ctx.fillStyle = col.dk; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.beginPath(); ctx.arc(px, py, 35, 0, Math.PI*2);
+    ctx.fillStyle = col.lt; ctx.fill(); ctx.strokeStyle = col.bg; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = col.dk; ctx.font = 'bold 12px sans-serif';
     var ini = (p.avatar_initials||(p.name||'').split(' ').map(function(w){return w[0];}).join('')).slice(0,2).toUpperCase();
-    ctx.fillText(ini, px, py-3);
+    ctx.fillText(ini, px, py-5);
     ctx.fillStyle = '#5c5040'; ctx.font = '9px sans-serif';
-    ctx.fillText((p.name||'').split(' ').slice(-1)[0].slice(0,9), px, py+11);
+    ctx.fillText((p.title||'').slice(0,12), px, py+8);
 
-    // Keyword nodes
+    // Key insight (if available)
     if (responses && responses[i]) {
-      var rwords = responses[i].toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).filter(function(w){ return w.length>4 && !STOP[w]; });
-      var freq = {};
-      rwords.forEach(function(w){ freq[w]=(freq[w]||0)+1; });
-      var top = Object.keys(freq).sort(function(a,b){return freq[b]-freq[a];}).slice(0,2);
-      top.forEach(function(word, wi) {
-        var ka = angle + (wi===0 ? -0.4 : 0.4);
-        var kx = cx+Math.cos(ka)*r2, ky = cy+Math.sin(ka)*r2;
-        ctx.beginPath();
-        ctx.moveTo(px+Math.cos(ka)*26, py+Math.sin(ka)*26);
-        ctx.lineTo(kx, ky);
-        ctx.strokeStyle = col.bg+'40'; ctx.lineWidth = 1; ctx.stroke();
-        ctx.font = '9px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        var tw = ctx.measureText(word.slice(0,12)).width, pw = tw+14, ph = 15;
-        var rx2 = kx-pw/2, ry2 = ky-ph/2, rad = 4;
-        ctx.beginPath();
-        ctx.moveTo(rx2+rad,ry2); ctx.lineTo(rx2+pw-rad,ry2); ctx.quadraticCurveTo(rx2+pw,ry2,rx2+pw,ry2+rad);
-        ctx.lineTo(rx2+pw,ry2+ph-rad); ctx.quadraticCurveTo(rx2+pw,ry2+ph,rx2+pw-rad,ry2+ph);
-        ctx.lineTo(rx2+rad,ry2+ph); ctx.quadraticCurveTo(rx2,ry2+ph,rx2,ry2+ph-rad);
-        ctx.lineTo(rx2,ry2+rad); ctx.quadraticCurveTo(rx2,ry2,rx2+rad,ry2); ctx.closePath();
-        ctx.fillStyle = col.lt+'ee'; ctx.strokeStyle = col.bg; ctx.lineWidth = 1; ctx.fill(); ctx.stroke();
-        ctx.fillStyle = col.dk; ctx.fillText(word.slice(0,12), kx, ky);
-      });
+      var insight = responses[i].split('.')[0].slice(0,20) + '...';
+      ctx.fillStyle = col.dk; ctx.font = '10px serif';
+      ctx.fillText(insight, px, py + 50);
     }
   });
+
+  // Title
+  ctx.fillStyle = '#6a4a10'; ctx.font = 'bold 16px serif'; ctx.textAlign = 'center';
+  ctx.fillText('Oblivion Mind Map', cx, 30);
 }
 
 // ===================== PATTERNS =====================
@@ -748,7 +753,8 @@ function renderPatterns() {
 }
 
 // ===================== VOICE =====================
-var recog = null;
+var currentUtterance = null;
+
 function toggleVoice() {
   if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
     alert('Voice input is not supported in this browser. Try Chrome.'); return;
@@ -770,38 +776,21 @@ function toggleVoice() {
 
 function speakText(text) {
   if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(text.slice(0,1200));
-  u.rate = 0.95; u.pitch = 1;
-  window.speechSynthesis.speak(u);
+  if (currentUtterance) {
+    // Stop current speech
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+    return;
+  }
+  // Start new speech
+  currentUtterance = new SpeechSynthesisUtterance(text.slice(0,1200));
+  currentUtterance.rate = 0.95; currentUtterance.pitch = 1;
+  currentUtterance.onend = function() { currentUtterance = null; };
+  window.speechSynthesis.speak(currentUtterance);
 }
 
 // ===================== MUSIC =====================
-function toggleMusic() {
-  var btn = document.getElementById('music-btn');
-  if (!ST.audioCtx) {
-    ST.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    ST.masterGain = ST.audioCtx.createGain();
-    ST.masterGain.gain.setValueAtTime(0, ST.audioCtx.currentTime);
-    ST.masterGain.connect(ST.audioCtx.destination);
-    [[108,.20],[216,.09],[432,.14],[528,.07],[648,.05]].forEach(function(pair) {
-      var osc = ST.audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = pair[0];
-      var g = ST.audioCtx.createGain(); g.gain.value = pair[1];
-      osc.connect(g); g.connect(ST.masterGain); osc.start();
-    });
-    var lfo = ST.audioCtx.createOscillator(); lfo.frequency.value = 0.06;
-    var lg = ST.audioCtx.createGain(); lg.gain.value = 0.03;
-    lfo.connect(lg); lg.connect(ST.masterGain.gain); lfo.start();
-    ST.masterGain.gain.linearRampToValueAtTime(0.35, ST.audioCtx.currentTime+2.5);
-    ST.musicOn = true; btn.classList.add('active'); btn.title = 'Stop ambient music';
-  } else if (ST.musicOn) {
-    ST.masterGain.gain.linearRampToValueAtTime(0, ST.audioCtx.currentTime+1.5);
-    ST.musicOn = false; btn.classList.remove('active'); btn.title = 'Play ambient music';
-  } else {
-    ST.masterGain.gain.linearRampToValueAtTime(0.35, ST.audioCtx.currentTime+1.5);
-    ST.musicOn = true; btn.classList.add('active'); btn.title = 'Stop ambient music';
-  }
-}
+// Music functionality removed
 
 // ===================== EXPORT =====================
 function toggleExp() {
@@ -907,8 +896,11 @@ async function loadHist() {
     var d = await r.json();
     var list = document.getElementById('sb-hist');
     list.innerHTML = '';
-    if (!d.chats || !d.chats.length) { list.innerHTML = '<div class="sb-empty">No previous chats<'+'/div>'; return; }
-    d.chats.forEach(function(c) {
+    if (!d.chats || !d.chats.length) { list.innerHTML = '<div class="sb-empty">No ' + (ST.mode === 'council' ? 'critical thinking' : 'normal conversation') + ' chats yet</div>'; return; }
+    // Filter chats by current mode
+    var filteredChats = d.chats.filter(function(c) { return c.mode === ST.mode; });
+    if (!filteredChats.length) { list.innerHTML = '<div class="sb-empty">No ' + (ST.mode === 'council' ? 'critical thinking' : 'normal conversation') + ' chats yet</div>'; return; }
+    filteredChats.forEach(function(c) {
       var item = document.createElement('div');
       item.className = 'sb-item' + (c.id === ST.cid ? ' active' : '');
       item.onclick = function(){ loadChat(c.id); };
