@@ -138,7 +138,7 @@ async function callHF(messages, token, model, opts) {
 
 async function buildCouncil(topic, token, model) {
   try {
-    var txt = await callHF([{ role:'user', content: councilPrompt(topic) }], token, model, { max_tokens:3500, temperature:0.85 });
+    var txt = await callHF([{ role:'user', content: councilPrompt(topic) }], token, model, { max_tokens:2500, temperature:0.85 });
     var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
     var arr = JSON.parse(clean);
     if (!Array.isArray(arr) || arr.length < 4) throw new Error('bad format');
@@ -161,12 +161,12 @@ async function personaReply(persona, all, question, history, token, model) {
   var msgs = [{ role:'system', content: personaPrompt(persona, all) }]
     .concat(hist)
     .concat([{ role:'user', content: question }]);
-  return callHF(msgs, token, model, { max_tokens: 400, temperature: 0.76 });
+  return callHF(msgs, token, model, { max_tokens: 300, temperature: 0.76 });
 }
 
 async function buildSynthesis(question, council, responses, token, model) {
   try {
-    var txt = await callHF([{ role:'user', content: synthesisPrompt(question, council, responses) }], token, model, { max_tokens:2000, temperature:0.62 });
+    var txt = await callHF([{ role:'user', content: synthesisPrompt(question, council, responses) }], token, model, { max_tokens:1500, temperature:0.62 });
     var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
     return JSON.parse(clean);
   } catch(e) {
@@ -181,7 +181,7 @@ async function normalReply(question, history, token, model) {
     if (h.reply) msgs.push({ role:'assistant', content: h.reply });
   });
   msgs.push({ role:'user', content: question });
-  return callHF(msgs, token, model, { max_tokens:800, temperature:0.70 });
+  return callHF(msgs, token, model, { max_tokens:600, temperature:0.70 });
 }
 
 async function mkSid() {
@@ -272,10 +272,11 @@ async function onChat(req, env) {
   if (!s) return jres({ error:'Unauthorized' }, 401);
   var body;
   try { body = await req.json(); } catch(e) { return jres({ error:'Invalid JSON' }, 400); }
-  var question = body.question, chatId = body.chatId, history = body.history, mode = body.mode;
+  var question = body.question, chatId = body.chatId, history = body.history, mode = body.mode, model = body.model;
   if (!question || !question.trim()) return jres({ error:'Question required' }, 400);
   if (question.length > 2000) return jres({ error:'Too long' }, 400);
-  var model = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
+  var defaultModel = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
+  var selectedModel = model || defaultModel;
   try {
     var cid = chatId || crypto.randomUUID();
     var key = 'chat:' + s.user.id + ':' + cid;
@@ -287,17 +288,17 @@ async function onChat(req, env) {
       cd = { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
     }
     if (mode === 'normal') {
-      var reply = await normalReply(question, history, s.hf_token, model);
+      var reply = await normalReply(question, history, s.hf_token, selectedModel);
       cd.messages.push({ id:crypto.randomUUID(), question:question, reply:reply, mode:'normal', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'normal' } });
       return jres({ chatId:cid, reply:reply });
     } else {
-      var council = await buildCouncil(question.trim(), s.hf_token, model);
+      var council = await buildCouncil(question.trim(), s.hf_token, selectedModel);
       var responses = await Promise.all(council.map(function(p) {
-        return personaReply(p, council, question, history, s.hf_token, model);
+        return personaReply(p, council, question, history, s.hf_token, selectedModel);
       }));
-      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, model);
+      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, selectedModel);
       cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'council' } });
