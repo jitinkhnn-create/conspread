@@ -148,19 +148,18 @@ body::before {
 
 /* PERSONA CARDS */
 .council-wrap { display: flex; flex-direction: column; gap: 14px; }
-.p-card { background: var(--sur); border: 1px solid var(--bor); border-left: 4px solid; border-radius: var(--r2); padding: 18px 20px; transition: box-shadow var(--t); }
-.p-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-.p-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-.p-av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--fu); font-size: 12px; font-weight: 700; flex-shrink: 0; border: 2px solid; }
-.p-info { flex: 1; }
-.p-name { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); line-height: 1.2; }
-.p-title { font-size: 12px; color: var(--tx2); margin-top: 2px; }
-.p-trad { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 10px; font-family: var(--fu); letter-spacing: .04em; margin-top: 6px; border: 1px solid; font-weight: 600; }
-.p-body { font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); white-space: pre-wrap; }
-.p-foot { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--bor); }
-.p-bias { font-size: 11px; font-style: italic; color: var(--tx3); font-family: var(--fb); flex: 1; }
-.speak-btn { background: none; border: 1px solid var(--bor2); border-radius: 20px; padding: 3px 12px; font-size: 11px; color: var(--tx3); cursor: pointer; transition: all var(--t); font-family: var(--fu); white-space: nowrap; flex-shrink: 0; }
-.speak-btn:hover { background: var(--sur2); color: var(--tx); }
+.persona-summary { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; transition: box-shadow var(--t); }
+.persona-summary:hover { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+.persona-name { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 8px; }
+.persona-summary-text { font-family: var(--fb); font-size: 16px; color: var(--tx); margin-bottom: 10px; }
+.persona-full { display: none; font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); white-space: pre-wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--bor); }
+.persona-link { color: var(--blue); text-decoration: none; font-size: 14px; font-weight: 600; }
+.persona-link:hover { text-decoration: underline; }
+.persona-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); overflow: hidden; }
+.persona-table th, .persona-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--bor); }
+.persona-table th { background: var(--sur2); font-family: var(--fu); font-weight: 600; color: var(--tx); }
+.persona-table td { font-family: var(--fb); color: var(--tx); }
+.persona-table tr:hover { background: var(--sur2); }
 
 /* COLLAPSIBLE */
 .collapsible { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); overflow: hidden; }
@@ -564,53 +563,48 @@ function appendLoading(txt) {
 function renderCouncil(council, responses, synthesis, question) {
   var wrap = document.createElement('div'); wrap.className = 'council-wrap fi';
   council.forEach(function(p, i) {
-    var col = PCOLS[i % PCOLS.length];
-    var card = document.createElement('div'); card.className = 'p-card';
-    card.dataset.personaId = p.id;
-    card.style.borderLeftColor = col.bg;
-    card.style.backgroundColor = col.lt + '22';
-    var hd = document.createElement('div'); hd.className = 'p-head';
-    var av = document.createElement('div'); av.className = 'p-av';
-    av.style.background = col.lt; av.style.color = col.dk; av.style.borderColor = col.bg;
-    var ini = (p.avatar_initials || (p.name||'').split(' ').map(function(w){return w[0];}).join('')).slice(0,2).toUpperCase();
-    av.textContent = ini;
-    var info = document.createElement('div'); info.className = 'p-info';
-    var nm = document.createElement('div'); nm.className = 'p-name'; nm.textContent = p.name;
-    var ti = document.createElement('div'); ti.className = 'p-title'; ti.textContent = p.title;
-    var tr = document.createElement('span'); tr.className = 'p-trad';
-    tr.style.background = col.lt; tr.style.color = col.dk; tr.style.borderColor = col.bg + '80';
-    tr.textContent = p.intellectual_tradition || '';
-    info.appendChild(nm); info.appendChild(ti); info.appendChild(tr);
-    hd.appendChild(av); hd.appendChild(info);
-    var body = document.createElement('div'); body.className = 'p-body';
-    body.dataset.personaId = p.id;
-    body.textContent = responses[i] || '';
-    var foot = document.createElement('div'); foot.className = 'p-foot';
-    var spk = document.createElement('button'); spk.className = 'speak-btn';
-    spk.textContent = '🔊 Speak';
-    (function(txt, btn){ 
-      btn.onclick = function(){ 
-        speakText(txt); 
-        setTimeout(function() {
-          btn.textContent = currentUtterance ? '⏹ Stop' : '🔊 Speak';
-        }, 100);
-      }; 
-    })(responses[i] || '', spk);
-    var bias = document.createElement('span'); bias.className = 'p-bias';
-    bias.textContent = 'Blind spot: ' + (p.known_bias || '').slice(0,80);
-    foot.appendChild(spk); foot.appendChild(bias);
-    card.appendChild(hd); card.appendChild(body); card.appendChild(foot);
-    wrap.appendChild(card);
+    var item = document.createElement('div'); item.className = 'persona-summary';
+    var name = document.createElement('div'); name.className = 'persona-name'; name.textContent = p.name + ' (' + p.title + ')';
+    var summary = document.createElement('div'); summary.className = 'persona-summary-text'; summary.textContent = getShortSummary(responses[i] || '');
+    var link = document.createElement('a'); link.className = 'persona-link'; link.href = '#'; link.textContent = 'Read full response';
+    link.onclick = function(e) { e.preventDefault(); toggleFull(item, responses[i] || ''); };
+    item.appendChild(name); item.appendChild(summary); item.appendChild(link);
+    wrap.appendChild(item);
   });
 
-  // Mind Map
-  wrap.appendChild(makeCollapsible('Map Thoughts', true, function(b) {
-    var container = document.createElement('div');
-    container.className = 'mindmap-canvas';
-    container.style.minHeight = '520px';
-    b.appendChild(container);
-    setTimeout(function(){ drawMindMap(container, question, council, responses); }, 100);
-  }));
+  // Summary table
+  var table = document.createElement('table'); table.className = 'persona-table';
+  var thead = document.createElement('thead');
+  var trh = document.createElement('tr');
+  var th1 = document.createElement('th'); th1.textContent = 'Persona';
+  var th2 = document.createElement('th'); th2.textContent = 'Short Answer';
+  trh.appendChild(th1); trh.appendChild(th2);
+  thead.appendChild(trh);
+  table.appendChild(thead);
+  var tbody = document.createElement('tbody');
+  council.forEach(function(p, i) {
+    var tr = document.createElement('tr');
+    var td1 = document.createElement('td'); td1.textContent = p.name;
+    var td2 = document.createElement('td'); td2.textContent = getShortSummary(responses[i] || '');
+    tr.appendChild(td1); tr.appendChild(td2);
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+
+  // Theme Connections
+  var connections = getThemeConnections(council, responses);
+  if (connections.length) {
+    wrap.appendChild(makeCollapsible('Theme Connections', false, function(b) {
+      var ul = document.createElement('ul'); ul.className = 'fw-list';
+      connections.forEach(function(conn) {
+        var li = document.createElement('li');
+        li.textContent = '"' + conn.theme + '" mentioned by: ' + conn.personas.join(', ');
+        ul.appendChild(li);
+      });
+      b.appendChild(ul);
+    }));
+  }
 
   // Synthesis
   if (synthesis) {
@@ -693,138 +687,27 @@ function renderNormal(text) {
   document.getElementById('msgs').appendChild(wrap);
 }
 
-// ===================== MIND MAP =====================
-function clearHighlights() {
-  document.querySelectorAll('.highlighted').forEach(function(el){ el.classList.remove('highlighted'); });
-  document.querySelectorAll('.mindmap-node').forEach(function(el){ el.classList.remove('mindmap-highlight'); });
-}
-
-function highlightPersona(personaId) {
-  clearHighlights();
-  var cards = document.querySelectorAll('[data-persona-id="' + personaId + '"]');
-  if (!cards.length) return;
-  cards.forEach(function(c){ c.classList.add('highlighted'); });
-  var node = document.querySelector('[data-node-id="p-' + personaId + '"]');
-  if (node) node.classList.add('mindmap-highlight');
-  cards[0].scrollIntoView({behavior:'smooth', block:'center'});
-}
-
-function highlightTheme(word) {
-  clearHighlights();
-  var regex = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '\\b','i');
-  var found = false;
-  document.querySelectorAll('.p-body, .ai-body').forEach(function(el) {
-    if (regex.test(el.textContent || '')) {
-      el.classList.add('highlighted'); found = true;
-    }
-  });
-  var node = document.querySelector('[data-node-id="t-' + word + '"]');
-  if (node) node.classList.add('mindmap-highlight');
-  if (found) {
-    var first = document.querySelector('.highlighted');
-    if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
-  }
-}
-
-function drawMindMap(container, question, council, responses) {
-  container.innerHTML = '';
-  var W = 900, H = 520, cx = W/2, cy = H/2;
-  var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-  svg.setAttribute('width', '100%');
-  svg.setAttribute('height', '100%');
-  svg.style.borderRadius = 'var(--r)';
-  svg.style.background = 'var(--bg)';
-  container.appendChild(svg);
-
-  function makeLine(x1,y1,x2,y2,color) {
-    var line = document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-    line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-    line.setAttribute('stroke', color); line.setAttribute('stroke-width', 2);
-    line.setAttribute('stroke-linecap', 'round');
-    svg.appendChild(line);
-    return line;
-  }
-
-  function makeNode(id,x,y,r,fill,stroke) {
-    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.classList.add('mindmap-node');
-    g.dataset.nodeId = id;
-    var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r);
-    c.setAttribute('fill', fill); c.setAttribute('stroke', stroke); c.setAttribute('stroke-width', 2);
-    g.appendChild(c);
-    svg.appendChild(g);
-    return {group:g, circle:c};
-  }
-
-  function makeLabel(x,y,text,opts) {
-    var t = document.createElementNS('http://www.w3.org/2000/svg','text');
-    t.setAttribute('x', x); t.setAttribute('y', y);
-    t.setAttribute('text-anchor', 'middle');
-    t.setAttribute('fill', (opts && opts.fill) || '#2d2820');
-    t.setAttribute('font-size', (opts && opts.fontSize) || 12);
-    t.setAttribute('font-weight', (opts && opts.fontWeight) || 'normal');
-    t.classList.add('mindmap-label');
-    t.textContent = text;
-    svg.appendChild(t);
-    return t;
-  }
-
-  function makeNodeWithLabel(id,x,y,r,fill,stroke,label,subtitle) {
-    var n = makeNode(id,x,y,r,fill,stroke);
-    makeLabel(x, y - 4, label, {fontSize:12, fontWeight:'bold', fill: '#2d2820'});
-    if (subtitle) makeLabel(x, y + 12, subtitle, {fontSize:10, fill:'#5c5040'});
-    return n.group;
-  }
-
-  // Build nodes
-  var nodeMap = {};
-  nodeMap['q'] = {x:cx,y:cy};
-  makeNodeWithLabel('q',cx,cy,58,'#fdf0cc','#b8902a','Q');
-  makeLabel(cx, cy - 28, 'Question', {fontSize:11, fill:'#6a4a10'});
-
-  // Themes (top repeated words)
+function getThemeConnections(council, responses) {
   var wordCounts = {};
-  (responses||[]).forEach(function(r){
+  var personaWords = {};
+  (responses||[]).forEach(function(r, i){
+    var words = {};
     (r||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
-      if (w.length > 4 && !STOP[w]) wordCounts[w] = (wordCounts[w]||0)+1;
-    });
-  });
-  var themes = Object.keys(wordCounts).sort(function(a,b){return wordCounts[b]-wordCounts[a];}).slice(0,4);
-  themes.forEach(function(word, idx) {
-    var angle = Math.PI/4 + idx*(Math.PI/3);
-    var x = cx + Math.cos(angle)*220;
-    var y = cy + Math.sin(angle)*180;
-    nodeMap['t-'+word] = {x:x,y:y};
-    makeLine(cx,cy,x,y,'#d4a835');
-    var g = makeNodeWithLabel('t-'+word,x,y,28,'#fff7e6','#d4a835', word);
-    g.addEventListener('click', function(){ highlightTheme(word); });
-  });
-
-  // Personae
-  (council||[]).forEach(function(p,i) {
-    var angle = (i/council.length)*Math.PI*2 - Math.PI/2;
-    var x = cx + Math.cos(angle)*180;
-    var y = cy + Math.sin(angle)*140;
-    var col = PCOLS[i % PCOLS.length];
-    nodeMap['p-'+p.id] = {x:x,y:y};
-    makeLine(cx,cy,x,y,col.bg);
-    var initials = (p.avatar_initials || (p.name||'').split(' ').map(function(w){return w[0];}).join('')).slice(0,2).toUpperCase();
-    var g = makeNodeWithLabel('p-'+p.id,x,y,35,col.lt,col.bg,initials,(p.title||'').slice(0,12));
-    g.addEventListener('click', function(){ highlightPersona(p.id); });
-
-    // Connect themes mentioned in this persona's response
-    themes.forEach(function(word) {
-      if ((responses[i]||'').toLowerCase().indexOf(word.toLowerCase()) !== -1) {
-        var t = nodeMap['t-'+word];
-        if (t) makeLine(x,y,t.x,t.y,col.bg);
+      if (w.length > 4 && !STOP[w]) {
+        words[w] = true;
+        wordCounts[w] = (wordCounts[w]||0)+1;
       }
     });
+    personaWords[i] = words;
   });
-
-  makeLabel(cx, 30, 'Oblivion Mind Map', {fontWeight:'bold', fontSize:16, fill:'#6a4a10'});
+  var themes = Object.keys(wordCounts).filter(function(w){ return wordCounts[w] > 1; }).sort(function(a,b){return wordCounts[b]-wordCounts[a];}).slice(0,5);
+  return themes.map(function(theme) {
+    var personas = [];
+    council.forEach(function(p, i) {
+      if (personaWords[i][theme]) personas.push(p.name);
+    });
+    return {theme: theme, personas: personas};
+  }).filter(function(conn){ return conn.personas.length > 1; });
 }
 
 // ===================== PATTERNS =====================
