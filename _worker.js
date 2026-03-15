@@ -305,6 +305,16 @@ async function onChat(req, env) {
       return jres({ chatId:cid, council:council, responses:responses, synthesis:synthesis });
     }
   } catch(err) {
+    // If the Hugging Face token is invalid/expired, force a logout so the client can re-authenticate.
+    if (err && typeof err.message === 'string' && err.message.startsWith('HF 401')) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json',
+          'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
+        }
+      });
+    }
     return jres({ error: err.message || 'Processing failed' }, 500);
   }
 }
@@ -324,11 +334,32 @@ async function onImage(req, env) {
     });
     if (!res.ok) {
       var errText = await res.text();
+      // Treat 401s as an authorization issue so the client can logout/relogin.
+      if (res.status === 401) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: {
+            'Content-Type': 'application/json',
+            'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
+          }
+        });
+      }
       return jres({ error: 'Image generation failed: ' + errText.slice(0,200) }, 502);
     }
     var imgBuffer = await res.arrayBuffer();
     return new Response(imgBuffer, { headers: { 'Content-Type': res.headers.get('content-type') || 'image/jpeg' } });
-  } catch(err) { return jres({ error: err.message }, 500); }
+  } catch(err) {
+    if (err && typeof err.message === 'string' && err.message.startsWith('HF 401')) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json',
+          'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
+        }
+      });
+    }
+    return jres({ error: err.message }, 500);
+  }
 }
 
 async function onHistory(req, env) {
