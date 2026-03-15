@@ -189,6 +189,17 @@ body::before {
 
 /* MIND MAP */
 .mindmap-canvas { width: 100%; height: auto; border-radius: var(--r); background: var(--bg); display: block; }
+.mindmap-node { cursor: pointer; transition: transform .15s ease, opacity .15s ease; }
+.mindmap-node:hover { transform: scale(1.05); opacity: .9; }
+.mindmap-highlight { stroke: var(--gold); stroke-width: 3px; }
+.highlighted { background: rgba(184,144,42,0.18); border-radius: 12px; }
+.mindmap-label { user-select: none; pointer-events: none; }
+
+.selection-action {
+  position: fixed; top: 0; left: 0; padding: 8px 12px; background: var(--sur); border: 1px solid var(--bor); border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12); font-size: 12px; color: var(--tx); z-index: 9999; cursor: pointer;
+}
+.selection-action.hidden { display: none; }
 
 /* PATTERNS */
 .pattern-panel { background: linear-gradient(135deg, #fffbf0, #fff8e8); border: 1px solid var(--bor2); border-radius: var(--r2); padding: 14px 18px; }
@@ -385,6 +396,7 @@ async function init() {
     if (d.authenticated) { ST.user = d.user; showLanding(); }
     else showLogin();
   } catch(e) { showLogin(); }
+  setupSelectionFollowUp();
 }
 
 function showLogin() {
@@ -554,6 +566,7 @@ function renderCouncil(council, responses, synthesis, question) {
   council.forEach(function(p, i) {
     var col = PCOLS[i % PCOLS.length];
     var card = document.createElement('div'); card.className = 'p-card';
+    card.dataset.personaId = p.id;
     card.style.borderLeftColor = col.bg;
     card.style.backgroundColor = col.lt + '22';
     var hd = document.createElement('div'); hd.className = 'p-head';
@@ -570,6 +583,7 @@ function renderCouncil(council, responses, synthesis, question) {
     info.appendChild(nm); info.appendChild(ti); info.appendChild(tr);
     hd.appendChild(av); hd.appendChild(info);
     var body = document.createElement('div'); body.className = 'p-body';
+    body.dataset.personaId = p.id;
     body.textContent = responses[i] || '';
     var foot = document.createElement('div'); foot.className = 'p-foot';
     var spk = document.createElement('button'); spk.className = 'speak-btn';
@@ -591,10 +605,11 @@ function renderCouncil(council, responses, synthesis, question) {
 
   // Mind Map
   wrap.appendChild(makeCollapsible('Map Thoughts', true, function(b) {
-    var canvas = document.createElement('canvas');
-    canvas.width = 900; canvas.height = 500; canvas.className = 'mindmap-canvas';
-    b.appendChild(canvas);
-    setTimeout(function(){ drawMindMap(canvas, question, council, responses); }, 100);
+    var container = document.createElement('div');
+    container.className = 'mindmap-canvas';
+    container.style.minHeight = '520px';
+    b.appendChild(container);
+    setTimeout(function(){ drawMindMap(container, question, council, responses); }, 100);
   }));
 
   // Synthesis
@@ -662,7 +677,7 @@ function renderNormal(text) {
   // Clean up formatting artifacts
   var cleanText = text.replace(/^\s*[*#]+\s*/gm, '').replace(/\s*[*#]+\s*$/gm, '').trim();
   var wrap = document.createElement('div'); wrap.className = 'ai-wrap fi';
-  var body = document.createElement('div'); body.className = 'ai-body'; body.textContent = cleanText;
+  var body = document.createElement('div'); body.className = 'ai-body'; body.dataset.response = 'normal'; body.textContent = cleanText;
   var foot = document.createElement('div'); foot.className = 'ai-foot';
   var spk = document.createElement('button'); spk.className = 'speak-btn';
   spk.textContent = '🔊 Speak';
@@ -679,52 +694,137 @@ function renderNormal(text) {
 }
 
 // ===================== MIND MAP =====================
-function drawMindMap(canvas, question, council, responses) {
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height, cx = W/2, cy = H/2;
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle = '#f8f5ef'; ctx.fillRect(0,0,W,H);
+function clearHighlights() {
+  document.querySelectorAll('.highlighted').forEach(function(el){ el.classList.remove('highlighted'); });
+  document.querySelectorAll('.mindmap-node').forEach(function(el){ el.classList.remove('mindmap-highlight'); });
+}
 
-  // Oblivion-style mind map: clean, minimal, focused on connections
-  ctx.strokeStyle = '#b8902a'; ctx.lineWidth = 2;
-  ctx.fillStyle = '#2d2820'; ctx.font = 'bold 14px serif'; ctx.textAlign = 'center';
+function highlightPersona(personaId) {
+  clearHighlights();
+  var cards = document.querySelectorAll('[data-persona-id="' + personaId + '"]');
+  if (!cards.length) return;
+  cards.forEach(function(c){ c.classList.add('highlighted'); });
+  var node = document.querySelector('[data-node-id="p-' + personaId + '"]');
+  if (node) node.classList.add('mindmap-highlight');
+  cards[0].scrollIntoView({behavior:'smooth', block:'center'});
+}
 
-  // Central question node
-  ctx.beginPath(); ctx.arc(cx, cy, 50, 0, Math.PI*2);
-  ctx.fillStyle = '#fdf0cc'; ctx.fill(); ctx.stroke();
-  ctx.fillStyle = '#2d2820';
-  var lines = question.length > 30 ? question.match(/.{1,25}/g) : [question];
-  lines.slice(0,2).forEach(function(l,i){ ctx.fillText(l, cx, cy + (i-0.5)*16); });
-
-  council.forEach(function(p, i) {
-    var angle = (i/council.length)*Math.PI*2 - Math.PI/2;
-    var px = cx + Math.cos(angle)*150, py = cy + Math.sin(angle)*120;
-    var col = PCOLS[i % PCOLS.length];
-
-    // Connection line
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py);
-    ctx.strokeStyle = col.bg; ctx.lineWidth = 2; ctx.stroke();
-
-    // Persona node
-    ctx.beginPath(); ctx.arc(px, py, 35, 0, Math.PI*2);
-    ctx.fillStyle = col.lt; ctx.fill(); ctx.strokeStyle = col.bg; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = col.dk; ctx.font = 'bold 12px sans-serif';
-    var ini = (p.avatar_initials||(p.name||'').split(' ').map(function(w){return w[0];}).join('')).slice(0,2).toUpperCase();
-    ctx.fillText(ini, px, py-5);
-    ctx.fillStyle = '#5c5040'; ctx.font = '9px sans-serif';
-    ctx.fillText((p.title||'').slice(0,12), px, py+8);
-
-    // Key insight (if available)
-    if (responses && responses[i]) {
-      var insight = responses[i].split('.')[0].slice(0,20) + '...';
-      ctx.fillStyle = col.dk; ctx.font = '10px serif';
-      ctx.fillText(insight, px, py + 50);
+function highlightTheme(word) {
+  clearHighlights();
+  var regex = new RegExp('\\b' + word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '\\b','i');
+  var found = false;
+  document.querySelectorAll('.p-body, .ai-body').forEach(function(el) {
+    if (regex.test(el.textContent || '')) {
+      el.classList.add('highlighted'); found = true;
     }
   });
+  var node = document.querySelector('[data-node-id="t-' + word + '"]');
+  if (node) node.classList.add('mindmap-highlight');
+  if (found) {
+    var first = document.querySelector('.highlighted');
+    if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
 
-  // Title
-  ctx.fillStyle = '#6a4a10'; ctx.font = 'bold 16px serif'; ctx.textAlign = 'center';
-  ctx.fillText('Oblivion Mind Map', cx, 30);
+function drawMindMap(container, question, council, responses) {
+  container.innerHTML = '';
+  var W = 900, H = 520, cx = W/2, cy = H/2;
+  var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '100%');
+  svg.style.borderRadius = 'var(--r)';
+  svg.style.background = 'var(--bg)';
+  container.appendChild(svg);
+
+  function makeLine(x1,y1,x2,y2,color) {
+    var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+    line.setAttribute('stroke', color); line.setAttribute('stroke-width', 2);
+    line.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(line);
+    return line;
+  }
+
+  function makeNode(id,x,y,r,fill,stroke) {
+    var g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.classList.add('mindmap-node');
+    g.dataset.nodeId = id;
+    var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r);
+    c.setAttribute('fill', fill); c.setAttribute('stroke', stroke); c.setAttribute('stroke-width', 2);
+    g.appendChild(c);
+    svg.appendChild(g);
+    return {group:g, circle:c};
+  }
+
+  function makeLabel(x,y,text,opts) {
+    var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('fill', (opts && opts.fill) || '#2d2820');
+    t.setAttribute('font-size', (opts && opts.fontSize) || 12);
+    t.setAttribute('font-weight', (opts && opts.fontWeight) || 'normal');
+    t.classList.add('mindmap-label');
+    t.textContent = text;
+    svg.appendChild(t);
+    return t;
+  }
+
+  function makeNodeWithLabel(id,x,y,r,fill,stroke,label,subtitle) {
+    var n = makeNode(id,x,y,r,fill,stroke);
+    makeLabel(x, y - 4, label, {fontSize:12, fontWeight:'bold', fill: '#2d2820'});
+    if (subtitle) makeLabel(x, y + 12, subtitle, {fontSize:10, fill:'#5c5040'});
+    return n.group;
+  }
+
+  // Build nodes
+  var nodeMap = {};
+  nodeMap['q'] = {x:cx,y:cy};
+  makeNodeWithLabel('q',cx,cy,58,'#fdf0cc','#b8902a','Q');
+  makeLabel(cx, cy - 28, 'Question', {fontSize:11, fill:'#6a4a10'});
+
+  // Themes (top repeated words)
+  var wordCounts = {};
+  (responses||[]).forEach(function(r){
+    (r||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
+      if (w.length > 4 && !STOP[w]) wordCounts[w] = (wordCounts[w]||0)+1;
+    });
+  });
+  var themes = Object.keys(wordCounts).sort(function(a,b){return wordCounts[b]-wordCounts[a];}).slice(0,4);
+  themes.forEach(function(word, idx) {
+    var angle = Math.PI/4 + idx*(Math.PI/3);
+    var x = cx + Math.cos(angle)*220;
+    var y = cy + Math.sin(angle)*180;
+    nodeMap['t-'+word] = {x:x,y:y};
+    makeLine(cx,cy,x,y,'#d4a835');
+    var g = makeNodeWithLabel('t-'+word,x,y,28,'#fff7e6','#d4a835', word);
+    g.addEventListener('click', function(){ highlightTheme(word); });
+  });
+
+  // Personae
+  (council||[]).forEach(function(p,i) {
+    var angle = (i/council.length)*Math.PI*2 - Math.PI/2;
+    var x = cx + Math.cos(angle)*180;
+    var y = cy + Math.sin(angle)*140;
+    var col = PCOLS[i % PCOLS.length];
+    nodeMap['p-'+p.id] = {x:x,y:y};
+    makeLine(cx,cy,x,y,col.bg);
+    var initials = (p.avatar_initials || (p.name||'').split(' ').map(function(w){return w[0];}).join('')).slice(0,2).toUpperCase();
+    var g = makeNodeWithLabel('p-'+p.id,x,y,35,col.lt,col.bg,initials,(p.title||'').slice(0,12));
+    g.addEventListener('click', function(){ highlightPersona(p.id); });
+
+    // Connect themes mentioned in this persona's response
+    themes.forEach(function(word) {
+      if ((responses[i]||'').toLowerCase().indexOf(word.toLowerCase()) !== -1) {
+        var t = nodeMap['t-'+word];
+        if (t) makeLine(x,y,t.x,t.y,col.bg);
+      }
+    });
+  });
+
+  makeLabel(cx, 30, 'Oblivion Mind Map', {fontWeight:'bold', fontSize:16, fill:'#6a4a10'});
 }
 
 // ===================== PATTERNS =====================
@@ -953,6 +1053,52 @@ function onKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend()
 function rsz(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,150)+'px'; }
 function scrollBottom() { setTimeout(function(){ document.getElementById('msgs').scrollTop=9999; },60); }
 function getIni(u) { return ((u.name||u.username||'U').split(' ').map(function(w){return w[0];}).join('')).toUpperCase().slice(0,2); }
+
+// ==== TEXT SELECTION FOLLOW-UP ====
+var selectionActionEl;
+function setupSelectionFollowUp() {
+  selectionActionEl = document.createElement('div');
+  selectionActionEl.className = 'selection-action hidden';
+  selectionActionEl.textContent = 'Ask about selection';
+  selectionActionEl.onclick = function() {
+    var txt = selectionActionEl.dataset.text;
+    if (!txt) return;
+    var qi = document.getElementById('qi');
+    qi.value = 'Tell me more about: "' + txt + '"';
+    qi.focus();
+    hideSelectionAction();
+  };
+  document.body.appendChild(selectionActionEl);
+
+  document.addEventListener('mouseup', function(e) {
+    var sel = window.getSelection();
+    var text = (sel && sel.toString && sel.toString().trim()) || '';
+    if (!text) { hideSelectionAction(); return; }
+    var node = sel.anchorNode;
+    if (!node) { hideSelectionAction(); return; }
+    var container = node.nodeType === 3 ? node.parentElement : node;
+    if (!container || !container.closest('.p-body, .ai-body')) { hideSelectionAction(); return; }
+    var range = sel.getRangeAt(0);
+    var rect = range.getBoundingClientRect();
+    showSelectionAction(text, rect.right, rect.top);
+  });
+  document.addEventListener('mousedown', function(e) {
+    if (!selectionActionEl.contains(e.target)) hideSelectionAction();
+  });
+  document.addEventListener('scroll', hideSelectionAction, true);
+}
+
+function showSelectionAction(text, x, y) {
+  selectionActionEl.dataset.text = text;
+  selectionActionEl.style.left = (x + 6) + 'px';
+  selectionActionEl.style.top = (y - 36) + 'px';
+  selectionActionEl.classList.remove('hidden');
+}
+function hideSelectionAction() {
+  if (!selectionActionEl) return;
+  selectionActionEl.classList.add('hidden');
+  selectionActionEl.dataset.text = '';
+}
 
 init();
 </script>
