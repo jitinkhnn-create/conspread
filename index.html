@@ -667,6 +667,45 @@ function buildSynthEl(syn) {
   return div;
 }
 
+function getShortSummary(text) {
+  if (!text) return 'No response';
+  var sentences = text.split(/[.!?]+/).filter(function(s){ return s.trim().length > 0; });
+  return sentences[0] ? sentences[0].trim().slice(0, 100) + (sentences[0].length > 100 ? '...' : '') : text.slice(0, 100) + '...';
+}
+
+function toggleFull(item, fullText) {
+  var fullDiv = item.querySelector('.persona-full');
+  if (!fullDiv) {
+    fullDiv = document.createElement('div'); fullDiv.className = 'persona-full';
+    fullDiv.textContent = fullText;
+    item.appendChild(fullDiv);
+  }
+  fullDiv.style.display = fullDiv.style.display === 'block' ? 'none' : 'block';
+}
+
+function getThemeConnections(council, responses) {
+  var wordCounts = {};
+  var personaWords = {};
+  (responses||[]).forEach(function(r, i){
+    var words = {};
+    (r||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
+      if (w.length > 4 && !STOP[w]) {
+        words[w] = true;
+        wordCounts[w] = (wordCounts[w]||0)+1;
+      }
+    });
+    personaWords[i] = words;
+  });
+  var themes = Object.keys(wordCounts).filter(function(w){ return wordCounts[w] > 1; }).sort(function(a,b){return wordCounts[b]-wordCounts[a];}).slice(0,5);
+  return themes.map(function(theme) {
+    var personas = [];
+    council.forEach(function(p, i) {
+      if (personaWords[i][theme]) personas.push(p.name);
+    });
+    return {theme: theme, personas: personas};
+  }).filter(function(conn){ return conn.personas.length > 1; });
+}
+
 function renderNormal(text) {
   // Clean up formatting artifacts
   var cleanText = text.replace(/^\s*[*#]+\s*/gm, '').replace(/\s*[*#]+\s*$/gm, '').trim();
