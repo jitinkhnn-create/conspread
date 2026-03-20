@@ -7,6 +7,13 @@
 const SAFE_AI = `You must always: be accurate and honest, acknowledge uncertainty,
 distinguish facts from opinions, avoid harmful content, and not fabricate information.`;
 
+const BUILTIN_MODEL_FALLBACKS = [
+  'Qwen/Qwen2.5-72B-Instruct',
+  'Qwen/Qwen2.5-Coder-32B-Instruct',
+  'meta-llama/Llama-3.1-70B-Instruct',
+  'mistralai/Mistral-7B-Instruct-v0.3'
+];
+
 function councilPrompt(topic, targetCount, history) {
   var prior = (history || []).slice(-3).map(function(h, i) {
     return (i + 1) + '. ' + (h && h.question ? h.question : '');
@@ -240,6 +247,38 @@ function normalizeResponseList(responses, targetCount, council) {
   return out;
 }
 
+function uniqueModels(list) {
+  var seen = {};
+  var out = [];
+  (list || []).forEach(function(m) {
+    var v = (typeof m === 'string') ? m.trim() : '';
+    if (!v || seen[v]) return;
+    seen[v] = true;
+    out.push(v);
+  });
+  return out;
+}
+
+function splitCsvModels(raw) {
+  if (!raw || typeof raw !== 'string') return [];
+  return raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+}
+
+function getModelCandidates(selectedModel, env) {
+  return uniqueModels(
+    [selectedModel, env.HF_MODEL]
+      .concat(splitCsvModels(env.HF_MODEL_FALLBACKS))
+      .concat(BUILTIN_MODEL_FALLBACKS)
+  );
+}
+
+function isModelNotSupported(status, errText) {
+  if (status !== 400) return false;
+  var txt = String(errText || '');
+  return txt.indexOf('model_not_supported') !== -1
+    || txt.indexOf('not supported by any provider') !== -1;
+}
+
 function isRetriableHF(err) {
   if (!err || typeof err.message !== 'string') return false;
   return /^HF (408|409|425|429|500|502|503|504):/.test(err.message);
@@ -266,27 +305,37 @@ async function callHFWithRetry(messages, token, model, opts, maxAttempts) {
 
 async function callHF(messages, token, model, opts) {
   opts = opts || {};
-  var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: model,
-      messages: messages,
-      max_tokens: opts.max_tokens || 600,
-      temperature: opts.temperature || 0.72,
-      stream: false
-    })
-  });
-  if (!res.ok) {
-    var errText = await res.text();
-    throw new Error('HF ' + res.status + ': ' + errText.slice(0, 300));
+  var models = Array.isArray(model) ? uniqueModels(model) : [model];
+  var lastErr = null;
+  for (var i = 0; i < models.length; i++) {
+    var chosenModel = models[i];
+    var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: chosenModel,
+        messages: messages,
+        max_tokens: opts.max_tokens || 600,
+        temperature: opts.temperature || 0.72,
+        stream: false
+      })
+    });
+    if (!res.ok) {
+      var errText = await res.text();
+      if (isModelNotSupported(res.status, errText) && i < models.length - 1) {
+        continue;
+      }
+      lastErr = new Error('HF ' + res.status + ': ' + errText.slice(0, 300));
+      throw lastErr;
+    }
+    var d = await res.json();
+    if (!d.choices || !d.choices[0]) throw new Error('Unexpected HF response');
+    return d.choices[0].message.content;
   }
-  var d = await res.json();
-  if (!d.choices || !d.choices[0]) throw new Error('Unexpected HF response');
-  return d.choices[0].message.content;
+  throw lastErr || new Error('No supported model available for this request.');
 }
 
 async function buildCouncil(topic, history, token, model) {
@@ -485,8 +534,8 @@ async function onChat(req, env) {
   var question = body.question, chatId = body.chatId, history = body.history, mode = body.mode, model = body.model;
   if (!question || !question.trim()) return jres({ error:'Question required' }, 400);
   if (question.length > 2000) return jres({ error:'Too long' }, 400);
-  var defaultModel = env.HF_MODEL || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
-  var selectedModel = model || defaultModel;
+  var defaultModel = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
+  var modelCandidates = getModelCandidates(model || defaultModel, env);
   try {
     var cid = chatId || crypto.randomUUID();
     var key = 'chat:' + s.user.id + ':' + cid;
@@ -498,7 +547,7 @@ async function onChat(req, env) {
       cd = { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
     }
     if (mode === 'normal') {
-      var reply = await normalReply(question, history, s.hf_token, selectedModel);
+      var reply = await normalReply(question, history, s.hf_token, modelCandidates);
       cd.messages.push({ id:crypto.randomUUID(), question:question, reply:reply, mode:'normal', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'normal' } });
@@ -506,16 +555,16 @@ async function onChat(req, env) {
     } else {
       var councilPack;
       try {
-        councilPack = await buildCouncilPack(question.trim(), history, s.hf_token, selectedModel);
+        councilPack = await buildCouncilPack(question.trim(), history, s.hf_token, modelCandidates);
       } catch (packErr) {
         // Fallback path for models that do not reliably emit large structured JSON in one shot.
-        var fallbackCouncil = await buildCouncil(question.trim(), history, s.hf_token, selectedModel);
-        var fallbackResponses = await buildPersonaResponses(fallbackCouncil, question, history, s.hf_token, selectedModel);
+        var fallbackCouncil = await buildCouncil(question.trim(), history, s.hf_token, modelCandidates);
+        var fallbackResponses = await buildPersonaResponses(fallbackCouncil, question, history, s.hf_token, modelCandidates);
         councilPack = { council: fallbackCouncil, responses: fallbackResponses };
       }
       var council = councilPack.council;
       var responses = councilPack.responses;
-      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, selectedModel);
+      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, modelCandidates);
       cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'council' } });
