@@ -164,6 +164,34 @@ async function personaReply(persona, all, question, history, token, model) {
   return callHF(msgs, token, model, { max_tokens: 300, temperature: 0.76 });
 }
 
+function isHF401(err) {
+  return !!(err && typeof err.message === 'string' && err.message.startsWith('HF 401'));
+}
+
+function fallbackPersonaReply(persona) {
+  var name = (persona && persona.name) ? persona.name : 'This council member';
+  return name + ' could not submit a response due to a temporary inference issue. '
+    + 'Treat this as missing input rather than agreement.';
+}
+
+async function buildPersonaResponses(council, question, history, token, model) {
+  var responses = [];
+  // Limit concurrency to reduce 429/5xx bursts from upstream router.
+  for (var i = 0; i < council.length; i += 3) {
+    var chunk = council.slice(i, i + 3);
+    var chunkResults = await Promise.all(chunk.map(async function(p) {
+      try {
+        return await personaReply(p, council, question, history, token, model);
+      } catch (err) {
+        if (isHF401(err)) throw err;
+        return fallbackPersonaReply(p);
+      }
+    }));
+    responses = responses.concat(chunkResults);
+  }
+  return responses;
+}
+
 async function buildSynthesis(question, council, responses, token, model) {
   try {
     var txt = await callHF([{ role:'user', content: synthesisPrompt(question, council, responses) }], token, model, { max_tokens:1500, temperature:0.62 });
@@ -295,9 +323,7 @@ async function onChat(req, env) {
       return jres({ chatId:cid, reply:reply });
     } else {
       var council = await buildCouncil(question.trim(), s.hf_token, selectedModel);
-      var responses = await Promise.all(council.map(function(p) {
-        return personaReply(p, council, question, history, s.hf_token, selectedModel);
-      }));
+      var responses = await buildPersonaResponses(council, question, history, s.hf_token, selectedModel);
       var synthesis = await buildSynthesis(question, council, responses, s.hf_token, selectedModel);
       cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
@@ -306,7 +332,7 @@ async function onChat(req, env) {
     }
   } catch(err) {
     // If the Hugging Face token is invalid/expired, force a logout so the client can re-authenticate.
-    if (err && typeof err.message === 'string' && err.message.startsWith('HF 401')) {
+    if (isHF401(err)) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: {
