@@ -150,9 +150,14 @@ body::before {
 .council-wrap { display: flex; flex-direction: column; gap: 14px; }
 .persona-summary { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; transition: box-shadow var(--t); }
 .persona-summary:hover { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-.persona-name { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 8px; }
+.persona-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.persona-name { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 0; }
+.assump-chip { font-family: var(--fu); font-size: 11px; color: var(--gd); background: var(--glt); border: 1px solid rgba(184,144,42,.35); border-radius: 999px; padding: 3px 8px; white-space: nowrap; }
 .persona-summary-text { font-family: var(--fb); font-size: 16px; color: var(--tx); margin-bottom: 10px; }
 .persona-full { display: none; font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); white-space: pre-wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--bor); }
+.persona-assumptions-title { margin-top: 10px; font-family: var(--fu); font-size: 12px; letter-spacing: .03em; color: var(--tx3); text-transform: uppercase; }
+.persona-assumptions { margin: 6px 0 0 20px; padding: 0; }
+.persona-assumptions li { margin: 4px 0; font-size: 14px; color: var(--tx2); }
 .persona-link { color: var(--blue); text-decoration: none; font-size: 14px; font-weight: 600; }
 .persona-link:hover { text-decoration: underline; }
 .persona-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); overflow: hidden; }
@@ -320,15 +325,16 @@ body::before {
         </svg>
       </button>
       <span class="mh-title" id="mh-title">Conspread</span>
-      <span class="badge badge-gold" id="mode-badge">8 Perspectives</span>
+      <span class="badge badge-gold" id="mode-badge">Dynamic Perspectives</span>
       <div class="mh-right">
         <div class="model-wrap">
           <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
-            <option value="Qwen/Qwen2.5-72B-Instruct">Qwen 2.5 72B</option>
-            <option value="Qwen/Qwen2.5-Coder-32B-Instruct">Qwen 2.5 Coder 32B</option>
-            <option value="microsoft/WizardLM-2-8x22B">WizardLM 2 8x22B</option>
-            <option value="meta-llama/Llama-3.1-70B-Instruct">Llama 3.1 70B</option>
-            <option value="mistralai/Mistral-7B-Instruct-v0.3">Mistral 7B</option>
+            <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B A3B Instruct [Best balanced: analysis + long docs]</option>
+            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B A22B Instruct [Highest quality: deep reasoning + writing]</option>
+            <option value="Qwen/Qwen3-Next-80B-A3B-Instruct-FP8">Qwen3-Next 80B A3B Instruct [Agentic workflows + very long context]</option>
+            <option value="Qwen/Qwen3-Coder-30B-A3B-Instruct">Qwen3 Coder 30B A3B Instruct [Code generation + repo understanding]</option>
+            <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2 [General chat + tools + long context]</option>
+            <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1 0528 [Hard reasoning + math + stepwise problem solving]</option>
           </select>
         </div>
         <div class="exp-wrap">
@@ -370,7 +376,7 @@ body::before {
 var ST = {
   user: null, mode: null, cid: null, hist: [], busy: false,
   voiceOn: false, audioCtx: null, masterGain: null,
-  wordFreq: {}, msgCount: 0, selectedModel: 'Qwen/Qwen2.5-72B-Instruct'
+  wordFreq: {}, msgCount: 0, selectedModel: 'Qwen/Qwen3-30B-A3B-Instruct-2507'
 };
 
 var PCOLS = [
@@ -410,15 +416,18 @@ function showLanding() {
 function enterMode(mode) {
   ST.mode = mode; ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
   // Load saved model or set default
-  ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen2.5-72B-Instruct';
-  document.getElementById('model-select').value = ST.selectedModel;
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
+  var modelSelect = document.getElementById('model-select');
+  var hasSavedModel = Array.from(modelSelect.options).some(function(opt) { return opt.value === ST.selectedModel; });
+  if (!hasSavedModel) ST.selectedModel = 'Qwen/Qwen3-30B-A3B-Instruct-2507';
+  modelSelect.value = ST.selectedModel;
   hide('landing'); show('app');
   var ini = getIni(ST.user);
   document.getElementById('sb-av').textContent = ini;
   document.getElementById('sb-name').textContent = ST.user.name || ST.user.username;
   if (mode === 'council') {
     document.getElementById('sb-mode-lbl').textContent = 'Council';
-    document.getElementById('mode-badge').textContent = '8 Perspectives';
+    document.getElementById('mode-badge').textContent = 'Dynamic Perspectives';
     document.getElementById('mode-badge').className = 'badge badge-gold';
     document.getElementById('sb-role').textContent = 'Critical Thinking';
   } else {
@@ -441,6 +450,9 @@ function show(id) { document.getElementById(id).classList.remove('h'); }
 function hide(id) { document.getElementById(id).classList.add('h'); }
 
 function showWelcome() {
+  if (ST.mode === 'council') {
+    document.getElementById('mode-badge').textContent = 'Dynamic Perspectives';
+  }
   var msgs = document.getElementById('msgs');
   msgs.innerHTML = '';
   var div = document.createElement('div'); div.className = 'welcome';
@@ -450,7 +462,7 @@ function showWelcome() {
   h2.textContent = ST.mode === 'council' ? 'Critical Thinking Council' : 'Normal Conversation';
   var p = document.createElement('p');
   p.textContent = ST.mode === 'council'
-    ? 'Ask any question. Eight specialists with fundamentally different worldviews will examine it from all angles.'
+    ? 'Ask any question. The council size adapts to complexity, then specialists with different worldviews examine it from all angles.'
     : 'Ask me anything. Clear, direct answers in plain English.';
   var wqs = document.createElement('div'); wqs.className = 'wqs';
   var qs = ST.mode === 'council'
@@ -490,7 +502,9 @@ async function doSend() {
     if (ST.mode === 'council') {
       ST.hist.push({question:q, responses:d.responses, mode:'council'});
       renderCouncil(d.council, d.responses, d.synthesis, q);
-      trackWords(d.responses.join(' ') + ' ' + q);
+      var perspectiveCount = (d.council && d.council.length) ? d.council.length : (d.responses ? d.responses.length : 0);
+      document.getElementById('mode-badge').textContent = perspectiveCount > 0 ? (perspectiveCount + ' Perspectives') : 'Dynamic Perspectives';
+      trackWords((d.responses || []).map(responseAnswer).join(' ') + ' ' + q);
     } else {
       ST.hist.push({question:q, reply:d.reply, mode:'normal'});
       renderNormal(d.reply);
@@ -501,6 +515,10 @@ async function doSend() {
     scrollBottom(); loadHist();
   } catch(err) {
     ld.remove();
+    if (err && typeof err.message === 'string' && err.message.toLowerCase().indexOf('unauthorized') !== -1) {
+      logout();
+      return;
+    }
     var em = document.createElement('div'); em.className = 'err-msg fi';
     em.textContent = 'Error: ' + err.message;
     document.getElementById('msgs').appendChild(em);
@@ -551,7 +569,7 @@ function appendUserMsg(q) {
 function appendLoading(txt) {
   var div = document.createElement('div'); div.className = 'load-card fi';
   var t = document.createElement('div'); t.className = 'load-title';
-  t.textContent = txt || (ST.mode === 'council' ? 'Assembling 8-voice council...' : 'Thinking...');
+  t.textContent = txt || (ST.mode === 'council' ? 'Assembling dynamic council...' : 'Thinking...');
   var dots = document.createElement('div'); dots.className = 'load-dots';
   for (var i=0;i<3;i++) dots.appendChild(document.createElement('span'));
   div.appendChild(t); div.appendChild(dots);
@@ -560,15 +578,32 @@ function appendLoading(txt) {
   return div;
 }
 
+function responseAnswer(r) {
+  if (!r) return '';
+  if (typeof r === 'string') return r;
+  if (typeof r.answer === 'string') return r.answer;
+  return '';
+}
+
+function responseAssumptions(r) {
+  if (!r || typeof r !== 'object' || !Array.isArray(r.assumptions)) return [];
+  return r.assumptions.filter(function(a) { return typeof a === 'string' && a.trim(); }).slice(0, 5);
+}
+
 function renderCouncil(council, responses, synthesis, question) {
   var wrap = document.createElement('div'); wrap.className = 'council-wrap fi';
   council.forEach(function(p, i) {
+    var answer = responseAnswer(responses[i] || '');
+    var assumptions = responseAssumptions(responses[i] || {});
     var item = document.createElement('div'); item.className = 'persona-summary';
+    var head = document.createElement('div'); head.className = 'persona-head';
     var name = document.createElement('div'); name.className = 'persona-name'; name.textContent = p.name + ' (' + p.title + ')';
-    var summary = document.createElement('div'); summary.className = 'persona-summary-text'; summary.textContent = getShortSummary(responses[i] || '');
+    var count = document.createElement('span'); count.className = 'assump-chip'; count.textContent = 'Assumptions: ' + assumptions.length;
+    head.appendChild(name); head.appendChild(count);
+    var summary = document.createElement('div'); summary.className = 'persona-summary-text'; summary.textContent = getShortSummary(answer);
     var link = document.createElement('a'); link.className = 'persona-link'; link.href = '#'; link.textContent = 'Read full response';
-    link.onclick = function(e) { e.preventDefault(); toggleFull(item, responses[i] || ''); };
-    item.appendChild(name); item.appendChild(summary); item.appendChild(link);
+    link.onclick = function(e) { e.preventDefault(); toggleFull(item, answer, assumptions); };
+    item.appendChild(head); item.appendChild(summary); item.appendChild(link);
     wrap.appendChild(item);
   });
 
@@ -585,7 +620,7 @@ function renderCouncil(council, responses, synthesis, question) {
   council.forEach(function(p, i) {
     var tr = document.createElement('tr');
     var td1 = document.createElement('td'); td1.textContent = p.name;
-    var td2 = document.createElement('td'); td2.textContent = getShortSummary(responses[i] || '');
+    var td2 = document.createElement('td'); td2.textContent = getShortSummary(responseAnswer(responses[i] || ''));
     tr.appendChild(td1); tr.appendChild(td2);
     tbody.appendChild(tr);
   });
@@ -673,11 +708,27 @@ function getShortSummary(text) {
   return sentences[0] ? sentences[0].trim().slice(0, 100) + (sentences[0].length > 100 ? '...' : '') : text.slice(0, 100) + '...';
 }
 
-function toggleFull(item, fullText) {
+function toggleFull(item, fullText, assumptions) {
   var fullDiv = item.querySelector('.persona-full');
   if (!fullDiv) {
     fullDiv = document.createElement('div'); fullDiv.className = 'persona-full';
-    fullDiv.textContent = fullText;
+    var answer = document.createElement('div');
+    answer.textContent = fullText;
+    fullDiv.appendChild(answer);
+    if (assumptions && assumptions.length) {
+      var title = document.createElement('div');
+      title.className = 'persona-assumptions-title';
+      title.textContent = 'Assumptions';
+      fullDiv.appendChild(title);
+      var ul = document.createElement('ul');
+      ul.className = 'persona-assumptions';
+      assumptions.forEach(function(a) {
+        var li = document.createElement('li');
+        li.textContent = a;
+        ul.appendChild(li);
+      });
+      fullDiv.appendChild(ul);
+    }
     item.appendChild(fullDiv);
   }
   fullDiv.style.display = fullDiv.style.display === 'block' ? 'none' : 'block';
@@ -687,8 +738,9 @@ function getThemeConnections(council, responses) {
   var wordCounts = {};
   var personaWords = {};
   (responses||[]).forEach(function(r, i){
+    var answer = responseAnswer(r || '');
     var words = {};
-    (r||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
+    (answer||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
       if (w.length > 4 && !STOP[w]) {
         words[w] = true;
         wordCounts[w] = (wordCounts[w]||0)+1;
@@ -730,8 +782,9 @@ function getThemeConnections(council, responses) {
   var wordCounts = {};
   var personaWords = {};
   (responses||[]).forEach(function(r, i){
+    var answer = responseAnswer(r || '');
     var words = {};
-    (r||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
+    (answer||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
       if (w.length > 4 && !STOP[w]) {
         words[w] = true;
         wordCounts[w] = (wordCounts[w]||0)+1;
@@ -836,7 +889,11 @@ function convText() {
   ST.hist.forEach(function(h, i) {
     lines.push('Q' + (i+1) + ': ' + h.question);
     if (h.mode === 'council' && h.responses) {
-      h.responses.forEach(function(r, j) { lines.push('  [' + (j+1) + '] ' + r); });
+      h.responses.forEach(function(r, j) {
+        lines.push('  [' + (j+1) + '] ' + responseAnswer(r));
+        var assumptions = responseAssumptions(r);
+        if (assumptions.length) assumptions.forEach(function(a) { lines.push('      - assumption: ' + a); });
+      });
     } else if (h.reply) { lines.push('Answer: ' + h.reply); }
     lines.push('');
   });
@@ -874,7 +931,7 @@ async function exportAs(fmt) {
       var rows = [['#','Type','Content']];
       ST.hist.forEach(function(h, i) {
         rows.push([i+1,'Question',h.question]);
-        if (h.mode==='council'&&h.responses) h.responses.forEach(function(r,j){rows.push(['',j+1+'. View',r]);});
+        if (h.mode==='council'&&h.responses) h.responses.forEach(function(r,j){rows.push(['',j+1+'. View',responseAnswer(r)]);});
         else if (h.reply) rows.push(['','Answer',h.reply]);
       });
       var ws = window.XLSX.utils.aoa_to_sheet(rows);
@@ -896,7 +953,7 @@ async function exportAs(fmt) {
         var y2 = 1.2;
         if (h.mode==='council'&&h.responses) {
           h.responses.slice(0,6).forEach(function(r,j){
-            sl.addText((j+1)+'. '+r.slice(0,180),{x:0.4,y:y2,w:12.5,h:0.8,fontSize:9,color:'5c5040'}); y2+=0.85;
+            sl.addText((j+1)+'. '+responseAnswer(r).slice(0,180),{x:0.4,y:y2,w:12.5,h:0.8,fontSize:9,color:'5c5040'}); y2+=0.85;
           });
         } else if (h.reply) {
           sl.addText(h.reply.slice(0,600),{x:0.4,y:y2,w:12.5,h:4,fontSize:11,color:'5c5040'});
@@ -950,7 +1007,9 @@ async function loadChat(chatId) {
       if (m.mode === 'council' || m.council) {
         ST.hist.push({question:m.question,responses:m.responses||[],mode:'council'});
         renderCouncil(m.council||[],m.responses||[],m.synthesis,m.question);
-        trackWords((m.responses||[]).join(' ')+' '+m.question);
+        trackWords((m.responses||[]).map(responseAnswer).join(' ')+' '+m.question);
+        var pc = (m.council && m.council.length) ? m.council.length : ((m.responses || []).length || 0);
+        document.getElementById('mode-badge').textContent = pc > 0 ? (pc + ' Perspectives') : 'Dynamic Perspectives';
       } else {
         ST.hist.push({question:m.question,reply:m.reply||'',mode:'normal'});
         renderNormal(m.reply||'');
@@ -968,6 +1027,10 @@ function newChat() {
   ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
   var old = document.getElementById('pattern-panel'); if (old) old.remove();
   showWelcome();
+}
+
+function logout() {
+  window.location.href = '/api/auth/logout';
 }
 
 function setQ(q) { var i=document.getElementById('qi'); i.value=q; i.focus(); rsz(i); }

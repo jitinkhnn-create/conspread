@@ -7,13 +7,18 @@
 const SAFE_AI = `You must always: be accurate and honest, acknowledge uncertainty,
 distinguish facts from opinions, avoid harmful content, and not fabricate information.`;
 
-function councilPrompt(topic) {
+function councilPrompt(topic, targetCount, history) {
+  var prior = (history || []).slice(-3).map(function(h, i) {
+    return (i + 1) + '. ' + (h && h.question ? h.question : '');
+  }).join('\n');
   return SAFE_AI + `
 
-You are assembling a critical thinking council. For the topic below, select EXACTLY 8 specialists
+You are assembling a critical thinking council. For the topic below, select EXACTLY ${targetCount} specialists
 whose perspectives create maximum intellectual friction.
 
 TOPIC: "${topic}"
+RECENT CONVERSATION CONTEXT:
+${prior || 'none'}
 
 Rules:
 1. Include at least one contrarian/devil's advocate
@@ -21,7 +26,7 @@ Rules:
 3. Select for genuine disciplinary diversity
 4. Each persona must have fundamentally different assumptions from the others
 
-For EACH of the 8 personas return:
+For EACH persona return:
 - id: snake_case unique identifier
 - name: realistic full name
 - title: professional title
@@ -35,7 +40,7 @@ For EACH of the 8 personas return:
 - signature_approach: how they structure arguments
 - avatar_initials: 2 capital letters
 
-Return ONLY a valid JSON array of exactly 8 objects. No markdown, no explanation.`;
+Return ONLY a valid JSON array of exactly ${targetCount} objects. No markdown, no explanation.`;
 }
 
 function personaPrompt(persona, allPersonas) {
@@ -65,12 +70,17 @@ STRICT RULES:
 
 Other council members (you respond INDEPENDENTLY): ${others}
 
-Respond in 150-200 words. Lead with your sharpest insight. No filler.`;
+Respond in this exact JSON shape and nothing else:
+{"answer":"150-200 words. Lead with your sharpest insight. No filler.","assumptions":["3-5 concise assumptions this answer relies on"]}`;
 }
 
 function synthesisPrompt(question, personas, responses) {
   var blocks = personas.map(function(p, i) {
-    return '[' + p.name + ', ' + p.title + ']:\n' + responses[i];
+    var r = responses[i] || {};
+    var assumptions = Array.isArray(r.assumptions) && r.assumptions.length
+      ? '\nAssumptions: ' + r.assumptions.join('; ')
+      : '';
+    return '[' + p.name + ', ' + p.title + ']:\n' + responseText(r) + assumptions;
   }).join('\n\n---\n\n');
   return SAFE_AI + `
 
@@ -98,17 +108,86 @@ Style rules:
 ${SAFE_AI}`;
 }
 
-function defaultCouncil() {
-  return [
-    { id:"empiricist", name:"Dr. Sarah Chen", title:"Empirical Research Scientist", intellectual_tradition:"Scientific empiricism", epistemology:"Claims require reproducible evidence. If it cannot be tested, it is not knowledge.", core_commitment:"Data overrides intuition every time.", friction_with:["appeals to authority","unfalsifiable claims","anecdotal evidence"], forbidden_rhetoric:["I feel","obviously","everyone knows"], vocabulary_register:"empirical_quantitative", known_bias:"Undervalues qualitative and lived experience.", signature_approach:"States the evidence first, then its limits.", avatar_initials:"SC" },
-    { id:"philosopher", name:"Prof. Marcus Webb", title:"Philosopher of Knowledge", intellectual_tradition:"Critical rationalism", epistemology:"All knowledge is provisional. We advance by eliminating error, not accumulating truth.", core_commitment:"Every claim must be falsifiable or it is not knowledge.", friction_with:["naive empiricism","dogmatic certainty","instrumental reasoning"], forbidden_rhetoric:["the data clearly shows","at the end of the day","practically speaking"], vocabulary_register:"philosophical", known_bias:"Over-complicates questions with clear practical answers.", signature_approach:"Exposes hidden assumptions before answering.", avatar_initials:"MW" },
-    { id:"pragmatist", name:"Dr. James Okafor", title:"Applied Policy Researcher", intellectual_tradition:"Pragmatic institutionalism", epistemology:"Truth is what works within real institutional constraints.", core_commitment:"Abstract principles must survive contact with messy reality.", friction_with:["purely theoretical approaches","ignoring incentive structures","ahistorical analysis"], forbidden_rhetoric:["in theory","if people were rational","the research clearly shows"], vocabulary_register:"policy_pragmatic", known_bias:"Too accommodating of existing power structures.", signature_approach:"Leads with institutional context, then what is achievable.", avatar_initials:"JO" },
-    { id:"contrarian", name:"Dr. Nina Vasquez", title:"Heterodox Economist", intellectual_tradition:"Austrian economics with contrarian methodology", epistemology:"Consensus is often wrong. The most important truths are unpopular.", core_commitment:"Mainstream thinking systematically produces blind spots.", friction_with:["consensus views","institutional authority","incremental thinking"], forbidden_rhetoric:["experts agree","the evidence is clear","we should trust"], vocabulary_register:"accessible_academic", known_bias:"Contrarianism for its own sake.", signature_approach:"Leads with what everyone is getting wrong.", avatar_initials:"NV" },
-    { id:"systems_thinker", name:"Dr. Amir Patel", title:"Complex Systems Scientist", intellectual_tradition:"Systems theory and complexity science", epistemology:"Individual components only make sense in relation to the whole system.", core_commitment:"Everything is connected. Linear cause-effect is almost always wrong.", friction_with:["reductionist thinking","single-cause explanations","ignoring feedback loops"], forbidden_rhetoric:["the cause is","simple solution","independently of"], vocabulary_register:"highly_technical", known_bias:"Makes everything seem too complex to act on.", signature_approach:"Maps feedback loops before proposing anything.", avatar_initials:"AP" },
-    { id:"ethicist", name:"Prof. Grace Ndlovu", title:"Applied Ethicist", intellectual_tradition:"Capabilities approach to human flourishing", epistemology:"What matters is human dignity and the conditions for people to live full lives.", core_commitment:"No technical solution that harms vulnerable people is actually a solution.", friction_with:["purely technical solutions","economic reductionism","treating people as means"], forbidden_rhetoric:["efficiency demands","that is just the market","growth will solve"], vocabulary_register:"narrative_qualitative", known_bias:"Prioritises individual cases over systemic change.", signature_approach:"Starts with who is affected, then evaluates solutions.", avatar_initials:"GN" },
-    { id:"economist", name:"Dr. Robert Klein", title:"Behavioural Economist", intellectual_tradition:"Behavioural and institutional economics", epistemology:"Human behaviour follows predictable patterns that rarely match rational-actor models.", core_commitment:"Incentives and cognitive biases shape outcomes more than values or intentions.", friction_with:["assuming rational actors","ignoring distributional effects","pure market solutions"], forbidden_rhetoric:["people will simply","we just need to change culture","if they understood"], vocabulary_register:"empirical_quantitative", known_bias:"Overestimates predictability of social systems.", signature_approach:"Identifies the incentive structure, then predicts behaviour.", avatar_initials:"RK" },
-    { id:"anthropologist", name:"Dr. Lena Hoffman", title:"Cultural Anthropologist", intellectual_tradition:"Interpretive anthropology", epistemology:"Meaning is constructed culturally. Context is everything. Universal claims are almost always parochial.", core_commitment:"No perspective is neutral. Power shapes what counts as knowledge.", friction_with:["universalist claims","techno-solutionism","ahistorical analysis"], forbidden_rhetoric:["naturally","human nature","objectively better"], vocabulary_register:"narrative_qualitative", known_bias:"Can relativise to the point of paralysis.", signature_approach:"Historicises the question, surfaces cultural assumptions.", avatar_initials:"LH" }
-  ];
+function makeFallbackPersona(topic, idx) {
+  var n = idx + 1;
+  var tag = String(topic || 'Topic').trim().slice(0, 24) || 'Topic';
+  return {
+    id: 'perspective_' + n,
+    name: 'Perspective ' + n + ' (' + tag + ')',
+    title: 'Independent Council Analyst',
+    intellectual_tradition: 'Interdisciplinary critical analysis',
+    epistemology: 'Combines evidence, logic, and context while exposing uncertainty.',
+    core_commitment: 'Decisions should be robust under uncertainty and trade-offs.',
+    friction_with: ['single-cause explanations', 'unchecked assumptions', 'overconfidence'],
+    forbidden_rhetoric: ['obviously', 'everyone knows', 'it is simple'],
+    vocabulary_register: 'accessible_academic',
+    known_bias: 'May over-emphasize uncertainty in ambiguous situations.',
+    signature_approach: 'States assumptions first, then pressure-tests conclusions.',
+    avatar_initials: 'P' + n
+  };
+}
+
+function normalizeCouncil(council, count, topic) {
+  var safeCount = Math.max(4, Math.min(10, count || 6));
+  var out = [];
+  (Array.isArray(council) ? council : []).forEach(function(p, idx) {
+    if (!p || typeof p !== 'object' || out.length >= safeCount) return;
+    var n = out.length + 1;
+    out.push({
+      id: (typeof p.id === 'string' && p.id.trim()) ? p.id.trim() : 'perspective_' + n,
+      name: (typeof p.name === 'string' && p.name.trim()) ? p.name.trim() : ('Perspective ' + n),
+      title: (typeof p.title === 'string' && p.title.trim()) ? p.title.trim() : 'Independent Council Analyst',
+      intellectual_tradition: (typeof p.intellectual_tradition === 'string' && p.intellectual_tradition.trim()) ? p.intellectual_tradition.trim() : 'Interdisciplinary critical analysis',
+      epistemology: (typeof p.epistemology === 'string' && p.epistemology.trim()) ? p.epistemology.trim() : 'Uses evidence and reasoning with explicit uncertainty.',
+      core_commitment: (typeof p.core_commitment === 'string' && p.core_commitment.trim()) ? p.core_commitment.trim() : 'Avoid brittle conclusions.',
+      friction_with: Array.isArray(p.friction_with) && p.friction_with.length ? p.friction_with.slice(0, 3) : ['unchecked assumptions', 'single-cause thinking'],
+      forbidden_rhetoric: Array.isArray(p.forbidden_rhetoric) && p.forbidden_rhetoric.length ? p.forbidden_rhetoric.slice(0, 3) : ['obviously', 'everyone knows', 'it is simple'],
+      vocabulary_register: (typeof p.vocabulary_register === 'string' && p.vocabulary_register.trim()) ? p.vocabulary_register.trim() : 'accessible_academic',
+      known_bias: (typeof p.known_bias === 'string' && p.known_bias.trim()) ? p.known_bias.trim() : 'May miss domain-specific nuance.',
+      signature_approach: (typeof p.signature_approach === 'string' && p.signature_approach.trim()) ? p.signature_approach.trim() : 'Makes assumptions explicit, then tests implications.',
+      avatar_initials: (typeof p.avatar_initials === 'string' && p.avatar_initials.trim()) ? p.avatar_initials.trim().slice(0, 2).toUpperCase() : ('P' + n)
+    });
+  });
+  while (out.length < safeCount) out.push(makeFallbackPersona(topic, out.length));
+  return out;
+}
+
+function chooseCouncilSize(question, history) {
+  var text = ((question || '') + ' ' + (history || []).map(function(h) { return h && h.question ? h.question : ''; }).join(' ')).toLowerCase();
+  var score = 0;
+  if ((question || '').length > 140) score += 1;
+  if ((history || []).length >= 2) score += 1;
+  if ((history || []).length >= 5) score += 1;
+  if (/(compare|versus|trade[\s-]?off|scenario|policy|ethical|ethics|regulation|strategy|system|geopolit|multi|stakeholder|uncertain|risk|long[-\s]?term)/.test(text)) score += 1;
+  if (/(urgent|quick|brief|simple|eli5|in short|tl;dr)/.test(text)) score -= 1;
+  if (score <= 0) return 4;
+  if (score === 1) return 6;
+  if (score === 2) return 8;
+  return 10;
+}
+
+function responseText(r) {
+  if (!r) return '';
+  if (typeof r === 'string') return r;
+  if (typeof r.answer === 'string') return r.answer;
+  return '';
+}
+
+function normalizePersonaResponse(raw, persona) {
+  if (raw && typeof raw === 'object' && typeof raw.answer === 'string') {
+    var assumptions = Array.isArray(raw.assumptions) ? raw.assumptions.filter(function(a) { return typeof a === 'string' && a.trim(); }).slice(0, 5) : [];
+    return { answer: raw.answer.trim(), assumptions: assumptions };
+  }
+  if (typeof raw !== 'string') {
+    return fallbackPersonaReply(persona);
+  }
+  var clean = raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+  try {
+    var parsed = JSON.parse(clean);
+    return normalizePersonaResponse(parsed, persona);
+  } catch (e) {
+    return { answer: clean, assumptions: [] };
+  }
 }
 
 async function callHF(messages, token, model, opts) {
@@ -136,17 +215,16 @@ async function callHF(messages, token, model, opts) {
   return d.choices[0].message.content;
 }
 
-async function buildCouncil(topic, token, model) {
+async function buildCouncil(topic, history, token, model) {
+  var targetCount = chooseCouncilSize(topic, history);
   try {
-    var txt = await callHF([{ role:'user', content: councilPrompt(topic) }], token, model, { max_tokens:2500, temperature:0.85 });
+    var txt = await callHF([{ role:'user', content: councilPrompt(topic, targetCount, history) }], token, model, { max_tokens:2500, temperature:0.85 });
     var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
     var arr = JSON.parse(clean);
-    if (!Array.isArray(arr) || arr.length < 4) throw new Error('bad format');
-    var def = defaultCouncil();
-    while (arr.length < 8) arr.push(def[arr.length]);
-    return arr.slice(0, 8);
+    if (!Array.isArray(arr) || arr.length < 2) throw new Error('bad format');
+    return normalizeCouncil(arr, targetCount, topic);
   } catch(e) {
-    return defaultCouncil();
+    return normalizeCouncil([], targetCount, topic);
   }
 }
 
@@ -154,14 +232,16 @@ async function personaReply(persona, all, question, history, token, model) {
   var idx = all.findIndex(function(p) { return p.id === persona.id; });
   var hist = (history || []).slice(-3).flatMap(function(h) {
     var pr = h.responses && h.responses[idx];
+    var priorAnswer = responseText(pr);
     return pr
-      ? [{ role:'user', content: h.question }, { role:'assistant', content: pr }]
+      ? [{ role:'user', content: h.question }, { role:'assistant', content: priorAnswer }]
       : [{ role:'user', content: h.question }];
   });
   var msgs = [{ role:'system', content: personaPrompt(persona, all) }]
     .concat(hist)
     .concat([{ role:'user', content: question }]);
-  return callHF(msgs, token, model, { max_tokens: 300, temperature: 0.76 });
+  var raw = await callHF(msgs, token, model, { max_tokens: 420, temperature: 0.76 });
+  return normalizePersonaResponse(raw, persona);
 }
 
 function isHF401(err) {
@@ -170,8 +250,10 @@ function isHF401(err) {
 
 function fallbackPersonaReply(persona) {
   var name = (persona && persona.name) ? persona.name : 'This council member';
-  return name + ' could not submit a response due to a temporary inference issue. '
-    + 'Treat this as missing input rather than agreement.';
+  return {
+    answer: name + ' could not submit a response due to a temporary inference issue. Treat this as missing input rather than agreement.',
+    assumptions: ['Inference service returned an intermittent upstream failure for this perspective.']
+  };
 }
 
 async function buildPersonaResponses(council, question, history, token, model) {
@@ -198,7 +280,11 @@ async function buildSynthesis(question, council, responses, token, model) {
     var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
     return JSON.parse(clean);
   } catch(e) {
-    return { summary: responses.join('\n\n'), decision_framework:{ key_questions:[], evidence_that_would_change_views:[], red_flags:[] }, open_questions:[] };
+    return {
+      summary: responses.map(function(r) { return responseText(r); }).join('\n\n'),
+      decision_framework:{ key_questions:[], evidence_that_would_change_views:[], red_flags:[] },
+      open_questions:[]
+    };
   }
 }
 
@@ -303,7 +389,7 @@ async function onChat(req, env) {
   var question = body.question, chatId = body.chatId, history = body.history, mode = body.mode, model = body.model;
   if (!question || !question.trim()) return jres({ error:'Question required' }, 400);
   if (question.length > 2000) return jres({ error:'Too long' }, 400);
-  var defaultModel = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
+  var defaultModel = env.HF_MODEL || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
   var selectedModel = model || defaultModel;
   try {
     var cid = chatId || crypto.randomUUID();
@@ -322,7 +408,7 @@ async function onChat(req, env) {
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'normal' } });
       return jres({ chatId:cid, reply:reply });
     } else {
-      var council = await buildCouncil(question.trim(), s.hf_token, selectedModel);
+      var council = await buildCouncil(question.trim(), history, s.hf_token, selectedModel);
       var responses = await buildPersonaResponses(council, question, history, s.hf_token, selectedModel);
       var synthesis = await buildSynthesis(question, council, responses, s.hf_token, selectedModel);
       cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
