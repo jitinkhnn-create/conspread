@@ -95,6 +95,53 @@ Return ONLY this JSON (no markdown fences):
 {"summary":"3-4 paragraphs covering genuine disagreements and what remains unresolved. Plain English.","decision_framework":{"key_questions":["3-5 questions someone must answer before deciding"],"evidence_that_would_change_views":["what each perspective would need to see"],"red_flags":["3-4 warning signs"]},"open_questions":[{"question":"unresolved question","why_unresolved":"specific reason"}]}`;
 }
 
+function councilPackPrompt(topic, targetCount, history) {
+  var prior = (history || []).slice(-3).map(function(h, i) {
+    return (i + 1) + '. ' + (h && h.question ? h.question : '');
+  }).join('\n');
+  return SAFE_AI + `
+
+Generate a critical thinking council and each member's response in one pass.
+
+TOPIC: "${topic}"
+RECENT CONVERSATION CONTEXT:
+${prior || 'none'}
+TARGET COUNCIL SIZE: ${targetCount}
+
+Requirements:
+1. Create exactly ${targetCount} genuinely different personas.
+2. Include at least one contrarian perspective.
+3. Ensure strong disciplinary diversity and conflicting assumptions.
+4. Each response must be direct, concrete, and 120-180 words.
+5. For each response provide 3-5 concise assumptions.
+
+Return ONLY valid JSON in this exact shape:
+{
+  "council": [
+    {
+      "id":"snake_case",
+      "name":"full name",
+      "title":"professional title",
+      "intellectual_tradition":"school of thought",
+      "epistemology":"one sentence",
+      "core_commitment":"one belief",
+      "friction_with":["a","b","c"],
+      "forbidden_rhetoric":["x","y","z"],
+      "vocabulary_register":"accessible_academic",
+      "known_bias":"one blind spot",
+      "signature_approach":"argument method",
+      "avatar_initials":"AB"
+    }
+  ],
+  "responses": [
+    {
+      "answer":"response text",
+      "assumptions":["assumption 1","assumption 2","assumption 3"]
+    }
+  ]
+}`;
+}
+
 function normalSystemPrompt() {
   return `You are Conspread, a helpful and thoughtful assistant.
 
@@ -106,25 +153,6 @@ Style rules:
 - Friendly but not sycophantic.
 
 ${SAFE_AI}`;
-}
-
-function makeFallbackPersona(topic, idx) {
-  var n = idx + 1;
-  var tag = String(topic || 'Topic').trim().slice(0, 24) || 'Topic';
-  return {
-    id: 'perspective_' + n,
-    name: 'Perspective ' + n + ' (' + tag + ')',
-    title: 'Independent Council Analyst',
-    intellectual_tradition: 'Interdisciplinary critical analysis',
-    epistemology: 'Combines evidence, logic, and context while exposing uncertainty.',
-    core_commitment: 'Decisions should be robust under uncertainty and trade-offs.',
-    friction_with: ['single-cause explanations', 'unchecked assumptions', 'overconfidence'],
-    forbidden_rhetoric: ['obviously', 'everyone knows', 'it is simple'],
-    vocabulary_register: 'accessible_academic',
-    known_bias: 'May over-emphasize uncertainty in ambiguous situations.',
-    signature_approach: 'States assumptions first, then pressure-tests conclusions.',
-    avatar_initials: 'P' + n
-  };
 }
 
 function normalizeCouncil(council, count, topic) {
@@ -148,8 +176,7 @@ function normalizeCouncil(council, count, topic) {
       avatar_initials: (typeof p.avatar_initials === 'string' && p.avatar_initials.trim()) ? p.avatar_initials.trim().slice(0, 2).toUpperCase() : ('P' + n)
     });
   });
-  while (out.length < safeCount) out.push(makeFallbackPersona(topic, out.length));
-  return out;
+  return out.slice(0, safeCount);
 }
 
 function chooseCouncilSize(question, history) {
@@ -190,6 +217,53 @@ function normalizePersonaResponse(raw, persona) {
   }
 }
 
+function parseJSONLoose(raw) {
+  if (raw && typeof raw === 'object') return raw;
+  if (typeof raw !== 'string') throw new Error('Invalid JSON payload');
+  var clean = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+  try { return JSON.parse(clean); } catch (e) {}
+  var first = clean.indexOf('{');
+  var last = clean.lastIndexOf('}');
+  if (first >= 0 && last > first) {
+    return JSON.parse(clean.slice(first, last + 1));
+  }
+  throw new Error('Invalid JSON payload');
+}
+
+function normalizeResponseList(responses, targetCount, council) {
+  var safeCount = Math.min(Array.isArray(council) ? council.length : 0, Math.max(2, Math.min(10, targetCount || 4)));
+  var out = [];
+  (Array.isArray(responses) ? responses : []).forEach(function(r, i) {
+    if (out.length >= safeCount) return;
+    out.push(normalizePersonaResponse(r, council && council[i]));
+  });
+  return out;
+}
+
+function isRetriableHF(err) {
+  if (!err || typeof err.message !== 'string') return false;
+  return /^HF (408|409|425|429|500|502|503|504):/.test(err.message);
+}
+
+function sleep(ms) {
+  return new Promise(function(resolve) { setTimeout(resolve, ms); });
+}
+
+async function callHFWithRetry(messages, token, model, opts, maxAttempts) {
+  var attempts = Math.max(1, maxAttempts || 1);
+  var lastErr;
+  for (var i = 0; i < attempts; i++) {
+    try {
+      return await callHF(messages, token, model, opts);
+    } catch (err) {
+      lastErr = err;
+      if (isHF401(err) || !isRetriableHF(err) || i === attempts - 1) throw err;
+      await sleep(250 * (i + 1));
+    }
+  }
+  throw lastErr || new Error('HF request failed');
+}
+
 async function callHF(messages, token, model, opts) {
   opts = opts || {};
   var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
@@ -217,15 +291,32 @@ async function callHF(messages, token, model, opts) {
 
 async function buildCouncil(topic, history, token, model) {
   var targetCount = chooseCouncilSize(topic, history);
-  try {
-    var txt = await callHF([{ role:'user', content: councilPrompt(topic, targetCount, history) }], token, model, { max_tokens:2500, temperature:0.85 });
-    var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
-    var arr = JSON.parse(clean);
-    if (!Array.isArray(arr) || arr.length < 2) throw new Error('bad format');
-    return normalizeCouncil(arr, targetCount, topic);
-  } catch(e) {
-    return normalizeCouncil([], targetCount, topic);
+  var txt = await callHFWithRetry([{ role:'user', content: councilPrompt(topic, targetCount, history) }], token, model, { max_tokens:2500, temperature:0.85 }, 3);
+  var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
+  var arr = JSON.parse(clean);
+  var council = normalizeCouncil(arr, targetCount, topic);
+  if (!Array.isArray(council) || council.length < 2) {
+    throw new Error('Council generation unavailable right now. Please retry in a moment.');
   }
+  return council;
+}
+
+async function buildCouncilPack(topic, history, token, model) {
+  var targetCount = chooseCouncilSize(topic, history);
+  var txt = await callHFWithRetry([{ role:'user', content: councilPackPrompt(topic, targetCount, history) }], token, model, { max_tokens:3200, temperature:0.78 }, 3);
+  var parsed = parseJSONLoose(txt);
+  var council = normalizeCouncil(parsed.council, targetCount, topic);
+  var responses = normalizeResponseList(parsed.responses, targetCount, council);
+  if (!Array.isArray(council) || council.length < 2) {
+    throw new Error('Council generation unavailable right now. Please retry in a moment.');
+  }
+  if (!Array.isArray(responses) || responses.length < 2) {
+    throw new Error('Council responses are temporarily unavailable. Please retry.');
+  }
+  while (responses.length < council.length) {
+    responses.push(fallbackPersonaReply(council[responses.length]));
+  }
+  return { council: council, responses: responses.slice(0, council.length) };
 }
 
 async function personaReply(persona, all, question, history, token, model) {
@@ -240,7 +331,7 @@ async function personaReply(persona, all, question, history, token, model) {
   var msgs = [{ role:'system', content: personaPrompt(persona, all) }]
     .concat(hist)
     .concat([{ role:'user', content: question }]);
-  var raw = await callHF(msgs, token, model, { max_tokens: 420, temperature: 0.76 });
+  var raw = await callHFWithRetry(msgs, token, model, { max_tokens: 420, temperature: 0.76 }, 2);
   return normalizePersonaResponse(raw, persona);
 }
 
@@ -258,18 +349,23 @@ function fallbackPersonaReply(persona) {
 
 async function buildPersonaResponses(council, question, history, token, model) {
   var responses = [];
+  var failures = 0;
   // Limit concurrency to reduce 429/5xx bursts from upstream router.
-  for (var i = 0; i < council.length; i += 3) {
-    var chunk = council.slice(i, i + 3);
+  for (var i = 0; i < council.length; i += 2) {
+    var chunk = council.slice(i, i + 2);
     var chunkResults = await Promise.all(chunk.map(async function(p) {
       try {
         return await personaReply(p, council, question, history, token, model);
       } catch (err) {
         if (isHF401(err)) throw err;
+        failures += 1;
         return fallbackPersonaReply(p);
       }
     }));
     responses = responses.concat(chunkResults);
+  }
+  if (failures >= council.length) {
+    throw new Error('Council responses are temporarily unavailable. Please retry.');
   }
   return responses;
 }
@@ -408,8 +504,17 @@ async function onChat(req, env) {
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'normal' } });
       return jres({ chatId:cid, reply:reply });
     } else {
-      var council = await buildCouncil(question.trim(), history, s.hf_token, selectedModel);
-      var responses = await buildPersonaResponses(council, question, history, s.hf_token, selectedModel);
+      var councilPack;
+      try {
+        councilPack = await buildCouncilPack(question.trim(), history, s.hf_token, selectedModel);
+      } catch (packErr) {
+        // Fallback path for models that do not reliably emit large structured JSON in one shot.
+        var fallbackCouncil = await buildCouncil(question.trim(), history, s.hf_token, selectedModel);
+        var fallbackResponses = await buildPersonaResponses(fallbackCouncil, question, history, s.hf_token, selectedModel);
+        councilPack = { council: fallbackCouncil, responses: fallbackResponses };
+      }
+      var council = councilPack.council;
+      var responses = councilPack.responses;
       var synthesis = await buildSynthesis(question, council, responses, s.hf_token, selectedModel);
       cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
@@ -426,6 +531,9 @@ async function onChat(req, env) {
           'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
         }
       });
+    }
+    if (err && typeof err.message === 'string' && /Council (generation|responses) .*unavailable/.test(err.message)) {
+      return jres({ error: err.message }, 503);
     }
     return jres({ error: err.message || 'Processing failed' }, 500);
   }
