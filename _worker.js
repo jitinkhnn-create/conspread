@@ -17,6 +17,7 @@ const BUILTIN_MODEL_FALLBACKS = [
 const OPENROUTER_FREE_FALLBACKS = [
   'or:openrouter/free',
   'or:meta-llama/llama-3.3-70b-instruct:free',
+  'or:mistralai/mistral-small-3.1-24b-instruct:free',
   'or:deepseek/deepseek-r1:free'
 ];
 
@@ -452,7 +453,9 @@ function getProviderStatus(err) {
 function isModelNotSupportedProvider(err) {
   if (!err || typeof err.message !== 'string') return false;
   if (err.message.indexOf('HF 400: model_not_supported') === 0) return true;
-  return /^OR (400|404):/.test(err.message) && err.message.toLowerCase().indexOf('model') !== -1;
+  if (!/^OR (400|404):/.test(err.message)) return false;
+  var msg = err.message.toLowerCase();
+  return msg.indexOf('model') !== -1 || msg.indexOf('no endpoints found') !== -1;
 }
 
 function getHFStatus(err) {
@@ -479,6 +482,12 @@ function mapHFErrorToClient(err) {
     return {
       status: 429,
       error: 'Inference provider rate limit reached. Please retry in a moment.'
+    };
+  }
+  if (status === 404 && String(raw).toLowerCase().indexOf('no endpoints found') !== -1) {
+    return {
+      status: 503,
+      error: 'No currently available endpoint for the selected free model. Please retry or choose another free model.'
     };
   }
   if (status >= 400 && status < 500) {
