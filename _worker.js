@@ -14,6 +14,12 @@ const BUILTIN_MODEL_FALLBACKS = [
   'mistralai/Mistral-7B-Instruct-v0.3'
 ];
 
+const OPENROUTER_FREE_FALLBACKS = [
+  'or:openrouter/free',
+  'or:meta-llama/llama-3.3-70b-instruct:free',
+  'or:deepseek/deepseek-r1:free'
+];
+
 function councilPrompt(topic, targetCount, history) {
   var prior = (history || []).slice(-3).map(function(h, i) {
     return (i + 1) + '. ' + (h && h.question ? h.question : '');
@@ -264,12 +270,23 @@ function splitCsvModels(raw) {
   return raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
 }
 
+function toOrModel(raw) {
+  var v = (typeof raw === 'string') ? raw.trim() : '';
+  if (!v) return '';
+  return v.startsWith('or:') ? v : ('or:' + v);
+}
+
 function getModelCandidates(selectedModel, env) {
-  return uniqueModels(
+  var base = uniqueModels(
     [selectedModel, env.HF_MODEL]
       .concat(splitCsvModels(env.HF_MODEL_FALLBACKS))
       .concat(BUILTIN_MODEL_FALLBACKS)
   );
+  if (env && env.OPENROUTER_API_KEY) {
+    var orModels = splitCsvModels(env.OPENROUTER_FREE_MODELS).map(toOrModel).filter(Boolean);
+    return uniqueModels(base.concat(orModels).concat(OPENROUTER_FREE_FALLBACKS));
+  }
+  return base;
 }
 
 function isModelNotSupported(status, errText) {
@@ -279,68 +296,106 @@ function isModelNotSupported(status, errText) {
     || txt.indexOf('not supported by any provider') !== -1;
 }
 
+function isOpenRouterModel(model) {
+  return typeof model === 'string' && model.startsWith('or:');
+}
+
+function stripOpenRouterPrefix(model) {
+  return isOpenRouterModel(model) ? model.slice(3) : model;
+}
+
 function isRetriableHF(err) {
-  if (!err || typeof err.message !== 'string') return false;
-  return /^HF (408|409|425|429|500|502|503|504):/.test(err.message);
+  var status = getProviderStatus(err);
+  return status === 408 || status === 409 || status === 425 || status === 429
+    || status === 500 || status === 502 || status === 503 || status === 504;
 }
 
 function sleep(ms) {
   return new Promise(function(resolve) { setTimeout(resolve, ms); });
 }
 
-async function callHFWithRetry(messages, token, model, opts, maxAttempts) {
-  var attempts = Math.max(1, maxAttempts || 1);
+async function callHFWithRetry(messages, token, model, opts, maxAttempts, env) {
+  var models = Array.isArray(model) ? uniqueModels(model) : [model];
   var lastErr;
-  for (var i = 0; i < attempts; i++) {
-    try {
-      return await callHF(messages, token, model, opts);
-    } catch (err) {
-      lastErr = err;
-      if (isHF401(err) || !isRetriableHF(err) || i === attempts - 1) throw err;
-      await sleep(250 * (i + 1));
+  for (var m = 0; m < models.length; m++) {
+    var candidate = models[m];
+    var attempts = Math.max(1, maxAttempts || 1);
+    for (var i = 0; i < attempts; i++) {
+      try {
+        return await callHF(messages, token, candidate, opts, env);
+      } catch (err) {
+        lastErr = err;
+        if (isHF401(err)) throw err;
+        if (isModelNotSupportedProvider(err) && m < models.length - 1) break;
+        if (!isRetriableHF(err) || i === attempts - 1) {
+          if (m < models.length - 1) break;
+          throw err;
+        }
+        await sleep(250 * (i + 1));
+      }
     }
   }
-  throw lastErr || new Error('HF request failed');
+  throw lastErr || new Error('LLM request failed');
 }
 
-async function callHF(messages, token, model, opts) {
+async function callHF(messages, token, model, opts, env) {
   opts = opts || {};
-  var models = Array.isArray(model) ? uniqueModels(model) : [model];
-  var lastErr = null;
-  for (var i = 0; i < models.length; i++) {
-    var chosenModel = models[i];
-    var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
+  if (isOpenRouterModel(model)) {
+    if (!env || !env.OPENROUTER_API_KEY) throw new Error('OR 500: OpenRouter is not configured.');
+    var orModel = stripOpenRouterPrefix(model);
+    var orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
+        'Authorization': 'Bearer ' + env.OPENROUTER_API_KEY,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': env.APP_URL || 'https://conspread.pages.dev',
+        'X-Title': 'Conspread'
       },
       body: JSON.stringify({
-        model: chosenModel,
+        model: orModel,
         messages: messages,
         max_tokens: opts.max_tokens || 600,
         temperature: opts.temperature || 0.72,
         stream: false
       })
     });
-    if (!res.ok) {
-      var errText = await res.text();
-      if (isModelNotSupported(res.status, errText) && i < models.length - 1) {
-        continue;
-      }
-      lastErr = new Error('HF ' + res.status + ': ' + errText.slice(0, 300));
-      throw lastErr;
+    if (!orRes.ok) {
+      var orErr = await orRes.text();
+      throw new Error('OR ' + orRes.status + ': ' + orErr.slice(0, 300));
     }
-    var d = await res.json();
-    if (!d.choices || !d.choices[0]) throw new Error('Unexpected HF response');
-    return d.choices[0].message.content;
+    var orData = await orRes.json();
+    if (!orData.choices || !orData.choices[0]) throw new Error('Unexpected OpenRouter response');
+    return orData.choices[0].message.content;
   }
-  throw lastErr || new Error('No supported model available for this request.');
+  var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: model,
+      messages: messages,
+      max_tokens: opts.max_tokens || 600,
+      temperature: opts.temperature || 0.72,
+      stream: false
+    })
+  });
+  if (!res.ok) {
+    var errText = await res.text();
+    if (isModelNotSupported(res.status, errText)) {
+      throw new Error('HF 400: model_not_supported');
+    }
+    throw new Error('HF ' + res.status + ': ' + errText.slice(0, 300));
+  }
+  var d = await res.json();
+  if (!d.choices || !d.choices[0]) throw new Error('Unexpected HF response');
+  return d.choices[0].message.content;
 }
 
-async function buildCouncil(topic, history, token, model) {
+async function buildCouncil(topic, history, token, model, env) {
   var targetCount = chooseCouncilSize(topic, history);
-  var txt = await callHFWithRetry([{ role:'user', content: councilPrompt(topic, targetCount, history) }], token, model, { max_tokens:2500, temperature:0.85 }, 3);
+  var txt = await callHFWithRetry([{ role:'user', content: councilPrompt(topic, targetCount, history) }], token, model, { max_tokens:2500, temperature:0.85 }, 3, env);
   var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
   var arr = JSON.parse(clean);
   var council = normalizeCouncil(arr, targetCount, topic);
@@ -350,9 +405,9 @@ async function buildCouncil(topic, history, token, model) {
   return council;
 }
 
-async function buildCouncilPack(topic, history, token, model) {
+async function buildCouncilPack(topic, history, token, model, env) {
   var targetCount = chooseCouncilSize(topic, history);
-  var txt = await callHFWithRetry([{ role:'user', content: councilPackPrompt(topic, targetCount, history) }], token, model, { max_tokens:3200, temperature:0.78 }, 3);
+  var txt = await callHFWithRetry([{ role:'user', content: councilPackPrompt(topic, targetCount, history) }], token, model, { max_tokens:3200, temperature:0.78 }, 3, env);
   var parsed = parseJSONLoose(txt);
   var council = normalizeCouncil(parsed.council, targetCount, topic);
   var responses = normalizeResponseList(parsed.responses, targetCount, council);
@@ -368,7 +423,7 @@ async function buildCouncilPack(topic, history, token, model) {
   return { council: council, responses: responses.slice(0, council.length) };
 }
 
-async function personaReply(persona, all, question, history, token, model) {
+async function personaReply(persona, all, question, history, token, model, env) {
   var idx = all.findIndex(function(p) { return p.id === persona.id; });
   var hist = (history || []).slice(-3).flatMap(function(h) {
     var pr = h.responses && h.responses[idx];
@@ -380,12 +435,59 @@ async function personaReply(persona, all, question, history, token, model) {
   var msgs = [{ role:'system', content: personaPrompt(persona, all) }]
     .concat(hist)
     .concat([{ role:'user', content: question }]);
-  var raw = await callHFWithRetry(msgs, token, model, { max_tokens: 420, temperature: 0.76 }, 2);
+  var raw = await callHFWithRetry(msgs, token, model, { max_tokens: 420, temperature: 0.76 }, 2, env);
   return normalizePersonaResponse(raw, persona);
 }
 
 function isHF401(err) {
   return !!(err && typeof err.message === 'string' && err.message.startsWith('HF 401'));
+}
+
+function getProviderStatus(err) {
+  if (!err || typeof err.message !== 'string') return null;
+  var m = err.message.match(/^(HF|OR) (\d{3}):/);
+  return m ? Number(m[2]) : null;
+}
+
+function isModelNotSupportedProvider(err) {
+  if (!err || typeof err.message !== 'string') return false;
+  if (err.message.indexOf('HF 400: model_not_supported') === 0) return true;
+  return /^OR (400|404):/.test(err.message) && err.message.toLowerCase().indexOf('model') !== -1;
+}
+
+function getHFStatus(err) {
+  return getProviderStatus(err);
+}
+
+function extractHFErrorText(err) {
+  if (!err || typeof err.message !== 'string') return '';
+  var m = err.message.match(/^(HF|OR) \d{3}:\s*(.*)$/);
+  return (m && m[2]) ? m[2] : err.message;
+}
+
+function mapHFErrorToClient(err) {
+  var status = getHFStatus(err);
+  var raw = extractHFErrorText(err);
+  if (!status) return null;
+  if (status === 402) {
+    return {
+      status: 402,
+      error: 'Hugging Face inference credits are exhausted for this account. Add credits or upgrade the HF plan, then try again.'
+    };
+  }
+  if (status === 429) {
+    return {
+      status: 429,
+      error: 'Inference provider rate limit reached. Please retry in a moment.'
+    };
+  }
+  if (status >= 400 && status < 500) {
+    return { status: status, error: raw || 'Inference request rejected by provider.' };
+  }
+  if (status >= 500) {
+    return { status: 503, error: 'Inference provider is temporarily unavailable. Please retry shortly.' };
+  }
+  return null;
 }
 
 function fallbackPersonaReply(persona) {
@@ -396,7 +498,7 @@ function fallbackPersonaReply(persona) {
   };
 }
 
-async function buildPersonaResponses(council, question, history, token, model) {
+async function buildPersonaResponses(council, question, history, token, model, env) {
   var responses = [];
   var failures = 0;
   // Limit concurrency to reduce 429/5xx bursts from upstream router.
@@ -404,7 +506,7 @@ async function buildPersonaResponses(council, question, history, token, model) {
     var chunk = council.slice(i, i + 2);
     var chunkResults = await Promise.all(chunk.map(async function(p) {
       try {
-        return await personaReply(p, council, question, history, token, model);
+        return await personaReply(p, council, question, history, token, model, env);
       } catch (err) {
         if (isHF401(err)) throw err;
         failures += 1;
@@ -419,9 +521,9 @@ async function buildPersonaResponses(council, question, history, token, model) {
   return responses;
 }
 
-async function buildSynthesis(question, council, responses, token, model) {
+async function buildSynthesis(question, council, responses, token, model, env) {
   try {
-    var txt = await callHF([{ role:'user', content: synthesisPrompt(question, council, responses) }], token, model, { max_tokens:1500, temperature:0.62 });
+    var txt = await callHFWithRetry([{ role:'user', content: synthesisPrompt(question, council, responses) }], token, model, { max_tokens:1500, temperature:0.62 }, 2, env);
     var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
     return JSON.parse(clean);
   } catch(e) {
@@ -433,14 +535,14 @@ async function buildSynthesis(question, council, responses, token, model) {
   }
 }
 
-async function normalReply(question, history, token, model) {
+async function normalReply(question, history, token, model, env) {
   var msgs = [{ role:'system', content: normalSystemPrompt() }];
   (history || []).slice(-6).forEach(function(h) {
     msgs.push({ role:'user', content: h.question });
     if (h.reply) msgs.push({ role:'assistant', content: h.reply });
   });
   msgs.push({ role:'user', content: question });
-  return callHF(msgs, token, model, { max_tokens:600, temperature:0.70 });
+  return callHFWithRetry(msgs, token, model, { max_tokens:600, temperature:0.70 }, 2, env);
 }
 
 async function mkSid() {
@@ -547,7 +649,7 @@ async function onChat(req, env) {
       cd = { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
     }
     if (mode === 'normal') {
-      var reply = await normalReply(question, history, s.hf_token, modelCandidates);
+      var reply = await normalReply(question, history, s.hf_token, modelCandidates, env);
       cd.messages.push({ id:crypto.randomUUID(), question:question, reply:reply, mode:'normal', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'normal' } });
@@ -555,16 +657,16 @@ async function onChat(req, env) {
     } else {
       var councilPack;
       try {
-        councilPack = await buildCouncilPack(question.trim(), history, s.hf_token, modelCandidates);
+        councilPack = await buildCouncilPack(question.trim(), history, s.hf_token, modelCandidates, env);
       } catch (packErr) {
         // Fallback path for models that do not reliably emit large structured JSON in one shot.
-        var fallbackCouncil = await buildCouncil(question.trim(), history, s.hf_token, modelCandidates);
-        var fallbackResponses = await buildPersonaResponses(fallbackCouncil, question, history, s.hf_token, modelCandidates);
+        var fallbackCouncil = await buildCouncil(question.trim(), history, s.hf_token, modelCandidates, env);
+        var fallbackResponses = await buildPersonaResponses(fallbackCouncil, question, history, s.hf_token, modelCandidates, env);
         councilPack = { council: fallbackCouncil, responses: fallbackResponses };
       }
       var council = councilPack.council;
       var responses = councilPack.responses;
-      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, modelCandidates);
+      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, modelCandidates, env);
       cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
       await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
         metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'council' } });
@@ -581,6 +683,8 @@ async function onChat(req, env) {
         }
       });
     }
+    var hfMapped = mapHFErrorToClient(err);
+    if (hfMapped) return jres({ error: hfMapped.error }, hfMapped.status);
     if (err && typeof err.message === 'string' && /Council (generation|responses) .*unavailable/.test(err.message)) {
       return jres({ error: err.message }, 503);
     }
@@ -627,6 +731,8 @@ async function onImage(req, env) {
         }
       });
     }
+    var hfMapped = mapHFErrorToClient(err);
+    if (hfMapped) return jres({ error: hfMapped.error }, hfMapped.status);
     return jres({ error: err.message }, 500);
   }
 }
