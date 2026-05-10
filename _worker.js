@@ -156,6 +156,23 @@ Return ONLY valid JSON in this exact shape:
 }`;
 }
 
+function buildLensSystemPrompt(selectedLenses) {
+  var lensTexts = {
+    1: 'LENS 1 — Where does this come from?\nIdentify factual claims if any. Point out where this information would come from, how someone could check it, what sources would be trustworthy. If it is opinion rather than checkable, say so. End with one short question inviting the user to think, like "If you wanted to check this, where would you look first?"',
+    2: 'LENS 2 — Whose voice is missing?\nNotice whose perspective the input is told from. Name one or two concrete perspectives NOT in the input — actual people or roles, not "many groups." Say what would look different from those perspectives. End with: "Whose view do you think matters most here, and why?"',
+    3: 'LENS 3 — What does this want me to feel?\nName the feeling the input seems designed to create. Point to specific words or framings that produce it. Say why someone might want the reader to feel that. Do not assume bad intent. End with: "Does noticing the feeling change what you think of the message?"',
+    4: "LENS 4 — What's the strongest argument the other way?\nIdentify the position implied or stated. Build the BEST argument someone smart could make on the OTHER side — not a strawman. Begin with: \"If someone smart disagreed, here is the best thing they could say:\" Do not declare a winner. End with: \"What part of that argument is hardest to dismiss?\"",
+    5: 'LENS 5 — Is this opinion, fact, or in between?\nSort the input into: fact you can check, opinion someone holds, or a mix. Explain WHY — point at specific words. If a mix, say which parts are checkable and which are values. Do not dismiss opinions. End with: "What would change your mind about this?"',
+    6: "LENS 6 — How does this connect to what you already know?\nSuggest two or three things from ordinary life that this input matches or conflicts with. Be concrete — \"Most kids have noticed...\" or \"If you have ever...\" Do not pretend to know the user's life. End with: \"Does this match what you have seen, or does it surprise you?\""
+  };
+  var selected = (Array.isArray(selectedLenses) ? selectedLenses : []).filter(function(n) { return lensTexts[n]; });
+  if (!selected.length) selected = [1, 4];
+  var base = 'You are a multi-lens thinking tool for readers age 10+. The user gives you a claim, headline, or question. You must respond through EACH of the following lenses. For each lens, write 60-100 words in plain language a 10-year-old can follow. No jargon. Do not be preachy. Do not begin any lens with "Great question!"\n\nRespond in this EXACT format — use these headers exactly so the app can parse them:\n\n';
+  var tags = selected.map(function(n) { return '[LENS_' + n + ']\n(your response)\n[/LENS_' + n + ']'; }).join('\n\n');
+  var lensBody = selected.map(function(n) { return lensTexts[n]; }).join('\n\n');
+  return base + tags + '\n\nThe lenses to apply:\n\n' + lensBody;
+}
+
 function normalSystemPrompt() {
   return `You are Conspread, a helpful and thoughtful assistant.
 
@@ -544,14 +561,30 @@ async function buildSynthesis(question, council, responses, token, model, env) {
   }
 }
 
+function trimConfirmation(text) {
+  return (text || '').replace(/^\s*(Sure!?|Of course!?|Here you go:?|Absolutely!?|Great!?)[,!.\s]*/i, '').trim();
+}
+
 async function normalReply(question, history, token, model, env) {
   var msgs = [{ role:'system', content: normalSystemPrompt() }];
   (history || []).slice(-6).forEach(function(h) {
     msgs.push({ role:'user', content: h.question });
-    if (h.reply) msgs.push({ role:'assistant', content: h.reply });
+    if (h.reply) msgs.push({ role:'assistant', content: trimConfirmation(h.reply) });
   });
   msgs.push({ role:'user', content: question });
-  return callHFWithRetry(msgs, token, model, { max_tokens:600, temperature:0.70 }, 2, env);
+  return callHFWithRetry(msgs, token, model, { max_tokens:1024, temperature:0.70 }, 2, env);
+}
+
+async function lensReply(question, selectedLenses, token, model, env) {
+  var lenses = (Array.isArray(selectedLenses) ? selectedLenses : []).map(Number).filter(function(n) { return n >= 1 && n <= 6; });
+  if (!lenses.length) lenses = [1, 4];
+  var systemPrompt = buildLensSystemPrompt(lenses);
+  var maxTokens = lenses.length === 1 ? 200 : 800;
+  var msgs = [
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: question }
+  ];
+  return callHFWithRetry(msgs, token, model, { max_tokens: maxTokens, temperature: 0.72 }, 2, env);
 }
 
 async function mkSid() {
@@ -656,6 +689,13 @@ async function onChat(req, env) {
       cd = ex ? JSON.parse(ex) : { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
     } catch(e) {
       cd = { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
+    }
+    if (mode === 'lens') {
+      var lenses = Array.isArray(body.lenses) && body.lenses.length
+        ? body.lenses.map(Number).filter(function(n) { return n >= 1 && n <= 6; })
+        : [1, 4];
+      var lensText = await lensReply(question.trim(), lenses, s.hf_token, modelCandidates, env);
+      return jres({ reply: lensText });
     }
     if (mode === 'normal') {
       var reply = await normalReply(question, history, s.hf_token, modelCandidates, env);
@@ -770,6 +810,43 @@ async function onHistory(req, env) {
   } catch(e) { return jres({ chats:[] }); }
 }
 
+async function onAnthropicChat(req, env) {
+  if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
+  var s = await getSession(req, env);
+  if (!s) return jres({ error: 'Unauthorized' }, 401);
+  var body;
+  try { body = await req.json(); } catch(e) { return jres({ error: 'Invalid JSON' }, 400); }
+  var model = body.model, messages = body.messages, systemPrompt = body.systemPrompt;
+  var maxTokens = Math.min(body.maxTokens || 1024, 2048);
+  if (!model || !model.startsWith('claude-')) return jres({ error: 'Invalid model' }, 400);
+  if (!Array.isArray(messages) || !messages.length) return jres({ error: 'Messages required' }, 400);
+  if (!env.ANTHROPIC_API_KEY) return jres({ error: 'Anthropic not configured on this deployment' }, 503);
+  var reqBody = {
+    model: model,
+    max_tokens: maxTokens,
+    messages: messages.map(function(m) { return { role: m.role, content: m.content }; })
+  };
+  if (systemPrompt) reqBody.system = systemPrompt;
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify(reqBody)
+    });
+    var data = await resp.json();
+    if (!resp.ok) return jres({ error: (data.error && data.error.message) || 'Anthropic API error' }, resp.status);
+    var text = data.content && data.content[0] && data.content[0].text;
+    if (!text) return jres({ error: 'Empty response from Anthropic' }, 502);
+    return jres({ reply: text });
+  } catch(err) {
+    return jres({ error: err.message || 'Anthropic request failed' }, 500);
+  }
+}
+
 export default {
   async fetch(request, env) {
     var path = new URL(request.url).pathname;
@@ -778,6 +855,7 @@ export default {
     if (path === '/api/auth/logout')   return onLogout(request, env);
     if (path === '/api/session')       return onSession(request, env);
     if (path === '/api/chat')          return onChat(request, env);
+    if (path === '/api/anthropic')     return onAnthropicChat(request, env);
     if (path === '/api/image')         return onImage(request, env);
     if (path === '/api/history')       return onHistory(request, env);
     return env.ASSETS.fetch(request);

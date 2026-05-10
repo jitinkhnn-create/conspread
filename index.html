@@ -249,6 +249,60 @@ body::before {
   .mode-card { width: 100%; max-width: 340px; }
   #msgs { padding: 16px 14px 8px; }
 }
+
+/* LENS MODE */
+.lens-input-label { background: var(--glt); border: 1px solid rgba(184,144,42,.4); border-radius: 12px 12px 4px 12px; padding: 12px 18px; font-family: var(--fb); font-size: 15px; color: var(--tx); margin-bottom: 4px; max-width: 640px; align-self: flex-end; }
+.lens-picker-wrap { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 20px; }
+.lens-picker-title { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
+.lens-picker-sub { font-size: 13px; color: var(--tx3); font-family: var(--fb); margin-bottom: 16px; }
+.lens-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.lens-card { background: var(--bg); border: 2px solid var(--bor); border-left-width: 4px; border-radius: var(--r); padding: 12px 14px; cursor: pointer; transition: all .2s ease; user-select: none; }
+.lens-card[data-lens="1"] { border-left-color: #2e6da8; }
+.lens-card[data-lens="2"] { border-left-color: #8e44ad; }
+.lens-card[data-lens="3"] { border-left-color: #c0392b; }
+.lens-card[data-lens="4"] { border-left-color: #b8902a; }
+.lens-card[data-lens="5"] { border-left-color: #27ae60; }
+.lens-card[data-lens="6"] { border-left-color: #16a085; }
+.lens-card.selected { background: var(--sur); box-shadow: 0 0 0 2px rgba(184,144,42,.25); border-color: var(--bor2); }
+.lens-card[data-lens="1"].selected { box-shadow: 0 0 0 2px rgba(46,109,168,.3); }
+.lens-card[data-lens="2"].selected { box-shadow: 0 0 0 2px rgba(142,68,173,.3); }
+.lens-card[data-lens="3"].selected { box-shadow: 0 0 0 2px rgba(192,57,43,.3); }
+.lens-card[data-lens="4"].selected { box-shadow: 0 0 0 2px rgba(184,144,42,.3); }
+.lens-card[data-lens="5"].selected { box-shadow: 0 0 0 2px rgba(39,174,96,.3); }
+.lens-card[data-lens="6"].selected { box-shadow: 0 0 0 2px rgba(22,160,133,.3); }
+.lens-card:hover { background: var(--sur); }
+.lens-card-emoji { font-size: 18px; margin-bottom: 5px; }
+.lens-card-q { font-family: var(--fu); font-size: 11px; font-weight: 600; color: var(--tx); margin-bottom: 2px; line-height: 1.4; }
+.lens-card-desc { font-family: var(--fb); font-size: 10px; color: var(--tx3); font-style: italic; }
+.lens-ctrl { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lens-select-all { background: none; border: none; color: var(--blue); font-size: 12px; cursor: pointer; font-family: var(--fu); text-decoration: underline; padding: 0; }
+.lens-analyze-btn { margin-left: auto; padding: 9px 20px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
+.lens-analyze-btn:hover:not(:disabled) { background: var(--gl); }
+.lens-analyze-btn:disabled { opacity: .4; cursor: not-allowed; }
+.lens-responses-wrap { display: flex; flex-direction: column; gap: 12px; }
+.lens-response-card { background: var(--sur); border: 1px solid var(--bor); border-left-width: 4px; border-radius: var(--r2); padding: 16px 18px; }
+.lens-response-card[data-lens="1"] { border-left-color: #2e6da8; }
+.lens-response-card[data-lens="2"] { border-left-color: #8e44ad; }
+.lens-response-card[data-lens="3"] { border-left-color: #c0392b; }
+.lens-response-card[data-lens="4"] { border-left-color: #b8902a; }
+.lens-response-card[data-lens="5"] { border-left-color: #27ae60; }
+.lens-response-card[data-lens="6"] { border-left-color: #16a085; }
+.lens-response-header { font-family: var(--fu); font-size: 11px; font-weight: 700; color: var(--tx2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+.lens-response-body { font-family: var(--fb); font-size: 16px; line-height: 1.75; color: var(--tx); }
+.lens-think-wrap { background: var(--sur); border: 2px solid var(--gold); border-radius: var(--r2); padding: 24px; }
+.lens-think-wrap h3 { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
+.lens-think-wrap > p { font-family: var(--fb); font-size: 14px; color: var(--tx3); margin-bottom: 16px; }
+.lens-think-textarea { width: 100%; min-height: 130px; padding: 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 16px; color: var(--tx); resize: vertical; outline: none; transition: border-color .2s; }
+.lens-think-textarea:focus { border-color: var(--gold); }
+.lens-submit-btn { margin-top: 12px; padding: 10px 22px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
+.lens-submit-btn:hover:not(:disabled) { background: var(--gl); }
+.lens-submit-btn:disabled { opacity: .4; cursor: not-allowed; }
+.lens-reflection-wrap { background: var(--sur2); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; }
+.lens-reflection-wrap p { font-family: var(--fb); font-size: 15px; color: var(--tx2); margin-bottom: 8px; }
+.lens-reflection-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+@media (max-width: 680px) {
+  .lens-grid { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
@@ -278,11 +332,11 @@ body::before {
   <div class="land-sub">Think deeper. See wider.</div>
   <div class="land-user" id="land-user"></div>
   <div class="mode-cards">
-    <div class="mode-card council" onclick="enterMode('council')">
-      <div class="mc-ico">◆</div>
-      <div class="mc-title">Critical Thinking</div>
-      <div class="mc-desc">8 specialists examine your question from genuinely different worldviews. Real friction, not diplomatic balance.</div>
-      <button class="mc-btn">Enter Council →</button>
+    <div class="mode-card council" onclick="enterMode('lens')">
+      <div class="mc-ico">🔍</div>
+      <div class="mc-title">Lens Mode</div>
+      <div class="mc-desc">Pick thinking lenses to examine what you read or hear. Ask sharp questions, then write your own view.</div>
+      <button class="mc-btn">Start Thinking →</button>
     </div>
     <div class="mode-card normal" onclick="enterMode('normal')">
       <div class="mc-ico">💬</div>
@@ -339,6 +393,9 @@ body::before {
             <option value="or:meta-llama/llama-3.3-70b-instruct:free">OpenRouter Llama 3.3 70B Free [Strong general reasoning]</option>
             <option value="or:mistralai/mistral-small-3.1-24b-instruct:free">OpenRouter Mistral Small 3.1 Free [Fast + reliable free endpoint]</option>
             <option value="or:deepseek/deepseek-r1:free">OpenRouter DeepSeek R1 Free [Reasoning + analysis]</option>
+            <option disabled>── Claude (Anthropic) ──</option>
+            <option value="claude-opus-4-6-20250514">Claude Opus 4.6 [Highest capability · requires ANTHROPIC_API_KEY]</option>
+            <option value="claude-sonnet-4-6-20250514">Claude Sonnet 4.6 [Balanced speed + quality · requires ANTHROPIC_API_KEY]</option>
           </select>
         </div>
         <div class="exp-wrap">
@@ -397,6 +454,68 @@ var PCOLS = [
 var STOP = {};
 'the a an and or but in on at to for of with by from is are was were be been have has had do does did will would could should may might that this these those their they them we our you your i it its not all more than what how when where which who if then also even just very can get much many some most other about up out so well said know think use used make made good new first last long great little own right big high such give come here'.split(' ').forEach(function(w){ STOP[w]=1; });
 
+// ===================== LENS MODE STATE =====================
+var LM = {
+  step: 0,         // 0=initial, 1=lens-picker shown, 2=responses shown, 3=reflection
+  input: '',
+  selectedLenses: [1, 4],
+  responses: null,
+  userView: '',
+  cache: {}
+};
+
+var LENSES = [
+  { n:1, emoji:'🔍', q:'Where does this come from?',                   label:'Trace the source' },
+  { n:2, emoji:'👁️',  q:'Whose voice is missing?',                     label:'Find hidden perspectives' },
+  { n:3, emoji:'🎭', q:'What does this want me to feel?',              label:'Spot the emotion' },
+  { n:4, emoji:'⚖️',  q:"What's the strongest argument the other way?", label:'Steelman the opposite' },
+  { n:5, emoji:'📊', q:'Is this opinion, fact, or in between?',        label:'Sort the claim' },
+  { n:6, emoji:'🔗', q:'How does this connect to what I already know?', label:'Link to your life' }
+];
+
+function buildLensSystemPrompt(selectedLenses) {
+  var lensTexts = {
+    1: 'LENS 1 — Where does this come from?\nIdentify factual claims if any. Point out where this information would come from, how someone could check it, what sources would be trustworthy. If it is opinion rather than checkable, say so. End with one short question inviting the user to think, like "If you wanted to check this, where would you look first?"',
+    2: 'LENS 2 — Whose voice is missing?\nNotice whose perspective the input is told from. Name one or two concrete perspectives NOT in the input — actual people or roles, not "many groups." Say what would look different from those perspectives. End with: "Whose view do you think matters most here, and why?"',
+    3: 'LENS 3 — What does this want me to feel?\nName the feeling the input seems designed to create. Point to specific words or framings that produce it. Say why someone might want the reader to feel that. Do not assume bad intent. End with: "Does noticing the feeling change what you think of the message?"',
+    4: "LENS 4 — What's the strongest argument the other way?\nIdentify the position implied or stated. Build the BEST argument someone smart could make on the OTHER side — not a strawman. Begin with: \"If someone smart disagreed, here is the best thing they could say:\" Do not declare a winner. End with: \"What part of that argument is hardest to dismiss?\"",
+    5: 'LENS 5 — Is this opinion, fact, or in between?\nSort the input into: fact you can check, opinion someone holds, or a mix. Explain WHY — point at specific words. If a mix, say which parts are checkable and which are values. Do not dismiss opinions. End with: "What would change your mind about this?"',
+    6: "LENS 6 — How does this connect to what you already know?\nSuggest two or three things from ordinary life that this input matches or conflicts with. Be concrete — \"Most kids have noticed...\" or \"If you have ever...\" Do not pretend to know the user's life. End with: \"Does this match what you have seen, or does it surprise you?\""
+  };
+  var selected = (Array.isArray(selectedLenses) ? selectedLenses : []).filter(function(n) { return lensTexts[n]; });
+  if (!selected.length) selected = [1, 4];
+  var base = 'You are a multi-lens thinking tool for readers age 10+. The user gives you a claim, headline, or question. You must respond through EACH of the following lenses. For each lens, write 60-100 words in plain language a 10-year-old can follow. No jargon. Do not be preachy. Do not begin any lens with "Great question!"\n\nRespond in this EXACT format — use these headers exactly so the app can parse them:\n\n';
+  var tags = selected.map(function(n) { return '[LENS_' + n + ']\n(your response)\n[/LENS_' + n + ']'; }).join('\n\n');
+  var lensBody = selected.map(function(n) { return lensTexts[n]; }).join('\n\n');
+  return base + tags + '\n\nThe lenses to apply:\n\n' + lensBody;
+}
+
+function parseLensResponse(text, selectedLenses) {
+  var result = {};
+  (selectedLenses || []).forEach(function(n) {
+    var rx = new RegExp('\\[LENS_' + n + '\\]([\\s\\S]*?)\\[/LENS_' + n + '\\]');
+    var m = (text || '').match(rx);
+    if (m) result[n] = m[1].trim();
+  });
+  if (!Object.keys(result).length && selectedLenses && selectedLenses.length) {
+    result[selectedLenses[0]] = text || '';
+  }
+  return result;
+}
+
+function buildContextWindow(hist) {
+  var WINDOW = 8;
+  var full = hist.slice(-WINDOW);
+  var older = hist.slice(0, hist.length - WINDOW);
+  if (!older.length) return { history: full, prefix: '' };
+  var summary = older.map(function(h) {
+    var q = (h.question || '').split(/[.?!]/)[0].trim().slice(0, 80);
+    var a = (h.reply || '').replace(/^\s*(Sure!?|Of course!?|Here you go:?|Absolutely!?)\s*/i, '').split(/[.?!]/)[0].trim().slice(0, 80);
+    return q + (a ? '. ' + a : '');
+  }).filter(Boolean).join('. ');
+  return { history: full, prefix: 'Previous context: ' + summary };
+}
+
 // ===================== INIT =====================
 async function init() {
   try {
@@ -419,7 +538,7 @@ function showLanding() {
 
 function enterMode(mode) {
   ST.mode = mode; ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
-  // Load saved model or set default
+  LM.step = 0; LM.input = ''; LM.responses = null; LM.userView = ''; LM.cache = {}; LM.selectedLenses = [1, 4];
   ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
   var modelSelect = document.getElementById('model-select');
   var hasSavedModel = Array.from(modelSelect.options).some(function(opt) { return opt.value === ST.selectedModel; });
@@ -429,16 +548,18 @@ function enterMode(mode) {
   var ini = getIni(ST.user);
   document.getElementById('sb-av').textContent = ini;
   document.getElementById('sb-name').textContent = ST.user.name || ST.user.username;
-  if (mode === 'council') {
-    document.getElementById('sb-mode-lbl').textContent = 'Council';
-    document.getElementById('mode-badge').textContent = 'Dynamic Perspectives';
+  if (mode === 'lens') {
+    document.getElementById('sb-mode-lbl').textContent = 'Lens';
+    document.getElementById('mode-badge').textContent = 'Lens Mode';
     document.getElementById('mode-badge').className = 'badge badge-gold';
     document.getElementById('sb-role').textContent = 'Critical Thinking';
+    document.getElementById('qi').placeholder = 'Type something you read, heard, or aren\'t sure about.';
   } else {
     document.getElementById('sb-mode-lbl').textContent = 'Chat';
     document.getElementById('mode-badge').textContent = 'Conversation';
     document.getElementById('mode-badge').className = 'badge badge-blue';
     document.getElementById('sb-role').textContent = 'Normal Chat';
+    document.getElementById('qi').placeholder = 'Ask anything...';
   }
   showWelcome();
   loadHist();
@@ -454,23 +575,20 @@ function show(id) { document.getElementById(id).classList.remove('h'); }
 function hide(id) { document.getElementById(id).classList.add('h'); }
 
 function showWelcome() {
-  if (ST.mode === 'council') {
-    document.getElementById('mode-badge').textContent = 'Dynamic Perspectives';
-  }
   var msgs = document.getElementById('msgs');
   msgs.innerHTML = '';
   var div = document.createElement('div'); div.className = 'welcome';
   var ico = document.createElement('div'); ico.className = 'welcome-ico';
-  ico.textContent = ST.mode === 'council' ? '◆' : '💬';
+  ico.textContent = ST.mode === 'lens' ? '🔍' : '💬';
   var h2 = document.createElement('h2');
-  h2.textContent = ST.mode === 'council' ? 'Critical Thinking Council' : 'Normal Conversation';
+  h2.textContent = ST.mode === 'lens' ? 'Lens Mode' : 'Normal Conversation';
   var p = document.createElement('p');
-  p.textContent = ST.mode === 'council'
-    ? 'Ask any question. The council size adapts to complexity, then specialists with different worldviews examine it from all angles.'
+  p.textContent = ST.mode === 'lens'
+    ? 'Type something you read, heard, or aren\'t sure about. Pick lenses to examine it — then write your own view.'
     : 'Ask me anything. Clear, direct answers in plain English.';
   var wqs = document.createElement('div'); wqs.className = 'wqs';
-  var qs = ST.mode === 'council'
-    ? ['Is technology making us more or less free?','Can democracy survive social media?','Is economic growth compatible with sustainability?','What does it mean to live well today?']
+  var qs = ST.mode === 'lens'
+    ? ['My friend said social media is making kids depressed','AI will replace all jobs in 10 years','Eating breakfast is the most important meal of the day']
     : ['Explain quantum computing simply','What should I know before starting a business?','Help me think through a difficult decision','What are the most important skills for the future?'];
   qs.forEach(function(q) {
     var btn = document.createElement('span'); btn.className = 'wq'; btn.textContent = q;
@@ -804,6 +922,249 @@ function getThemeConnections(council, responses) {
     });
     return {theme: theme, personas: personas};
   }).filter(function(conn){ return conn.personas.length > 1; });
+}
+
+// ===================== LENS MODE FUNCTIONS =====================
+function lensStep1Submit() {
+  var inp = document.getElementById('qi'), q = inp.value.trim();
+  if (!q || ST.busy) return;
+  var w = document.querySelector('.welcome'); if (w) w.remove();
+  LM.input = q;
+  LM.step = 1;
+  LM.responses = null;
+  LM.userView = '';
+  inp.value = ''; inp.style.height = 'auto';
+  // Clear cache if input changed
+  if (LM._lastInput !== q) { LM.cache = {}; LM._lastInput = q; }
+  var label = document.createElement('div');
+  label.className = 'lens-input-label fi';
+  label.textContent = q;
+  document.getElementById('msgs').appendChild(label);
+  renderLensPicker();
+  scrollBottom();
+}
+
+function renderLensPicker() {
+  var wrap = document.createElement('div'); wrap.className = 'lens-picker-wrap fi';
+  var ttl = document.createElement('div'); ttl.className = 'lens-picker-title'; ttl.textContent = 'Pick your lenses';
+  var sub = document.createElement('div'); sub.className = 'lens-picker-sub';
+  sub.textContent = 'Choose the questions you want to ask. Lenses 1 and 4 are pre-selected — change them if you like.';
+  wrap.appendChild(ttl); wrap.appendChild(sub);
+
+  var grid = document.createElement('div'); grid.className = 'lens-grid';
+  LENSES.forEach(function(lens) {
+    var card = document.createElement('div');
+    card.className = 'lens-card' + (LM.selectedLenses.indexOf(lens.n) !== -1 ? ' selected' : '');
+    card.dataset.lens = lens.n;
+    var em = document.createElement('div'); em.className = 'lens-card-emoji'; em.textContent = lens.emoji;
+    var q2 = document.createElement('div'); q2.className = 'lens-card-q'; q2.textContent = lens.q;
+    var d = document.createElement('div'); d.className = 'lens-card-desc'; d.textContent = lens.label;
+    card.appendChild(em); card.appendChild(q2); card.appendChild(d);
+    card.onclick = function() {
+      var idx = LM.selectedLenses.indexOf(lens.n);
+      if (idx !== -1) { LM.selectedLenses.splice(idx, 1); card.classList.remove('selected'); }
+      else { LM.selectedLenses.push(lens.n); card.classList.add('selected'); }
+      updateAnalyzeBtn();
+    };
+    grid.appendChild(card);
+  });
+  wrap.appendChild(grid);
+
+  var ctrl = document.createElement('div'); ctrl.className = 'lens-ctrl';
+  var selAll = document.createElement('button'); selAll.className = 'lens-select-all'; selAll.textContent = 'Use all 6';
+  selAll.onclick = function() {
+    LM.selectedLenses = [1,2,3,4,5,6];
+    grid.querySelectorAll('.lens-card').forEach(function(c) { c.classList.add('selected'); });
+    updateAnalyzeBtn();
+  };
+  var ab = document.createElement('button'); ab.className = 'lens-analyze-btn'; ab.id = 'lens-analyze-btn';
+  ab.textContent = 'Analyze with ' + LM.selectedLenses.length + ' lens' + (LM.selectedLenses.length !== 1 ? 'es' : '');
+  ab.onclick = runLensAnalysis;
+  ctrl.appendChild(selAll); ctrl.appendChild(ab);
+  wrap.appendChild(ctrl);
+  document.getElementById('msgs').appendChild(wrap);
+}
+
+function updateAnalyzeBtn() {
+  var btn = document.getElementById('lens-analyze-btn');
+  if (!btn) return;
+  var n = LM.selectedLenses.length;
+  btn.textContent = n ? ('Analyze with ' + n + ' lens' + (n !== 1 ? 'es' : '')) : 'Select at least one lens';
+  btn.disabled = !n;
+}
+
+async function runLensAnalysis() {
+  if (!LM.selectedLenses.length || ST.busy) return;
+  var q = LM.input;
+  var lenses = LM.selectedLenses.slice().sort(function(a,b){return a-b;});
+  var cacheKey = lenses.join(',');
+
+  if (LM.cache[cacheKey]) {
+    displayLensResponses(LM.cache[cacheKey], lenses);
+    showWhatDoYouThinkBox();
+    scrollBottom();
+    return;
+  }
+
+  ST.busy = true;
+  var ab = document.getElementById('lens-analyze-btn');
+  if (ab) ab.disabled = true;
+  var ld = appendLoading('Thinking through your lenses...');
+
+  try {
+    var reply;
+    var systemPrompt = buildLensSystemPrompt(lenses);
+    var isClaudeModel = ST.selectedModel.startsWith('claude-');
+    var maxTok = lenses.length === 1 ? 200 : 800;
+
+    if (isClaudeModel) {
+      var r = await fetch('/api/anthropic', {
+        method: 'POST', credentials: 'same-origin',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role:'user', content: q }], systemPrompt: systemPrompt, maxTokens: maxTok })
+      });
+      var d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Request failed');
+      reply = d.reply;
+    } else {
+      var r2 = await fetch('/api/chat', {
+        method: 'POST', credentials: 'same-origin',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ question: q, chatId: null, history: [], mode: 'lens', model: ST.selectedModel, lenses: lenses })
+      });
+      var d2 = await r2.json();
+      if (!r2.ok) throw new Error(d2.error || 'Request failed');
+      reply = d2.reply;
+    }
+
+    ld.remove();
+    var parsed = parseLensResponse(reply, lenses);
+    LM.cache[cacheKey] = parsed;
+    LM.responses = parsed;
+    LM.step = 2;
+    ST.hist.push({ question: q, lenses: lenses, responses: parsed, mode: 'lens' });
+    displayLensResponses(parsed, lenses);
+    showWhatDoYouThinkBox();
+    scrollBottom();
+  } catch(err) {
+    ld.remove();
+    if (ab) ab.disabled = false;
+    if (err && typeof err.message === 'string' && err.message.toLowerCase().indexOf('unauthorized') !== -1) { logout(); return; }
+    var em = document.createElement('div'); em.className = 'err-msg fi'; em.textContent = 'Error: ' + err.message;
+    document.getElementById('msgs').appendChild(em);
+  }
+  ST.busy = false;
+}
+
+function displayLensResponses(parsed, lenses) {
+  var wrap = document.createElement('div'); wrap.className = 'lens-responses-wrap fi';
+  (lenses || []).forEach(function(n) {
+    if (!parsed[n]) return;
+    var lens = LENSES.find(function(l) { return l.n === n; });
+    if (!lens) return;
+    var card = document.createElement('div'); card.className = 'lens-response-card'; card.dataset.lens = n;
+    var hdr = document.createElement('div'); hdr.className = 'lens-response-header'; hdr.textContent = lens.emoji + '  ' + lens.q;
+    var body = document.createElement('div'); body.className = 'lens-response-body'; body.textContent = parsed[n];
+    card.appendChild(hdr); card.appendChild(body);
+    wrap.appendChild(card);
+  });
+  document.getElementById('msgs').appendChild(wrap);
+}
+
+function showWhatDoYouThinkBox() {
+  var wrap = document.createElement('div'); wrap.className = 'lens-think-wrap fi';
+  var h3 = document.createElement('h3'); h3.textContent = 'Now — what do you think?';
+  var p = document.createElement('p'); p.textContent = 'You can change your mind, stay where you started, or feel less sure. All are real answers.';
+  var ta = document.createElement('textarea'); ta.className = 'lens-think-textarea'; ta.placeholder = 'Write your view here...';
+  var btn = document.createElement('button'); btn.className = 'lens-submit-btn'; btn.textContent = 'Submit my view';
+  btn.onclick = function() {
+    var view = ta.value.trim();
+    if (!view) return;
+    LM.userView = view;
+    var last = ST.hist[ST.hist.length - 1];
+    if (last && last.mode === 'lens') last.userView = view;
+    ta.disabled = true; btn.disabled = true;
+    LM.step = 3;
+    showReflection();
+    scrollBottom();
+  };
+  wrap.appendChild(h3); wrap.appendChild(p); wrap.appendChild(ta); wrap.appendChild(btn);
+  document.getElementById('msgs').appendChild(wrap);
+}
+
+function showReflection() {
+  var usedSet = LM.selectedLenses;
+  var unused = LENSES.filter(function(l) { return usedSet.indexOf(l.n) === -1; });
+  var used = usedSet.map(function(n) {
+    var l = LENSES.find(function(l) { return l.n === n; });
+    return l ? (l.emoji + ' ' + l.label) : ('Lens ' + n);
+  }).join(' and ');
+
+  var wrap = document.createElement('div'); wrap.className = 'lens-reflection-wrap fi';
+  var p1 = document.createElement('p'); p1.textContent = 'You used ' + used + '.';
+  wrap.appendChild(p1);
+
+  if (unused.length) {
+    var sug = unused[0];
+    var p2 = document.createElement('p'); p2.textContent = 'Want to try ' + sug.emoji + ' "' + sug.q + '" too?';
+    var btns = document.createElement('div'); btns.className = 'lens-reflection-btns';
+    var btnYes = document.createElement('button'); btnYes.className = 'icon-btn'; btnYes.textContent = 'Yes, add that lens';
+    btnYes.onclick = function() { btns.remove(); p2.remove(); addOneLens(sug); };
+    var btnNo = document.createElement('button'); btnNo.className = 'icon-btn'; btnNo.textContent = "No, I'm done";
+    btnNo.onclick = function() { wrap.remove(); };
+    btns.appendChild(btnYes); btns.appendChild(btnNo);
+    wrap.appendChild(p2); wrap.appendChild(btns);
+  }
+  document.getElementById('msgs').appendChild(wrap);
+}
+
+async function addOneLens(lens) {
+  var q = LM.input;
+  var cacheKey = 'single:' + lens.n;
+  if (LM.cache[cacheKey]) {
+    displayLensResponses(LM.cache[cacheKey], [lens.n]);
+    scrollBottom();
+    return;
+  }
+  ST.busy = true;
+  var ld = appendLoading('Adding lens...');
+  try {
+    var systemPrompt = buildLensSystemPrompt([lens.n]);
+    var isClaudeModel = ST.selectedModel.startsWith('claude-');
+    var reply;
+    if (isClaudeModel) {
+      var r = await fetch('/api/anthropic', {
+        method: 'POST', credentials: 'same-origin',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role:'user', content: q }], systemPrompt: systemPrompt, maxTokens: 200 })
+      });
+      var d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Request failed');
+      reply = d.reply;
+    } else {
+      var r2 = await fetch('/api/chat', {
+        method: 'POST', credentials: 'same-origin',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ question: q, chatId: null, history: [], mode: 'lens', model: ST.selectedModel, lenses: [lens.n] })
+      });
+      var d2 = await r2.json();
+      if (!r2.ok) throw new Error(d2.error || 'Request failed');
+      reply = d2.reply;
+    }
+    ld.remove();
+    var parsed = parseLensResponse(reply, [lens.n]);
+    LM.cache[cacheKey] = parsed;
+    if (LM.responses) Object.assign(LM.responses, parsed);
+    var last = ST.hist[ST.hist.length - 1];
+    if (last && last.mode === 'lens' && last.responses) Object.assign(last.responses, parsed);
+    displayLensResponses(parsed, [lens.n]);
+    scrollBottom();
+  } catch(err) {
+    ld.remove();
+    var em = document.createElement('div'); em.className = 'err-msg fi'; em.textContent = 'Error: ' + err.message;
+    document.getElementById('msgs').appendChild(em);
+  }
+  ST.busy = false;
 }
 
 // ===================== PATTERNS =====================
