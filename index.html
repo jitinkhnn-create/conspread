@@ -31,7 +31,7 @@ body::before {
 #lp.h { display: none; }
 .lc {
   text-align: center; padding: 52px 44px; background: var(--sur);
-  border: 1px solid var(--bor2); border-radius: 20px; max-width: 420px; width: 90%;
+  border: 1px solid var(--bor2); border-radius: 20px; max-width: 440px; width: 90%;
   box-shadow: 0 20px 60px rgba(0,0,0,.08); position: relative;
 }
 .lc::before {
@@ -41,9 +41,9 @@ body::before {
 .l-logo { font-family: var(--fd); font-size: 46px; font-weight: 700; color: var(--tx); letter-spacing: .04em; margin-bottom: 4px; }
 .l-logo span { color: var(--gold); }
 .l-tag { font-family: var(--fb); font-size: 14px; font-style: italic; color: var(--tx3); margin-bottom: 32px; }
-.l-feats { list-style: none; text-align: left; margin-bottom: 36px; display: flex; flex-direction: column; gap: 8px; }
-.l-feats li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--tx2); font-family: var(--fb); }
-.l-feats li::before { content: '◆'; color: var(--gd); font-size: 7px; margin-top: 6px; flex-shrink: 0; }
+.l-feats { list-style: none; text-align: left; margin-bottom: 36px; display: flex; flex-direction: column; gap: 10px; }
+.l-feats li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--tx2); font-family: var(--fb); line-height: 1.6; }
+.l-feats li::before { content: '◆'; color: var(--gd); font-size: 7px; margin-top: 7px; flex-shrink: 0; }
 .btn-hf {
   display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
   padding: 13px 24px; background: var(--gold); color: #fff; border: none; border-radius: var(--r2);
@@ -56,35 +56,28 @@ body::before {
 /* LANDING */
 #landing { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); padding: 32px; }
 #landing.h { display: none; }
-.land-logo { font-family: var(--fd); font-size: 56px; font-weight: 700; color: var(--tx); letter-spacing: .04em; text-align: center; line-height: 1; }
+.land-logo { font-family: var(--fd); font-size: 64px; font-weight: 700; color: var(--tx); letter-spacing: .04em; text-align: center; line-height: 1; }
 .land-logo span { color: var(--gold); }
-.land-sub { font-family: var(--fb); font-size: 19px; font-style: italic; color: var(--tx2); text-align: center; margin: 8px 0 6px; }
-.land-user { font-size: 13px; color: var(--tx3); text-align: center; margin-bottom: 48px; }
-.mode-cards { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; max-width: 760px; }
-.mode-card {
-  background: var(--sur); border: 1px solid var(--bor2); border-radius: 20px;
-  padding: 40px 36px; cursor: pointer; transition: all .25s ease;
-  width: 320px; text-align: center; position: relative; overflow: hidden;
+.land-sub { font-family: var(--fb); font-size: 21px; font-style: italic; color: var(--tx2); text-align: center; margin: 10px 0 6px; }
+.land-user { font-size: 13px; color: var(--tx3); text-align: center; margin-bottom: 36px; }
+.land-pitch { max-width: 540px; text-align: center; font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx2); margin-bottom: 32px; }
+.land-pitch strong { color: var(--tx); font-weight: 600; }
+.land-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.btn-begin {
+  display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px;
+  background: var(--gold); color: #fff; border: none; border-radius: var(--r2);
+  font-family: var(--fu); font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: background var(--t), transform var(--t);
 }
-.mode-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-.mode-card.council::before { background: linear-gradient(90deg, var(--gold), var(--gl)); }
-.mode-card.normal::before { background: linear-gradient(90deg, var(--blue), #5a9fd8); }
-.mode-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,.12); }
-.mc-ico { font-size: 44px; margin-bottom: 18px; }
-.mc-title { font-family: var(--fd); font-size: 26px; font-weight: 700; color: var(--tx); margin-bottom: 10px; }
-.mc-desc { font-family: var(--fb); font-size: 15px; color: var(--tx2); line-height: 1.7; margin-bottom: 24px; }
-.mc-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border: none; border-radius: var(--r2); font-family: var(--fu); font-size: 14px; font-weight: 600; cursor: pointer; transition: background var(--t); }
-.mode-card.council .mc-btn { background: var(--glt); color: var(--gd); }
-.mode-card.council .mc-btn:hover { background: var(--gold); color: #fff; }
-.mode-card.normal .mc-btn { background: var(--blt); color: var(--bld); }
-.mode-card.normal .mc-btn:hover { background: var(--blue); color: #fff; }
+.btn-begin:hover { background: var(--gl); transform: translateY(-1px); }
+.land-foot { font-size: 12px; color: var(--tx3); font-family: var(--fb); font-style: italic; max-width: 420px; text-align: center; }
 
 /* APP SHELL */
 #app { display: flex; height: 100vh; position: relative; z-index: 1; }
 #app.h { display: none; }
 
 /* SIDEBAR */
-#sb { width: 264px; flex-shrink: 0; background: var(--sur); border-right: 1px solid var(--bor); display: flex; flex-direction: column; transition: width .25s, opacity .25s; overflow: hidden; }
+#sb { width: 280px; flex-shrink: 0; background: var(--sur); border-right: 1px solid var(--bor); display: flex; flex-direction: column; transition: width .25s, opacity .25s; overflow: hidden; }
 #sb.c { width: 0; opacity: 0; }
 .sb-top { padding: 16px 16px 12px; border-bottom: 1px solid var(--bor); flex-shrink: 0; }
 .sb-logo { font-family: var(--fd); font-size: 20px; font-weight: 700; color: var(--tx); }
@@ -92,16 +85,24 @@ body::before {
 .sb-logo small { display: block; font-family: var(--fu); font-size: 10px; font-weight: 400; color: var(--tx3); letter-spacing: .1em; text-transform: uppercase; margin-top: 1px; }
 .btn-new { display: flex; align-items: center; gap: 7px; width: 100%; margin-top: 10px; padding: 8px 14px; background: var(--glt); border: 1px solid var(--bor2); border-radius: var(--r); color: var(--gd); font-family: var(--fu); font-size: 12px; font-weight: 600; cursor: pointer; transition: all var(--t); }
 .btn-new:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
-.btn-back { display: flex; align-items: center; gap: 6px; width: 100%; margin-top: 6px; padding: 7px 14px; background: transparent; border: 1px solid var(--bor); border-radius: var(--r); color: var(--tx3); font-family: var(--fu); font-size: 12px; cursor: pointer; transition: all var(--t); }
-.btn-back:hover { color: var(--tx2); border-color: var(--bor2); }
+
+/* STATS PANEL */
+.sb-stats { padding: 12px 14px; border-bottom: 1px solid var(--bor); display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sb-stat { background: var(--sur2); border-radius: var(--r); padding: 8px 10px; }
+.sb-stat-lbl { font-family: var(--fu); font-size: 9px; color: var(--tx3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 2px; }
+.sb-stat-val { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); line-height: 1; }
+.sb-stat-sub { font-size: 10px; color: var(--tx3); font-family: var(--fb); font-style: italic; margin-top: 2px; }
+
 .sb-list { flex: 1; overflow-y: auto; padding: 10px 8px; }
-.sb-item { padding: 9px 12px; border-radius: var(--r); cursor: pointer; border: 1px solid transparent; margin-bottom: 3px; transition: background var(--t); }
+.sb-section-lbl { font-family: var(--fu); font-size: 10px; color: var(--tx3); text-transform: uppercase; letter-spacing: .08em; padding: 4px 10px 8px; }
+.sb-item { padding: 10px 12px; border-radius: var(--r); cursor: pointer; border: 1px solid transparent; margin-bottom: 4px; transition: background var(--t); }
 .sb-item:hover, .sb-item.active { background: var(--sur2); border-color: var(--bor); }
-.sb-item-title { font-size: 12px; color: var(--tx); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sb-item-meta { font-size: 10px; color: var(--tx3); margin-top: 2px; display: flex; gap: 6px; align-items: center; }
-.sb-mode { font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 700; text-transform: uppercase; }
-.sb-mode.council { background: var(--glt); color: var(--gd); }
-.sb-mode.normal { background: var(--blt); color: var(--bld); }
+.sb-item-title { font-size: 12px; color: var(--tx); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
+.sb-item-meta { font-size: 10px; color: var(--tx3); margin-top: 4px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.sb-tag { font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.sb-tag.changed { background: var(--blt); color: var(--bld); }
+.sb-tag.held { background: var(--sur2); color: var(--tx2); }
+.sb-tag.unsure { background: var(--glt); color: var(--gd); }
 .sb-empty { font-size: 12px; color: var(--tx3); padding: 16px; text-align: center; font-family: var(--fb); font-style: italic; }
 .sb-foot { padding: 12px 14px; border-top: 1px solid var(--bor); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .sb-av { width: 30px; height: 30px; border-radius: 50%; background: var(--glt); color: var(--gd); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; border: 1px solid var(--bor2); }
@@ -117,26 +118,36 @@ body::before {
 .btn-sb { background: none; border: none; cursor: pointer; color: var(--tx2); padding: 6px; border-radius: 6px; display: flex; transition: all var(--t); }
 .btn-sb:hover { background: var(--sur2); }
 .mh-title { font-family: var(--fd); font-size: 17px; font-weight: 700; color: var(--tx); }
-.badge { font-family: var(--fu); font-size: 9px; padding: 2px 9px; border-radius: 20px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
-.badge-gold { background: var(--glt); color: var(--gd); }
-.badge-blue { background: var(--blt); color: var(--bld); }
+.mh-step { font-family: var(--fu); font-size: 10px; color: var(--tx3); text-transform: uppercase; letter-spacing: .08em; padding: 3px 10px; background: var(--sur2); border-radius: 20px; }
 .mh-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .icon-btn { background: none; border: 1px solid var(--bor2); border-radius: var(--r); padding: 5px 12px; font-size: 12px; color: var(--tx2); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all var(--t); font-family: var(--fu); }
 .icon-btn:hover { background: var(--sur2); }
 .model-wrap { position: relative; }
-#model-select { background: var(--sur); border: 1px solid var(--bor2); border-radius: var(--r); padding: 5px 12px; font-size: 12px; color: var(--tx2); cursor: pointer; font-family: var(--fu); min-width: 140px; }
+#model-select { background: var(--sur); border: 1px solid var(--bor2); border-radius: var(--r); padding: 5px 12px; font-size: 12px; color: var(--tx2); cursor: pointer; font-family: var(--fu); min-width: 140px; max-width: 220px; }
 #model-select:focus { outline: none; border-color: var(--gold); }
+.exp-wrap { position: relative; }
+#exp-menu { position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r); padding: 4px; min-width: 160px; box-shadow: 0 8px 24px rgba(0,0,0,.08); display: none; z-index: 10; }
+#exp-menu.open { display: block; }
+#exp-menu button { display: block; width: 100%; text-align: left; padding: 7px 12px; background: none; border: none; font-size: 12px; color: var(--tx2); cursor: pointer; border-radius: 4px; font-family: var(--fu); }
+#exp-menu button:hover { background: var(--sur2); }
 
 /* MESSAGES */
-#msgs { flex: 1; overflow-y: auto; padding: 28px 28px 16px; display: flex; flex-direction: column; gap: 24px; }
-.welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 32px; gap: 12px; flex: 1; }
-.welcome-ico { font-size: 48px; margin-bottom: 4px; }
-.welcome h2 { font-family: var(--fd); font-size: 28px; font-weight: 700; color: var(--tx); }
-.welcome p { font-family: var(--fb); font-size: 17px; color: var(--tx2); max-width: 500px; line-height: 1.75; }
+#msgs { flex: 1; overflow-y: auto; padding: 28px 28px 16px; display: flex; flex-direction: column; gap: 20px; }
+
+/* WELCOME */
+.welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 32px; gap: 12px; flex: 1; max-width: 640px; align-self: center; }
+.welcome-ico { font-size: 44px; margin-bottom: 4px; }
+.welcome h2 { font-family: var(--fd); font-size: 32px; font-weight: 700; color: var(--tx); }
+.welcome p { font-family: var(--fb); font-size: 17px; color: var(--tx2); line-height: 1.75; }
+.welcome .hint { font-family: var(--fb); font-size: 14px; color: var(--tx3); font-style: italic; margin-top: 4px; }
 .wqs { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; max-width: 580px; }
 .wq { padding: 8px 16px; background: var(--sur); border: 1px solid var(--bor2); border-radius: 20px; font-size: 13px; color: var(--tx2); cursor: pointer; transition: all var(--t); font-family: var(--fb); }
 .wq:hover { background: var(--glt); border-color: var(--gold); color: var(--gd); }
+
+/* USER MSG */
 .user-msg { align-self: flex-end; max-width: 640px; background: var(--glt); border: 1px solid rgba(184,144,42,.4); border-radius: 16px 16px 4px 16px; padding: 12px 18px; font-family: var(--fb); font-size: 17px; line-height: 1.65; color: var(--tx); }
+
+/* LOADING */
 .load-card { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 28px; text-align: center; }
 .load-title { font-family: var(--fd); font-size: 17px; color: var(--tx2); margin-bottom: 14px; }
 .load-dots { display: flex; justify-content: center; gap: 8px; }
@@ -146,38 +157,153 @@ body::before {
 @keyframes pulse { 0%,100%{opacity:.2;transform:scale(.7)} 50%{opacity:1;transform:scale(1)} }
 .err-msg { background: #fff5f5; border: 1px solid #ffcccc; border-radius: var(--r2); padding: 14px 18px; color: var(--err); font-size: 14px; font-family: var(--fb); }
 
-/* PERSPECTIVE RESPONSES */
-.persp-responses-wrap { display: flex; flex-direction: column; gap: 18px; }
-.persp-cat-section { background: var(--sur); border: 1px solid var(--bor); border-left-width: 4px; border-radius: var(--r2); padding: 16px 18px; }
-.persp-cat-section-title { font-family: var(--fd); font-size: 17px; font-weight: 700; margin-bottom: 14px; }
-.persp-response-card { padding: 12px 0; border-top: 1px solid var(--bor); }
-.persp-response-card:first-of-type { border-top: none; padding-top: 0; }
-.persp-response-sub { font-family: var(--fu); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-.persp-response-body { font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); }
+/* STEP CARDS */
+.step-card { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 22px 24px; max-width: 720px; }
+.step-card.locked { background: var(--sur2); opacity: .7; }
+.step-card.work { border: 2px solid var(--gold); padding: 24px 26px; }
+.step-card.accent-blue { border-left: 4px solid var(--blue); }
+.step-lbl { font-family: var(--fu); font-size: 10px; color: var(--tx3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.step-lbl .badge-work { background: var(--gold); color: #fff; padding: 1px 7px; border-radius: 10px; font-size: 9px; }
+.step-title { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--tx); margin-bottom: 4px; line-height: 1.2; }
+.step-sub { font-family: var(--fb); font-size: 14px; color: var(--tx2); margin-bottom: 16px; font-style: italic; }
 
+/* POSITION TEXTAREA */
+.pos-ta { width: 100%; min-height: 110px; padding: 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 16px; color: var(--tx); resize: vertical; outline: none; line-height: 1.6; transition: border-color .2s; }
+.pos-ta:focus { border-color: var(--gold); }
+.pos-ta:disabled { background: var(--sur2); color: var(--tx2); }
+
+/* CONFIDENCE SLIDER */
+.conf-row { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+.conf-lbl { font-family: var(--fb); font-size: 14px; color: var(--tx2); }
+.conf-slider { -webkit-appearance: none; appearance: none; flex: 1; min-width: 140px; height: 4px; background: var(--bor); border-radius: 2px; outline: none; cursor: pointer; }
+.conf-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: var(--gold); border-radius: 50%; cursor: pointer; border: 2px solid var(--sur); box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+.conf-slider::-moz-range-thumb { width: 18px; height: 18px; background: var(--gold); border-radius: 50%; cursor: pointer; border: 2px solid var(--sur); }
+.conf-slider:disabled { opacity: .5; cursor: not-allowed; }
+.conf-val { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--gold); min-width: 26px; text-align: right; }
+.conf-of { font-family: var(--fb); font-size: 13px; color: var(--tx3); }
+
+.row-btn { display: flex; justify-content: flex-end; margin-top: 14px; }
+.btn-primary { padding: 9px 22px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t), transform var(--t); }
+.btn-primary:hover:not(:disabled) { background: var(--gl); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-ghost { padding: 9px 16px; background: transparent; color: var(--tx2); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fu); font-size: 13px; cursor: pointer; transition: all var(--t); }
+.btn-ghost:hover { background: var(--sur2); }
+
+/* PINNED POSITION CARD (always visible during lens flow) */
+.pinned-pos { background: var(--glt); border: 1px solid rgba(184,144,42,.35); border-radius: var(--r); padding: 12px 16px; max-width: 720px; }
+.pinned-pos-lbl { font-family: var(--fu); font-size: 10px; color: var(--gd); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.pinned-pos-text { font-family: var(--fb); font-size: 14px; color: var(--tx); line-height: 1.5; font-style: italic; }
+.pinned-pos-conf { font-family: var(--fu); font-size: 11px; color: var(--gd); margin-top: 4px; }
+
+/* LENS PICKER */
+.lens-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.lens-card {
+  background: var(--bg); border: 1.5px solid var(--bor); border-radius: var(--r);
+  padding: 14px 16px; cursor: pointer; transition: all var(--t); text-align: left;
+}
+.lens-card:hover { border-color: var(--bor2); background: var(--sur); }
+.lens-card.selected { border-color: var(--gold); background: var(--glt); }
+.lens-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.lens-card-emoji { font-size: 18px; }
+.lens-card-q { font-family: var(--fu); font-size: 14px; font-weight: 600; color: var(--tx); }
+.lens-card-desc { font-family: var(--fb); font-size: 13px; color: var(--tx2); line-height: 1.5; }
+.lens-controls { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.lens-count { font-family: var(--fb); font-size: 13px; color: var(--tx3); font-style: italic; margin-right: auto; }
+
+/* LENS RESPONSES */
+.lens-resp { background: var(--sur); border: 1px solid var(--bor); border-left: 3px solid var(--gold); border-radius: var(--r); padding: 16px 20px; max-width: 720px; }
+.lens-resp-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.lens-resp-emoji { font-size: 18px; }
+.lens-resp-q { font-family: var(--fu); font-size: 14px; font-weight: 600; color: var(--tx); }
+.lens-resp-body { font-family: var(--fb); font-size: 16px; line-height: 1.75; color: var(--tx); white-space: pre-wrap; }
+.lens-resp-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.act-btn { padding: 6px 12px; background: var(--sur2); border: 1px solid var(--bor2); border-radius: 20px; font-family: var(--fu); font-size: 11px; color: var(--tx2); cursor: pointer; transition: all var(--t); display: flex; align-items: center; gap: 4px; }
+.act-btn:hover { background: var(--bor); color: var(--tx); }
+.act-btn.pushback:hover { background: #fff5f5; border-color: #ffaaaa; color: var(--err); }
+
+/* PUSHBACK INPUT */
+.pushback-wrap { margin-top: 10px; padding-top: 12px; border-top: 1px dashed var(--bor); }
+.pushback-ta { width: 100%; min-height: 70px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 14px; color: var(--tx); resize: vertical; outline: none; line-height: 1.5; }
+.pushback-ta:focus { border-color: var(--gold); }
+.pushback-reply { margin-top: 10px; padding: 12px 14px; background: var(--bg); border-left: 2px solid var(--blue); border-radius: 4px; font-family: var(--fb); font-size: 15px; line-height: 1.7; color: var(--tx); white-space: pre-wrap; }
+
+/* REFLECTION SUGGESTION */
+.suggest-lens { background: var(--blt); border: 1px solid rgba(46,109,168,.3); border-radius: var(--r); padding: 12px 16px; max-width: 720px; }
+.suggest-lens-lbl { font-family: var(--fu); font-size: 10px; color: var(--bld); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.suggest-lens-text { font-family: var(--fb); font-size: 14px; color: var(--tx); margin-bottom: 10px; line-height: 1.5; }
+
+/* OUTCOME BADGE */
+.outcome-card { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 22px; max-width: 720px; text-align: center; }
+.outcome-badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-family: var(--fu); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+.outcome-badge.changed { background: var(--blt); color: var(--bld); }
+.outcome-badge.held { background: var(--sur2); color: var(--tx2); }
+.outcome-badge.unsure { background: var(--glt); color: var(--gd); }
+.outcome-title { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
+.outcome-detail { font-family: var(--fb); font-size: 14px; color: var(--tx2); line-height: 1.6; }
+.outcome-detail strong { color: var(--tx); font-weight: 600; }
+
+/* HISTORY VIEW (modal-ish overlay in main panel) */
+.history-overlay { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 24px; max-width: 720px; align-self: center; width: 100%; }
+.history-title { font-family: var(--fd); font-size: 24px; font-weight: 700; color: var(--tx); margin-bottom: 4px; }
+.history-sub { font-family: var(--fb); font-size: 14px; color: var(--tx3); font-style: italic; margin-bottom: 18px; }
+.history-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+.history-stat { background: var(--sur2); border-radius: var(--r); padding: 12px 14px; }
+.history-stat-lbl { font-family: var(--fu); font-size: 10px; color: var(--tx3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.history-stat-val { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--tx); line-height: 1; }
+.history-stat-sub { font-family: var(--fb); font-size: 11px; color: var(--tx3); font-style: italic; margin-top: 3px; }
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-item { padding: 12px 14px; border: 1px solid var(--bor); border-radius: var(--r); display: flex; align-items: flex-start; gap: 10px; cursor: pointer; transition: all var(--t); }
+.history-item:hover { background: var(--sur2); border-color: var(--bor2); }
+.history-item-q { font-family: var(--fb); font-size: 14px; font-weight: 600; color: var(--tx); line-height: 1.4; }
+.history-item-d { font-family: var(--fb); font-size: 12px; color: var(--tx3); margin-top: 3px; }
+.history-pattern { margin-top: 16px; padding: 12px 14px; background: var(--blt); border-radius: var(--r); font-family: var(--fb); font-size: 13px; color: var(--bld); line-height: 1.6; }
+.history-pattern strong { color: var(--bld); font-weight: 600; }
+
+/* SELECTION ACTION */
 .selection-action {
   position: fixed; top: 0; left: 0; padding: 8px 12px; background: var(--sur); border: 1px solid var(--bor); border-radius: 999px;
   box-shadow: 0 10px 30px rgba(0,0,0,.12); font-size: 12px; color: var(--tx); z-index: 9999; cursor: pointer;
 }
 .selection-action.hidden { display: none; }
 
-/* PATTERNS */
-.pattern-panel { background: linear-gradient(135deg, #fffbf0, #fff8e8); border: 1px solid var(--bor2); border-radius: var(--r2); padding: 14px 18px; }
-.pattern-lbl { font-family: var(--fu); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--gd); font-weight: 700; margin-bottom: 10px; }
-.pattern-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-.pattern-tag { padding: 4px 12px; background: var(--glt); border: 1px solid var(--bor2); border-radius: 20px; font-size: 12px; color: var(--gd); font-family: var(--fb); }
-
-/* NORMAL CHAT */
-.ai-wrap { max-width: 720px; }
-.ai-body { background: var(--sur); border: 1px solid var(--bor); border-radius: 4px 16px 16px 16px; padding: 16px 20px; font-family: var(--fb); font-size: 17px; line-height: 1.8; color: var(--tx); white-space: pre-wrap; margin-bottom: 8px; }
-.ai-foot { display: flex; gap: 8px; align-items: center; }
-.img-wrap { max-width: 720px; }
-.img-wrap img { max-width: 100%; border-radius: 12px; border: 1px solid var(--bor); display: block; }
-.img-cap { font-size: 12px; color: var(--tx3); font-style: italic; margin-top: 6px; font-family: var(--fb); }
+/* CONTEXT FORM */
+.ctx-card { background: var(--sur); border: 1.5px solid var(--gold); border-radius: var(--r2); padding: 24px 26px; max-width: 720px; }
+.ctx-intro { font-family: var(--fb); font-size: 14px; color: var(--tx2); line-height: 1.7; margin-bottom: 18px; font-style: italic; }
+.ctx-field { margin-bottom: 14px; }
+.ctx-label { display: block; font-family: var(--fu); font-size: 11px; color: var(--tx3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.ctx-label .ctx-hint { text-transform: none; letter-spacing: 0; font-style: italic; color: var(--tx3); font-size: 11px; margin-left: 6px; }
+.ctx-input {
+  width: 100%; padding: 10px 14px; background: var(--bg); border: 1px solid var(--bor2);
+  border-radius: var(--r); font-family: var(--fb); font-size: 15px; color: var(--tx);
+  outline: none; transition: border-color .2s; line-height: 1.5;
+}
+.ctx-input:focus { border-color: var(--gold); }
+.ctx-prefix { display: flex; align-items: stretch; }
+.ctx-prefix-lbl {
+  display: flex; align-items: center; padding: 0 14px; background: var(--sur2);
+  border: 1px solid var(--bor2); border-right: none;
+  border-radius: var(--r) 0 0 var(--r);
+  font-family: var(--fb); font-size: 15px; color: var(--tx2); font-style: italic;
+  white-space: nowrap;
+}
+.ctx-prefix .ctx-input { border-radius: 0 var(--r) var(--r) 0; }
+.ctx-source-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.ctx-source-btn {
+  padding: 9px 12px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r);
+  font-family: var(--fb); font-size: 14px; color: var(--tx2); cursor: pointer; transition: all var(--t);
+  text-align: left;
+}
+.ctx-source-btn:hover { background: var(--sur); border-color: var(--bor); }
+.ctx-source-btn.selected { background: var(--glt); border-color: var(--gold); color: var(--gd); }
+.ctx-saved { background: var(--sur2); border-radius: var(--r); padding: 8px 12px; font-family: var(--fb); font-size: 13px; color: var(--tx2); display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.ctx-saved-edit { margin-left: auto; background: none; border: none; color: var(--blue); font-size: 12px; cursor: pointer; font-family: var(--fu); text-decoration: underline; }
+@media (max-width: 680px) {
+  .ctx-source-row { grid-template-columns: 1fr; }
+}
 
 /* INPUT */
 #ia { padding: 12px 20px 16px; border-top: 1px solid var(--bor); background: rgba(248,245,239,.95); backdrop-filter: blur(8px); flex-shrink: 0; }
-.iw { background: var(--sur); border: 1px solid var(--bor2); border-radius: var(--r2); display: flex; flex-direction: column; box-shadow: 0 2px 12px rgba(0,0,0,.04); transition: border-color .2s, box-shadow .2s; }
+.iw { background: var(--sur); border: 1px solid var(--bor2); border-radius: var(--r2); display: flex; flex-direction: column; box-shadow: 0 2px 12px rgba(0,0,0,.04); transition: border-color .2s, box-shadow .2s; max-width: 720px; margin: 0 auto; }
 .iw:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,144,42,.08); }
 #qi { background: none; border: none; outline: none; padding: 12px 16px 8px; font-family: var(--fb); font-size: 17px; color: var(--tx); resize: none; max-height: 150px; min-height: 48px; line-height: 1.6; width: 100%; }
 #qi::placeholder { color: var(--tx3); }
@@ -189,56 +315,19 @@ body::before {
 .btn-send { margin-left: auto; display: flex; align-items: center; gap: 7px; padding: 7px 18px; background: var(--gold); border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: background var(--t), transform var(--t); }
 .btn-send:hover:not(:disabled) { background: var(--gl); transform: translateY(-1px); }
 .btn-send:disabled { opacity: .4; cursor: not-allowed; }
-.disc { font-size: 11px; color: var(--tx3); text-align: center; padding: 7px 0 0; font-family: var(--fb); font-style: italic; }
-
-/* MUSIC */
-#music-btn { display: none; }
+.disc { font-size: 11px; color: var(--tx3); text-align: center; padding: 7px 0 0; font-family: var(--fb); font-style: italic; max-width: 720px; margin: 0 auto; }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bor2); border-radius: 3px; }
-@keyframes fi { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fi { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 .fi { animation: fi .3s ease forwards; }
+
 @media (max-width: 680px) {
   #sb { position: absolute; top: 0; bottom: 0; left: 0; z-index: 50; box-shadow: 4px 0 20px rgba(0,0,0,.1); }
-  .mode-cards { flex-direction: column; align-items: center; }
-  .mode-card { width: 100%; max-width: 340px; }
   #msgs { padding: 16px 14px 8px; }
-}
-
-/* PERSPECTIVES PICKER */
-.persp-input-label { background: var(--glt); border: 1px solid rgba(184,144,42,.4); border-radius: 12px 12px 4px 12px; padding: 12px 18px; font-family: var(--fb); font-size: 15px; color: var(--tx); margin-bottom: 4px; max-width: 640px; align-self: flex-end; }
-.persp-picker-wrap { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 20px; }
-.persp-picker-title { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
-.persp-picker-sub { font-size: 13px; color: var(--tx3); font-family: var(--fb); margin-bottom: 16px; }
-.persp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-.persp-cat-card { background: var(--bg); border: 1px solid var(--bor); border-top-width: 3px; border-radius: var(--r); padding: 12px 14px; }
-.persp-cat-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.persp-cat-lbl { font-family: var(--fu); font-size: 12px; font-weight: 700; }
-.persp-selall { background: none; border: 1px solid; border-radius: 20px; padding: 2px 9px; font-size: 10px; font-family: var(--fu); font-weight: 600; cursor: pointer; transition: all var(--t); }
-.persp-selall:hover { opacity: .7; }
-.persp-sub-list { display: flex; flex-direction: column; gap: 6px; }
-.persp-sub-row { display: flex; align-items: center; gap: 8px; font-family: var(--fb); font-size: 13px; color: var(--tx2); cursor: pointer; user-select: none; }
-.persp-sub-row input[type=checkbox] { accent-color: var(--gold); width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; }
-.persp-sub-row:hover { color: var(--tx); }
-.persp-ctrl { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.persp-select-all { background: none; border: none; color: var(--blue); font-size: 12px; cursor: pointer; font-family: var(--fu); text-decoration: underline; padding: 0; }
-.persp-analyze-btn { margin-left: auto; padding: 9px 20px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
-.persp-analyze-btn:hover:not(:disabled) { background: var(--gl); }
-.persp-analyze-btn:disabled { opacity: .4; cursor: not-allowed; }
-.persp-think-wrap { background: var(--sur); border: 2px solid var(--gold); border-radius: var(--r2); padding: 24px; }
-.persp-think-wrap h3 { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
-.persp-think-wrap > p { font-family: var(--fb); font-size: 14px; color: var(--tx3); margin-bottom: 16px; }
-.persp-think-textarea { width: 100%; min-height: 130px; padding: 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 16px; color: var(--tx); resize: vertical; outline: none; transition: border-color .2s; }
-.persp-think-textarea:focus { border-color: var(--gold); }
-.persp-submit-btn { margin-top: 12px; padding: 10px 22px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
-.persp-submit-btn:hover:not(:disabled) { background: var(--gl); }
-.persp-submit-btn:disabled { opacity: .4; cursor: not-allowed; }
-.persp-reflection-wrap { background: var(--sur2); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; }
-.persp-reflection-wrap p { font-family: var(--fb); font-size: 15px; color: var(--tx2); margin-bottom: 8px; }
-.persp-reflection-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-@media (max-width: 680px) {
-  .persp-grid { grid-template-columns: 1fr 1fr; }
+  .lens-grid { grid-template-columns: 1fr; }
+  .history-stats { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -248,12 +337,12 @@ body::before {
 <div id="lp" class="h">
   <div class="lc">
     <div class="l-logo">Conspr<span>e</span>ad</div>
-    <div class="l-tag">Think deeper. See wider.</div>
+    <div class="l-tag">Think for yourself. Out loud.</div>
     <ul class="l-feats">
-      <li>8 specialist perspectives — genuine friction, not consensus</li>
-      <li>Critical thinking and normal conversation modes</li>
-      <li>Voice input, thought maps, pattern recognition</li>
-      <li>Export to PDF, Word, Excel, PowerPoint</li>
+      <li>State your position before you see anyone else's</li>
+      <li>Six lenses that push back on what you think — not feed it</li>
+      <li>Track how your own mind changes over time</li>
+      <li>For anyone who suspects they've been taught what to think, not how</li>
     </ul>
     <a href="/api/auth/login" class="btn-hf">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7.07l-8 4-8-4V8.5L12 4.18z"/></svg>
@@ -266,21 +355,17 @@ body::before {
 <!-- LANDING -->
 <div id="landing" class="h">
   <div class="land-logo">Conspr<span>e</span>ad</div>
-  <div class="land-sub">Think deeper. See wider.</div>
+  <div class="land-sub">Think for yourself. Out loud.</div>
   <div class="land-user" id="land-user"></div>
-  <div class="mode-cards">
-    <div class="mode-card council" onclick="enterMode('perspectives')">
-      <div class="mc-ico">🔭</div>
-      <div class="mc-title">Perspectives</div>
-      <div class="mc-desc">Enter any topic. Choose from Personal, Ethical, Practical, Creative, Historical, or Future-oriented perspectives — and see the same idea through different eyes.</div>
-      <button class="mc-btn">Explore Perspectives →</button>
-    </div>
-    <div class="mode-card normal" onclick="enterMode('normal')">
-      <div class="mc-ico">💬</div>
-      <div class="mc-title">Normal Conversation</div>
-      <div class="mc-desc">Clear, direct answers in plain language. Ask anything, think through decisions, explore ideas freely.</div>
-      <button class="mc-btn">Start Chatting →</button>
-    </div>
+  <div class="land-pitch">
+    Most tools give you answers. This one asks <strong>what you think first</strong> — then puts your position through six lenses designed to push back, not flatter. You finish by saying where you actually land. Over time, you'll see your own mind on a timeline.
+  </div>
+  <div class="land-cta">
+    <button class="btn-begin" onclick="enterApp()">
+      Begin
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </button>
+    <div class="land-foot">Not for quick facts. For things you're genuinely unsure about, or things you think you're sure about but might not be.</div>
   </div>
 </div>
 
@@ -288,16 +373,30 @@ body::before {
 <div id="app" class="h">
   <nav id="sb">
     <div class="sb-top">
-      <div class="sb-logo">Conspr<span>e</span>ad <small id="sb-mode-lbl">Council</small></div>
-      <button class="btn-new" onclick="newChat()">+ New Chat</button>
-      <button class="btn-back" onclick="goBack()">← Change Mode</button>
+      <div class="sb-logo">Conspr<span>e</span>ad <small>Think out loud</small></div>
+      <button class="btn-new" onclick="newChat()">+ New question</button>
     </div>
-    <div class="sb-list" id="sb-hist"><div class="sb-empty">No chats yet</div></div>
+    <div class="sb-stats" id="sb-stats">
+      <div class="sb-stat">
+        <div class="sb-stat-lbl">Questions</div>
+        <div class="sb-stat-val" id="stat-q">0</div>
+        <div class="sb-stat-sub">thought through</div>
+      </div>
+      <div class="sb-stat">
+        <div class="sb-stat-lbl">Mind changed</div>
+        <div class="sb-stat-val" id="stat-c">0</div>
+        <div class="sb-stat-sub">times</div>
+      </div>
+    </div>
+    <div class="sb-list" id="sb-hist">
+      <div class="sb-section-lbl">Recent thinking</div>
+      <div class="sb-empty">No questions yet. Ask one to begin.</div>
+    </div>
     <div class="sb-foot">
       <div class="sb-av" id="sb-av">?</div>
       <div class="sb-info">
         <div class="sb-name" id="sb-name">Loading</div>
-        <div class="sb-role" id="sb-role">Session</div>
+        <div class="sb-role" id="sb-role">Thinker</div>
       </div>
       <button class="btn-logout" onclick="logout()" title="Sign out">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -315,24 +414,28 @@ body::before {
           <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
-      <span class="mh-title" id="mh-title">Conspread</span>
-      <span class="badge badge-gold" id="mode-badge">Dynamic Perspectives</span>
+      <span class="mh-title">Conspread</span>
+      <span class="mh-step" id="mh-step">Ask a question</span>
       <div class="mh-right">
+        <button class="icon-btn" onclick="showHistory()" title="Your thinking history">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+          History
+        </button>
         <div class="model-wrap">
           <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
-            <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B A3B Instruct [Best balanced: analysis + long docs]</option>
-            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B A22B Instruct [Highest quality: deep reasoning + writing]</option>
-            <option value="Qwen/Qwen3-Next-80B-A3B-Instruct-FP8">Qwen3-Next 80B A3B Instruct [Agentic workflows + very long context]</option>
-            <option value="Qwen/Qwen3-Coder-30B-A3B-Instruct">Qwen3 Coder 30B A3B Instruct [Code generation + repo understanding]</option>
-            <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2 [General chat + tools + long context]</option>
-            <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1 0528 [Hard reasoning + math + stepwise problem solving]</option>
-            <option value="or:openrouter/free">OpenRouter Auto Free [Routes to available free model]</option>
-            <option value="or:meta-llama/llama-3.3-70b-instruct:free">OpenRouter Llama 3.3 70B Free [Strong general reasoning]</option>
-            <option value="or:mistralai/mistral-small-3.1-24b-instruct:free">OpenRouter Mistral Small 3.1 Free [Fast + reliable free endpoint]</option>
-            <option value="or:deepseek/deepseek-r1:free">OpenRouter DeepSeek R1 Free [Reasoning + analysis]</option>
+            <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B [balanced]</option>
+            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B [highest quality]</option>
+            <option value="Qwen/Qwen3-Next-80B-A3B-Instruct-FP8">Qwen3-Next 80B [long context]</option>
+            <option value="Qwen/Qwen3-Coder-30B-A3B-Instruct">Qwen3 Coder 30B</option>
+            <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2</option>
+            <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1 [reasoning]</option>
+            <option value="or:openrouter/free">OpenRouter Auto Free</option>
+            <option value="or:meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B Free</option>
+            <option value="or:mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 Free</option>
+            <option value="or:deepseek/deepseek-r1:free">DeepSeek R1 Free</option>
             <option disabled>── Claude (Anthropic) ──</option>
-            <option value="claude-opus-4-6-20250514">Claude Opus 4.6 [Highest capability · requires ANTHROPIC_API_KEY]</option>
-            <option value="claude-sonnet-4-6-20250514">Claude Sonnet 4.6 [Balanced speed + quality · requires ANTHROPIC_API_KEY]</option>
+            <option value="claude-opus-4-6-20250514">Claude Opus 4.6</option>
+            <option value="claude-sonnet-4-6-20250514">Claude Sonnet 4.6</option>
           </select>
         </div>
         <div class="exp-wrap">
@@ -350,7 +453,7 @@ body::before {
     <div id="msgs"></div>
     <div id="ia">
       <div class="iw">
-        <textarea id="qi" rows="2" placeholder="Ask anything..." onkeydown="onKey(event)" oninput="rsz(this)"></textarea>
+        <textarea id="qi" rows="2" placeholder="What's on your mind? A question, a claim you read, something you're unsure about..." onkeydown="onKey(event)" oninput="rsz(this)"></textarea>
         <div class="it-bar">
           <span class="it-hint">Shift+Enter = new line</span>
           <button class="voice-btn" id="voice-btn" onclick="toggleVoice()">&#127908; Voice</button>
@@ -358,96 +461,65 @@ body::before {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
             </svg>
-            Send
+            Ask
           </button>
         </div>
       </div>
-      <p class="disc">For thinking and research only — not professional advice.</p>
+      <p class="disc">For thinking, not for quick answers. Not professional advice.</p>
     </div>
   </div>
 </div>
 
-
-
 <script>
 // ===================== STATE =====================
 var ST = {
-  user: null, mode: null, cid: null, hist: [], busy: false,
-  voiceOn: false, wordFreq: {}, msgCount: 0, selectedModel: 'Qwen/Qwen3-30B-A3B-Instruct-2507'
+  user: null, cid: null, busy: false, voiceOn: false,
+  selectedModel: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
+  stats: { questions: 0, changed: 0, held: 0, unsure: 0, lensFreq: {}, outcomeByLens: {} },
+  userRole: ''   // persistent: "I am a ___"
 };
 
-// PERSPECTIVES DATA
-var PERSPECTIVES = [
-  { category:'Personal',        emoji:'🧍', color:'#e67e22', subcategories:['Emotional impact','Daily life relevance','Self-reflection'] },
-  { category:'Ethical',         emoji:'⚖️',  color:'#8e44ad', subcategories:['Fairness','Social responsibility','Environmental impact'] },
-  { category:'Practical',       emoji:'🔧', color:'#2e6da8', subcategories:['Daily application','Problem-solving','Real-world use'] },
-  { category:'Creative',        emoji:'🎨', color:'#27ae60', subcategories:['Imaginative scenarios','Storytelling','Artistic views'] },
-  { category:'Historical',      emoji:'📜', color:'#c0392b', subcategories:['Past interpretations','Lessons from history','Cultural evolution'] },
-  { category:'Future-oriented', emoji:'🔭', color:'#16a085', subcategories:['Long-term effects','Future innovations','Trends ahead'] }
+// Lens-flow state for the active question
+var LF = {
+  step: 0,                  // 0 = idle, 1 = context, 2 = position, 3 = pick lenses, 4 = responses, 5 = outcome, 6 = done
+  question: '',
+  ctxReason: '',            // "asking this for ___"
+  ctxPurpose: '',           // "will use this in/at/for ___"
+  ctxSource: '',            // "where it's coming from ___"
+  positionBefore: '',
+  confBefore: 5,
+  selectedLenses: [],
+  responses: {},
+  pushbacks: {},
+  positionAfter: '',
+  confAfter: 5,
+  outcome: null
+};
+
+var recog = null;
+var currentUtterance = null;
+
+// ===================== LENSES =====================
+// Six confrontational lenses. The names matter — they're the product.
+var LENSES = [
+  { n: 1, emoji: '⚔️',  q: 'The opposite view',     label: 'What would someone who totally disagrees say?',
+    instruction: 'Steelman the strongest argument against the user\'s stated position. Do not soften it. Quote back the user\'s own logic and show where it cracks under pressure. Stay direct. 100-140 words.' },
+  { n: 2, emoji: '👁️',  q: 'What you\'re assuming', label: 'Hidden things you took for granted.',
+    instruction: 'Surface 3-4 specific unspoken assumptions baked into the user\'s position or the question itself. Number them. For each, name the assumption in one sentence, then say in one sentence what changes if it\'s wrong. 100-140 words.' },
+  { n: 3, emoji: '🔬',  q: 'Zoom in / zoom out',    label: 'Looks different at one person vs. a million.',
+    instruction: 'Show how this question looks at three scales: one individual, a group or community of ~100, and a country or larger. The right answer can flip between scales. Be concrete with examples at each scale. 100-140 words.' },
+  { n: 4, emoji: '⚖️',  q: 'Who gains, who loses',  label: 'Follow the incentives. Who benefits from each side?',
+    instruction: 'List 2-3 groups who benefit if the user\'s position is adopted, and 2-3 who lose. Then do the same for the opposite. Be specific about real people, industries, or institutions. End with one line: which of these is loudest in public debate, and why. 100-140 words.' },
+  { n: 5, emoji: '⏳',  q: 'Has this happened before?', label: 'Times when something similar came up in history.',
+    instruction: 'Name 1-2 real historical episodes where a similar question or pattern came up. Briefly: when, where, what happened, how it was resolved (or not). End with one line: which historical pattern this most resembles, and why that\'s worth knowing. 100-140 words.' },
+  { n: 6, emoji: '🔭',  q: '10 years from now',     label: 'Future-you looking back at this question.',
+    instruction: 'Project forward 10 years. Describe two plausible futures: one where the user\'s position turned out right, and one where it turned out wrong. Be specific about what would have had to be true in each case. End with: what to watch for now to tell which is happening. 100-140 words.' }
 ];
-
-var STOP = {};
-'the a an and or but in on at to for of with by from is are was were be been have has had do does did will would could should may might that this these those their they them we our you your i it its not all more than what how when where which who if then also even just very can get much many some most other about up out so well said know think use used make made good new first last long great little own right big high such give come here'.split(' ').forEach(function(w){ STOP[w]=1; });
-
-// ===================== LENS MODE STATE =====================
-// PERSPECTIVES MODE STATE
-var PM = {
-  step: 0, input: '', selected: [], responses: null, userView: '', cache: {}
-};
-
-// PERSPECTIVES RESPONSE PARSER
-function parsePerspectivesResponse(text, selectedPerspectives) {
-  var result = {};
-  (selectedPerspectives || []).forEach(function(p) {
-    var k = p.category + '|' + p.subcategory;
-    var escaped = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var rx = new RegExp('\\[P:' + escaped + '\\]([\\s\\S]*?)\\[/P:' + escaped + '\\]');
-    var m = (text || '').match(rx);
-    if (m) result[k] = m[1].trim();
-  });
-  if (!Object.keys(result).length && selectedPerspectives && selectedPerspectives.length) {
-    result[selectedPerspectives[0].category + '|' + selectedPerspectives[0].subcategory] = text || '';
-  }
-  return result;
-}
-
-// CLIENT-SIDE PERSPECTIVE PROMPT (for Claude path)
-var PERSP_INSTRUCTIONS_CLIENT = {
-  'Personal|Emotional impact':        'How does this topic make people feel? Name the emotions — fear, excitement, sadness, hope — and say which kinds of people feel them and why.',
-  'Personal|Daily life relevance':    'How does this show up in everyday life? Give a concrete example a 10-18 year old would recognise from their own day.',
-  'Personal|Self-reflection':         'What does this topic ask someone to examine about themselves? What belief, habit, or assumption might it challenge?',
-  'Ethical|Fairness':                 'Is this topic fair to everyone involved? Name who benefits and who might be left out or harmed.',
-  'Ethical|Social responsibility':    'What do people, companies, or governments owe each other here? What does doing the right thing look like in practice?',
-  'Ethical|Environmental impact':     'How does this connect to the natural world? Describe the environmental effects — short-term and long-term.',
-  'Practical|Daily application':      'How would someone actually use or apply this in everyday life? Give concrete steps, situations, or tools.',
-  'Practical|Problem-solving':        'What problem does this topic solve, or create? What would a practical fix look like?',
-  'Practical|Real-world use':         'Where is this already being used in the world? Give a real or plausible example in action.',
-  'Creative|Imaginative scenarios':   'Describe a surprising or unexpected situation this topic could lead to. Make it vivid and specific.',
-  'Creative|Storytelling':            'Write 2-3 sentences of a mini-story that brings this topic to life for a young reader.',
-  'Creative|Artistic views':          'How might a poet, musician, or filmmaker see this differently? What feeling would they want to capture?',
-  'Historical|Past interpretations':  'How did people in a specific past time or place deal with this topic? Name the era or culture.',
-  'Historical|Lessons from history':  'What lesson has history taught about this topic? Point to a real past mistake or success.',
-  'Historical|Cultural evolution':    'How has the meaning of this topic shifted across cultures or over time? Name the change.',
-  'Future-oriented|Long-term effects':'Where does this topic lead in 20-50 years if nothing changes? Be specific about consequences.',
-  'Future-oriented|Future innovations':'What new technology or idea could change how we deal with this? Why might it matter?',
-  'Future-oriented|Trends ahead':     'What patterns visible today hint at where this is heading? Name a real, observable trend.'
-};
-
-function buildPerspectivesSystemPromptClient(selected) {
-  var tagBlock = selected.map(function(p) {
-    return '[P:' + p.category + '|' + p.subcategory + ']\n(your response here)\n[/P:' + p.category + '|' + p.subcategory + ']';
-  }).join('\n\n');
-  var instrBlock = selected.map(function(p) {
-    var k = p.category + '|' + p.subcategory;
-    return '[P:' + k + ']\n' + p.category + ' — ' + p.subcategory + ':\n' + (PERSP_INSTRUCTIONS_CLIENT[k] || '');
-  }).join('\n\n');
-  return 'You must always be accurate and honest, acknowledge uncertainty, distinguish facts from opinions.\n\nYou are a multi-perspective thinking tool for readers aged 10+. For each perspective write 80-120 words in plain language. No jargon. No preaching. Never start with "Great question!"\n\nUse this EXACT tag format:\n\n' + tagBlock + '\n\nPerspective instructions:\n\n' + instrBlock;
-}
 
 // ===================== INIT =====================
 async function init() {
   try {
-    var r = await fetch('/api/session', {credentials:'same-origin'});
+    var r = await fetch('/api/session', { credentials: 'same-origin' });
     var d = await r.json();
     if (d.authenticated) { ST.user = d.user; showLanding(); }
     else showLogin();
@@ -455,667 +527,1219 @@ async function init() {
   setupSelectionFollowUp();
 }
 
-function showLogin() { show('lp'); hide('landing'); hide('app'); }
-
+function showLogin()   { show('lp');     hide('landing'); hide('app'); }
 function showLanding() {
   hide('lp'); show('landing'); hide('app');
   document.getElementById('land-user').textContent = 'Welcome, ' + (ST.user.name || ST.user.username);
 }
 
-function enterMode(mode) {
-  ST.mode = mode; ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
-  PM.step = 0; PM.input = ''; PM.responses = null; PM.userView = ''; PM.cache = {}; PM.selected = [];
+function enterApp() {
   ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
-  var modelSelect = document.getElementById('model-select');
-  var hasSavedModel = Array.from(modelSelect.options).some(function(opt) { return opt.value === ST.selectedModel; });
-  if (!hasSavedModel) ST.selectedModel = 'Qwen/Qwen3-30B-A3B-Instruct-2507';
-  modelSelect.value = ST.selectedModel;
+  ST.userRole = localStorage.getItem('userRole') || '';
+  var ms = document.getElementById('model-select');
+  if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
+    ms.value = ST.selectedModel;
+  } else {
+    ST.selectedModel = 'Qwen/Qwen3-30B-A3B-Instruct-2507';
+    ms.value = ST.selectedModel;
+  }
   hide('landing'); show('app');
   document.getElementById('sb-av').textContent = getIni(ST.user);
   document.getElementById('sb-name').textContent = ST.user.name || ST.user.username;
-  if (mode === 'perspectives') {
-    document.getElementById('sb-mode-lbl').textContent = 'Perspectives';
-    document.getElementById('mode-badge').textContent = 'Perspectives Mode';
-    document.getElementById('mode-badge').className = 'badge badge-gold';
-    document.getElementById('sb-role').textContent = 'Critical Thinking';
-    document.getElementById('qi').placeholder = 'Enter a topic, question, or statement to explore...';
-  } else {
-    document.getElementById('sb-mode-lbl').textContent = 'Chat';
-    document.getElementById('mode-badge').textContent = 'Conversation';
-    document.getElementById('mode-badge').className = 'badge badge-blue';
-    document.getElementById('sb-role').textContent = 'Normal Chat';
-    document.getElementById('qi').placeholder = 'Ask anything...';
-  }
   showWelcome();
   loadHist();
 }
 
-function goBack() { hide('app'); show('landing'); }
-function changeModel(model) { ST.selectedModel = model; localStorage.setItem('selectedModel', model); }
+function changeModel(m) { ST.selectedModel = m; localStorage.setItem('selectedModel', m); }
 function show(id) { document.getElementById(id).classList.remove('h'); }
 function hide(id) { document.getElementById(id).classList.add('h'); }
 
+// ===================== WELCOME =====================
 function showWelcome() {
-  var msgs = document.getElementById('msgs');
-  msgs.innerHTML = '';
+  resetLF();
+  setStep('Ask a question');
+  document.getElementById('qi').placeholder = 'What\'s on your mind? A question, a claim you read, something you\'re unsure about...';
+  var msgs = document.getElementById('msgs'); msgs.innerHTML = '';
   var div = document.createElement('div'); div.className = 'welcome';
-  var ico = document.createElement('div'); ico.className = 'welcome-ico';
-  ico.textContent = ST.mode === 'lens' ? '🔍' : '💬';
-  var h2 = document.createElement('h2');
-  h2.textContent = ST.mode === 'lens' ? 'Lens Mode' : 'Normal Conversation';
+  var ico = document.createElement('div'); ico.className = 'welcome-ico'; ico.textContent = '🪞';
+  var h2 = document.createElement('h2'); h2.textContent = 'Start with a question';
   var p = document.createElement('p');
-  p.textContent = ST.mode === 'lens'
-    ? 'Type something you read, heard, or aren\'t sure about. Pick lenses to examine it — then write your own view.'
-    : 'Ask me anything. Clear, direct answers in plain English.';
+  p.textContent = 'Type something you\'re genuinely unsure about, or something you think you\'re sure about. The work begins after you ask.';
+  var hint = document.createElement('p'); hint.className = 'hint';
+  hint.textContent = 'Five steps: context · your position · pick lenses · read · where you land.';
   var wqs = document.createElement('div'); wqs.className = 'wqs';
-  var qs = ST.mode === 'lens'
-    ? ['My friend said social media is making kids depressed','AI will replace all jobs in 10 years','Eating breakfast is the most important meal of the day']
-    : ['Explain quantum computing simply','What should I know before starting a business?','Help me think through a difficult decision','What are the most important skills for the future?'];
+  var qs = [
+    'Should phones be banned in schools?',
+    'Is it okay to lie to protect a friend?',
+    'AI will replace most jobs in 10 years',
+    'Should I drop a hobby I\'m bored of?',
+    'Is going to college still worth it?'
+  ];
   qs.forEach(function(q) {
     var btn = document.createElement('span'); btn.className = 'wq'; btn.textContent = q;
     btn.onclick = function() { setQ(q); };
     wqs.appendChild(btn);
   });
-  div.appendChild(ico); div.appendChild(h2); div.appendChild(p); div.appendChild(wqs);
+  div.appendChild(ico); div.appendChild(h2); div.appendChild(p); div.appendChild(hint); div.appendChild(wqs);
   msgs.appendChild(div);
 }
 
-// ===================== SEND =====================
-async function doSend() {
-  var inp = document.getElementById('qi'), q = inp.value.trim();
-  if (!q || ST.busy) return;
-  var imgRx = /^(generate|create|draw|make|show)\s+(an?\s+)?(image|picture|photo|illustration)/i;
-  if (imgRx.test(q)) { sendImg(q); return; }
-  var w = document.querySelector('.welcome');
-  if (w) w.remove();
-  ST.busy = true; inp.value = ''; inp.style.height = 'auto';
-  document.getElementById('sbtn').disabled = true;
-  appendUserMsg(q);
-  var ld = appendLoading();
-  try {
-    var r = await fetch('/api/chat', {
-      method: 'POST', credentials: 'same-origin',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({question:q, chatId:ST.cid, history:ST.hist.slice(-4), mode:ST.mode, model:ST.selectedModel})
-    });
-    var d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'Request failed');
-    ST.cid = d.chatId;
-    ld.remove();
-    if (ST.mode === 'council') {
-      ST.hist.push({question:q, responses:d.responses, mode:'council'});
-      renderCouncil(d.council, d.responses, d.synthesis, q);
-      var perspectiveCount = (d.council && d.council.length) ? d.council.length : (d.responses ? d.responses.length : 0);
-      document.getElementById('mode-badge').textContent = perspectiveCount > 0 ? (perspectiveCount + ' Perspectives') : 'Dynamic Perspectives';
-      trackWords((d.responses || []).map(responseAnswer).join(' ') + ' ' + q);
-    } else {
-      ST.hist.push({question:q, reply:d.reply, mode:'normal'});
-      renderNormal(d.reply);
-      trackWords(d.reply + ' ' + q);
-    }
-    ST.msgCount++;
-    if (ST.msgCount >= 3) renderPatterns();
-    scrollBottom(); loadHist();
-  } catch(err) {
-    ld.remove();
-    if (err && typeof err.message === 'string' && err.message.toLowerCase().indexOf('unauthorized') !== -1) {
-      logout();
-      return;
-    }
-    var em = document.createElement('div'); em.className = 'err-msg fi';
-    em.textContent = 'Error: ' + err.message;
-    document.getElementById('msgs').appendChild(em);
-  }
-  ST.busy = false; document.getElementById('sbtn').disabled = false;
+function resetLF() {
+  LF.step = 0; LF.question = '';
+  LF.ctxReason = ''; LF.ctxPurpose = ''; LF.ctxSource = '';
+  LF.positionBefore = ''; LF.confBefore = 5;
+  LF.selectedLenses = []; LF.responses = {}; LF.pushbacks = {};
+  LF.positionAfter = ''; LF.confAfter = 5; LF.outcome = null;
 }
 
-async function sendImg(prompt) {
-  ST.busy = true; document.getElementById('sbtn').disabled = true;
-  var inp = document.getElementById('qi'); inp.value = ''; inp.style.height = 'auto';
+function setStep(label) { document.getElementById('mh-step').textContent = label; }
+
+// ===================== FLOW: ASK QUESTION =====================
+function doSend() {
+  var inp = document.getElementById('qi'), q = inp.value.trim();
+  if (!q || ST.busy) return;
+  if (LF.step !== 0) return; // Already in a flow
+
   var w = document.querySelector('.welcome'); if (w) w.remove();
-  appendUserMsg(prompt);
-  var ld = appendLoading('Generating image...');
-  try {
-    var clean = prompt.replace(/^(generate|create|draw|make|show)\s+(an?\s+)?(image|picture|photo|illustration)\s+(of\s+)?/i, '');
-    var r = await fetch('/api/image', {
-      method:'POST', credentials:'same-origin',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({prompt: clean})
-    });
-    ld.remove();
-    if (!r.ok) { var e = await r.json(); throw new Error(e.error || 'Failed'); }
-    var blob = await r.blob();
-    var url = URL.createObjectURL(blob);
-    var wrap = document.createElement('div'); wrap.className = 'img-wrap fi';
-    var img = document.createElement('img'); img.src = url; img.alt = clean;
-    var cap = document.createElement('div'); cap.className = 'img-cap'; cap.textContent = clean;
-    wrap.appendChild(img); wrap.appendChild(cap);
-    document.getElementById('msgs').appendChild(wrap);
-  } catch(err) {
-    ld.remove();
-    var em2 = document.createElement('div'); em2.className = 'err-msg fi';
-    em2.textContent = 'Image error: ' + err.message;
-    document.getElementById('msgs').appendChild(em2);
-  }
-  ST.busy = false; document.getElementById('sbtn').disabled = false;
+
+  LF.question = q;
+  LF.step = 1;
+  inp.value = ''; inp.style.height = 'auto';
+
+  appendUserMsg(q);
+  renderStep1_Context();
   scrollBottom();
 }
 
-// ===================== RENDER =====================
 function appendUserMsg(q) {
   var div = document.createElement('div'); div.className = 'user-msg fi';
   div.textContent = q;
   document.getElementById('msgs').appendChild(div);
+}
+
+// ===================== STEP 1: CONTEXT =====================
+function renderStep1_Context() {
+  setStep('Step 1 of 5 — Context');
+  var msgs = document.getElementById('msgs');
+  var card = document.createElement('div'); card.className = 'ctx-card fi';
+
+  var lbl = document.createElement('div'); lbl.className = 'step-lbl';
+  lbl.textContent = 'Step 1 of 5';
+  var title = document.createElement('div'); title.className = 'step-title';
+  title.textContent = 'A bit of context first';
+  var intro = document.createElement('div'); intro.className = 'ctx-intro';
+  intro.textContent = 'These four lines change how the lenses respond. A student asking for a debate gets a different push than a parent making a household rule. One sentence each is enough.';
+  card.appendChild(lbl); card.appendChild(title); card.appendChild(intro);
+
+  // Field 1: I am a ___ (role) — show saved or prompt fresh
+  var roleSaved = ST.userRole && ST.userRole.length > 1;
+  if (roleSaved) {
+    var saved = document.createElement('div'); saved.className = 'ctx-saved';
+    saved.innerHTML = '<span style="font-family:var(--fu);font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;">You are:</span> <span style="color:var(--tx);">' + ST.userRole + '</span>';
+    var editBtn = document.createElement('button'); editBtn.className = 'ctx-saved-edit'; editBtn.textContent = 'Change';
+    editBtn.onclick = function() {
+      saved.remove();
+      ST.userRole = '';
+      buildRoleField(card, true);
+    };
+    saved.appendChild(editBtn);
+    card.appendChild(saved);
+  } else {
+    buildRoleField(card, false);
+  }
+
+  // Field 2: I'm asking this for ___ (reason)
+  var f2 = document.createElement('div'); f2.className = 'ctx-field';
+  var l2 = document.createElement('label'); l2.className = 'ctx-label';
+  l2.innerHTML = 'I am asking this for <span class="ctx-hint">(reason — e.g. a debate, a decision, curiosity)</span>';
+  var i2 = document.createElement('input'); i2.type = 'text'; i2.className = 'ctx-input'; i2.id = 'ctx-reason';
+  i2.placeholder = 'a class debate next week';
+  f2.appendChild(l2); f2.appendChild(i2);
+  card.appendChild(f2);
+
+  // Field 3: I'll use this for ___ (purpose)
+  var f3 = document.createElement('div'); f3.className = 'ctx-field';
+  var l3 = document.createElement('label'); l3.className = 'ctx-label';
+  l3.innerHTML = 'I will use this answer for <span class="ctx-hint">(purpose — what you\'ll do with it)</span>';
+  var i3 = document.createElement('input'); i3.type = 'text'; i3.className = 'ctx-input'; i3.id = 'ctx-purpose';
+  i3.placeholder = 'arguing my side and anticipating theirs';
+  f3.appendChild(l3); f3.appendChild(i3);
+  card.appendChild(f3);
+
+  // Field 4: Where it's coming from (source) — chips
+  var f4 = document.createElement('div'); f4.className = 'ctx-field';
+  var l4 = document.createElement('label'); l4.className = 'ctx-label';
+  l4.innerHTML = 'Where this question is coming from <span class="ctx-hint">(pick one — or type your own)</span>';
+  f4.appendChild(l4);
+  var sourceRow = document.createElement('div'); sourceRow.className = 'ctx-source-row';
+  var sources = ['A discussion', 'Something I\'m learning', 'A challenge or claim', 'My own thought'];
+  sources.forEach(function(s) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'ctx-source-btn'; b.textContent = s;
+    b.onclick = function() {
+      sourceRow.querySelectorAll('.ctx-source-btn').forEach(function(x) { x.classList.remove('selected'); });
+      b.classList.add('selected');
+      document.getElementById('ctx-source-custom').value = '';
+      LF.ctxSource = s;
+      updateCtxContinueBtn();
+    };
+    sourceRow.appendChild(b);
+  });
+  f4.appendChild(sourceRow);
+  var customSrc = document.createElement('input');
+  customSrc.type = 'text'; customSrc.className = 'ctx-input'; customSrc.id = 'ctx-source-custom';
+  customSrc.placeholder = 'Or describe in your own words...';
+  customSrc.style.marginTop = '8px';
+  customSrc.oninput = function() {
+    if (customSrc.value.trim()) {
+      sourceRow.querySelectorAll('.ctx-source-btn').forEach(function(x) { x.classList.remove('selected'); });
+      LF.ctxSource = customSrc.value.trim();
+    } else {
+      LF.ctxSource = '';
+    }
+    updateCtxContinueBtn();
+  };
+  f4.appendChild(customSrc);
+  card.appendChild(f4);
+
+  // Continue button
+  var rowBtn = document.createElement('div'); rowBtn.className = 'row-btn';
+  var btn = document.createElement('button'); btn.className = 'btn-primary'; btn.id = 'ctx-continue';
+  btn.textContent = 'Continue →';
+  btn.disabled = true;
+  btn.onclick = function() {
+    LF.ctxReason = document.getElementById('ctx-reason').value.trim();
+    LF.ctxPurpose = document.getElementById('ctx-purpose').value.trim();
+    // ctxSource already tracked
+    var roleInp = document.getElementById('ctx-role');
+    if (roleInp && roleInp.value.trim()) {
+      ST.userRole = roleInp.value.trim();
+      localStorage.setItem('userRole', ST.userRole);
+    }
+    // Disable everything in this card
+    card.querySelectorAll('input, button').forEach(function(el) { el.disabled = true; });
+    LF.step = 2;
+    renderPinnedContext();
+    renderStep2_Position();
+    scrollBottom();
+  };
+  i2.oninput = updateCtxContinueBtn;
+  i3.oninput = updateCtxContinueBtn;
+  rowBtn.appendChild(btn);
+  card.appendChild(rowBtn);
+
+  msgs.appendChild(card);
+  setTimeout(function() {
+    var firstFocusable = roleSaved ? i2 : document.getElementById('ctx-role');
+    if (firstFocusable) firstFocusable.focus();
+  }, 100);
+}
+
+function buildRoleField(parent, focus) {
+  var f1 = document.createElement('div'); f1.className = 'ctx-field';
+  var l1 = document.createElement('label'); l1.className = 'ctx-label';
+  l1.innerHTML = 'I am a <span class="ctx-hint">(role, age, situation — saved for next time)</span>';
+  var wrap = document.createElement('div'); wrap.className = 'ctx-prefix';
+  var pre = document.createElement('span'); pre.className = 'ctx-prefix-lbl'; pre.textContent = 'I am a';
+  var i1 = document.createElement('input'); i1.type = 'text'; i1.className = 'ctx-input'; i1.id = 'ctx-role';
+  i1.placeholder = '13-year-old student';
+  i1.oninput = updateCtxContinueBtn;
+  wrap.appendChild(pre); wrap.appendChild(i1);
+  f1.appendChild(l1); f1.appendChild(wrap);
+  // Insert before the second field
+  var firstField = parent.querySelector('.ctx-field');
+  if (firstField) parent.insertBefore(f1, firstField);
+  else parent.appendChild(f1);
+  if (focus) setTimeout(function() { i1.focus(); }, 50);
+}
+
+function updateCtxContinueBtn() {
+  var btn = document.getElementById('ctx-continue');
+  if (!btn) return;
+  var roleInp = document.getElementById('ctx-role');
+  var roleOk = ST.userRole || (roleInp && roleInp.value.trim().length >= 2);
+  var reason = document.getElementById('ctx-reason');
+  var purpose = document.getElementById('ctx-purpose');
+  var reasonOk = reason && reason.value.trim().length >= 2;
+  var purposeOk = purpose && purpose.value.trim().length >= 2;
+  var sourceOk = !!LF.ctxSource;
+  btn.disabled = !(roleOk && reasonOk && purposeOk && sourceOk);
+}
+
+// ===================== PINNED CONTEXT (compact summary, visible during flow) =====================
+function renderPinnedContext() {
+  var msgs = document.getElementById('msgs');
+  var p = document.createElement('div'); p.className = 'pinned-pos fi'; p.id = 'pinned-ctx';
+  p.style.background = 'var(--sur2)';
+  p.style.borderColor = 'var(--bor)';
+  var lbl = document.createElement('div'); lbl.className = 'pinned-pos-lbl';
+  lbl.style.color = 'var(--tx3)';
+  lbl.textContent = 'Context';
+  var txt = document.createElement('div'); txt.className = 'pinned-pos-text';
+  txt.style.fontStyle = 'normal';
+  txt.innerHTML =
+    '<strong style="font-weight:600;color:var(--tx);">' + escapeHtml(ST.userRole) + '</strong>' +
+    ' &middot; asking for <em>' + escapeHtml(LF.ctxReason) + '</em>' +
+    ' &middot; will use it for <em>' + escapeHtml(LF.ctxPurpose) + '</em>' +
+    ' &middot; from <em>' + escapeHtml(LF.ctxSource) + '</em>';
+  p.appendChild(lbl); p.appendChild(txt);
+  msgs.appendChild(p);
+}
+
+function escapeHtml(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ===================== STEP 2: STATE POSITION =====================
+function renderStep2_Position() {
+  setStep('Step 2 of 5 — Your position');
+  var msgs = document.getElementById('msgs');
+
+  var card = document.createElement('div'); card.className = 'step-card work fi';
+  var lbl = document.createElement('div'); lbl.className = 'step-lbl';
+  lbl.innerHTML = 'Step 2 of 5 <span class="badge-work">This is the work</span>';
+  var title = document.createElement('div'); title.className = 'step-title';
+  title.textContent = 'Before you see anything — what do you think?';
+  var sub = document.createElement('div'); sub.className = 'step-sub';
+  sub.textContent = 'Even one sentence counts. We\'ll come back to it.';
+
+  var ta = document.createElement('textarea'); ta.className = 'pos-ta'; ta.id = 'pos-before';
+  ta.placeholder = 'I think...';
+
+  var confRow = document.createElement('div'); confRow.className = 'conf-row';
+  var confL = document.createElement('span'); confL.className = 'conf-lbl'; confL.textContent = 'How sure are you?';
+  var slider = document.createElement('input');
+  slider.type = 'range'; slider.min = '1'; slider.max = '10'; slider.value = '5'; slider.step = '1';
+  slider.className = 'conf-slider'; slider.id = 'conf-before';
+  var val = document.createElement('span'); val.className = 'conf-val'; val.id = 'conf-before-val'; val.textContent = '5';
+  var of = document.createElement('span'); of.className = 'conf-of'; of.textContent = '/ 10';
+  slider.oninput = function() { val.textContent = slider.value; };
+  confRow.appendChild(confL); confRow.appendChild(slider); confRow.appendChild(val); confRow.appendChild(of);
+
+  var rowBtn = document.createElement('div'); rowBtn.className = 'row-btn';
+  var btn = document.createElement('button'); btn.className = 'btn-primary'; btn.textContent = 'Continue →';
+  btn.disabled = true;
+  ta.oninput = function() { btn.disabled = ta.value.trim().length < 3; };
+  btn.onclick = function() {
+    LF.positionBefore = ta.value.trim();
+    LF.confBefore = parseInt(slider.value, 10);
+    ta.disabled = true; slider.disabled = true; btn.disabled = true;
+    LF.step = 3;
+    renderPinnedPosition();
+    renderStep3_LensPicker();
+    scrollBottom();
+  };
+  rowBtn.appendChild(btn);
+
+  card.appendChild(lbl); card.appendChild(title); card.appendChild(sub);
+  card.appendChild(ta); card.appendChild(confRow); card.appendChild(rowBtn);
+  msgs.appendChild(card);
+  setTimeout(function() { ta.focus(); }, 100);
+}
+
+// ===================== PINNED POSITION (always visible after step 1) =====================
+function renderPinnedPosition() {
+  var msgs = document.getElementById('msgs');
+  var p = document.createElement('div'); p.className = 'pinned-pos fi'; p.id = 'pinned-pos';
+  var lbl = document.createElement('div'); lbl.className = 'pinned-pos-lbl'; lbl.textContent = 'Your starting position';
+  var txt = document.createElement('div'); txt.className = 'pinned-pos-text'; txt.textContent = '"' + LF.positionBefore + '"';
+  var conf = document.createElement('div'); conf.className = 'pinned-pos-conf'; conf.textContent = 'Confidence: ' + LF.confBefore + ' / 10';
+  p.appendChild(lbl); p.appendChild(txt); p.appendChild(conf);
+  msgs.appendChild(p);
+}
+
+// ===================== STEP 3: PICK LENSES =====================
+function renderStep3_LensPicker() {
+  setStep('Step 3 of 5 — Pick your lenses');
+  var msgs = document.getElementById('msgs');
+
+  var card = document.createElement('div'); card.className = 'step-card fi';
+  var lbl = document.createElement('div'); lbl.className = 'step-lbl'; lbl.textContent = 'Step 3 of 5';
+  var title = document.createElement('div'); title.className = 'step-title';
+  title.textContent = 'Now — choose what to push your thinking against';
+  var sub = document.createElement('div'); sub.className = 'step-sub';
+  sub.textContent = 'Pick at least one. You can always add more after you read.';
+
+  var grid = document.createElement('div'); grid.className = 'lens-grid';
+  LENSES.forEach(function(lens) {
+    var c = document.createElement('div'); c.className = 'lens-card'; c.dataset.n = lens.n;
+    var head = document.createElement('div'); head.className = 'lens-card-head';
+    var em = document.createElement('span'); em.className = 'lens-card-emoji'; em.textContent = lens.emoji;
+    var qq = document.createElement('span'); qq.className = 'lens-card-q'; qq.textContent = lens.q;
+    head.appendChild(em); head.appendChild(qq);
+    var d = document.createElement('div'); d.className = 'lens-card-desc'; d.textContent = lens.label;
+    c.appendChild(head); c.appendChild(d);
+    c.onclick = function() {
+      var idx = LF.selectedLenses.indexOf(lens.n);
+      if (idx !== -1) { LF.selectedLenses.splice(idx, 1); c.classList.remove('selected'); }
+      else { LF.selectedLenses.push(lens.n); c.classList.add('selected'); }
+      updateLensControls();
+    };
+    grid.appendChild(c);
+  });
+
+  var ctrl = document.createElement('div'); ctrl.className = 'lens-controls';
+  var count = document.createElement('span'); count.className = 'lens-count'; count.id = 'lens-count';
+  count.textContent = 'Pick at least one';
+  var allBtn = document.createElement('button'); allBtn.className = 'btn-ghost'; allBtn.textContent = 'Use all 6';
+  allBtn.onclick = function() {
+    LF.selectedLenses = LENSES.map(function(l) { return l.n; });
+    grid.querySelectorAll('.lens-card').forEach(function(c) { c.classList.add('selected'); });
+    updateLensControls();
+  };
+  var go = document.createElement('button'); go.className = 'btn-primary'; go.id = 'lens-go'; go.textContent = 'Push my thinking →';
+  go.disabled = true;
+  go.onclick = runLenses;
+  ctrl.appendChild(count); ctrl.appendChild(allBtn); ctrl.appendChild(go);
+
+  card.appendChild(lbl); card.appendChild(title); card.appendChild(sub);
+  card.appendChild(grid); card.appendChild(ctrl);
+  msgs.appendChild(card);
+}
+
+function updateLensControls() {
+  var n = LF.selectedLenses.length;
+  var count = document.getElementById('lens-count');
+  var go = document.getElementById('lens-go');
+  if (!count || !go) return;
+  if (n === 0) count.textContent = 'Pick at least one';
+  else count.textContent = n + ' lens' + (n !== 1 ? 'es' : '') + ' selected';
+  go.disabled = n === 0;
+}
+
+// ===================== STEP 4: RUN LENSES =====================
+async function runLenses() {
+  if (!LF.selectedLenses.length || ST.busy) return;
+  ST.busy = true;
+  document.getElementById('lens-go').disabled = true;
+  setStep('Step 4 of 5 — Lenses');
+
+  var ld = appendLoading('Thinking through your lenses...');
+
+  try {
+    var lenses = LF.selectedLenses.slice().sort(function(a,b){ return a-b; });
+    var systemPrompt = buildLensSystemPrompt(lenses, LF.positionBefore, LF.confBefore);
+    var isClaude = ST.selectedModel.indexOf('claude-') === 0;
+    var maxTok = Math.max(400, lenses.length * 200);
+    var reply;
+    if (isClaude) {
+      var r = await fetch('/api/anthropic', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role: 'user', content: LF.question }], systemPrompt: systemPrompt, maxTokens: maxTok })
+      });
+      var d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Request failed');
+      reply = d.reply;
+    } else {
+      var r2 = await fetch('/api/chat', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: LF.question, chatId: ST.cid, history: [], mode: 'lens',
+          model: ST.selectedModel, lenses: lenses,
+          userRole: ST.userRole,
+          ctxReason: LF.ctxReason, ctxPurpose: LF.ctxPurpose, ctxSource: LF.ctxSource,
+          positionBefore: LF.positionBefore, confidenceBefore: LF.confBefore,
+          systemPrompt: systemPrompt
+        })
+      });
+      var d2 = await r2.json();
+      if (!r2.ok) throw new Error(d2.error || 'Request failed');
+      reply = d2.reply;
+      if (d2.chatId) ST.cid = d2.chatId;
+    }
+    ld.remove();
+    var parsed = parseLensResponse(reply, lenses);
+    LF.responses = parsed;
+    LF.step = 4;
+    lenses.forEach(function(n) { renderLensResponse(n); });
+    renderStep5_PromptAfter();
+    scrollBottom();
+  } catch(err) {
+    ld.remove();
+    if (err && (err.message || '').toLowerCase().indexOf('unauthorized') !== -1) { logout(); return; }
+    var em = document.createElement('div'); em.className = 'err-msg fi';
+    em.textContent = 'Error: ' + err.message;
+    document.getElementById('msgs').appendChild(em);
+    document.getElementById('lens-go').disabled = false;
+  }
+  ST.busy = false;
+}
+
+function buildLensSystemPrompt(lenses, position, conf) {
+  var tagBlock = lenses.map(function(n) {
+    var l = LENSES.find(function(x) { return x.n === n; });
+    return '[L' + n + ']\n(your response here)\n[/L' + n + ']';
+  }).join('\n\n');
+  var instr = lenses.map(function(n) {
+    var l = LENSES.find(function(x) { return x.n === n; });
+    return '[L' + n + '] — ' + l.q + ':\n' + l.instruction;
+  }).join('\n\n');
+
+  var ctxBlock = '';
+  if (ST.userRole || LF.ctxReason || LF.ctxPurpose || LF.ctxSource) {
+    ctxBlock = 'USER CONTEXT (use this silently to calibrate tone, examples, and depth — DO NOT repeat it back, DO NOT start your response with "as a ___" or reference these fields directly):\n';
+    if (ST.userRole)   ctxBlock += '- The user is a ' + ST.userRole + '.\n';
+    if (LF.ctxReason)  ctxBlock += '- They are asking this for: ' + LF.ctxReason + '.\n';
+    if (LF.ctxPurpose) ctxBlock += '- They will use the answer for: ' + LF.ctxPurpose + '.\n';
+    if (LF.ctxSource)  ctxBlock += '- This question is coming from: ' + LF.ctxSource + '.\n';
+    ctxBlock += '\nAdapt accordingly: examples should be relatable to their situation, vocabulary should match their level, and the kind of push-back should suit their purpose (a debater needs sharper counter-arguments; someone making a personal decision needs more weight on practical trade-offs; a learner needs more grounding context). Never patronize and never flatter.\n\n';
+  }
+
+  return 'You are a critical thinking tool. The user has stated their position before you respond. Your job is NOT to flatter or summarize. Your job is to push.\n\n' +
+    ctxBlock +
+    'USER POSITION: "' + position + '"\n' +
+    'USER CONFIDENCE: ' + conf + '/10\n\n' +
+    'Write the response for each requested lens using EXACTLY this format:\n\n' + tagBlock + '\n\n' +
+    'Lens instructions:\n\n' + instr + '\n\n' +
+    'Rules: Plain language. No jargon. Never start with "Great question!" or any flattery. Do not hedge. Stay focused on the user\'s specific position, not generic talking points. Treat the user as a serious thinker who can handle a real challenge.';
+}
+
+function parseLensResponse(text, lenses) {
+  var out = {};
+  (lenses || []).forEach(function(n) {
+    var rx = new RegExp('\\[L' + n + '\\]([\\s\\S]*?)\\[/L' + n + '\\]');
+    var m = (text || '').match(rx);
+    if (m) out[n] = m[1].trim();
+  });
+  // Fallback: if nothing parsed but we got text and only 1 lens was asked, use whole reply
+  if (!Object.keys(out).length && lenses.length === 1) {
+    out[lenses[0]] = (text || '').trim();
+  }
+  return out;
+}
+
+function renderLensResponse(n) {
+  var lens = LENSES.find(function(l) { return l.n === n; });
+  if (!lens) return;
+  var text = LF.responses[n] || '(no response)';
+  var msgs = document.getElementById('msgs');
+  var card = document.createElement('div'); card.className = 'lens-resp fi'; card.dataset.lens = n;
+  var head = document.createElement('div'); head.className = 'lens-resp-head';
+  var em = document.createElement('span'); em.className = 'lens-resp-emoji'; em.textContent = lens.emoji;
+  var qq = document.createElement('span'); qq.className = 'lens-resp-q'; qq.textContent = lens.q;
+  head.appendChild(em); head.appendChild(qq);
+  var body = document.createElement('div'); body.className = 'lens-resp-body'; body.textContent = text;
+  var acts = document.createElement('div'); acts.className = 'lens-resp-actions';
+
+  var pushBtn = document.createElement('button'); pushBtn.className = 'act-btn pushback';
+  pushBtn.innerHTML = '↩ Push back';
+  pushBtn.onclick = function() { openPushback(card, n); };
+
+  var holdBtn = document.createElement('button'); holdBtn.className = 'act-btn';
+  holdBtn.innerHTML = '✓ Held my position';
+  holdBtn.onclick = function() {
+    holdBtn.disabled = true; holdBtn.textContent = '✓ Held'; holdBtn.style.opacity = '.6';
+  };
+
+  var changeBtn = document.createElement('button'); changeBtn.className = 'act-btn';
+  changeBtn.innerHTML = '↻ This shifted me';
+  changeBtn.onclick = function() {
+    changeBtn.disabled = true; changeBtn.textContent = '↻ Shifted'; changeBtn.style.opacity = '.6';
+  };
+
+  acts.appendChild(pushBtn); acts.appendChild(holdBtn); acts.appendChild(changeBtn);
+  card.appendChild(head); card.appendChild(body); card.appendChild(acts);
+  msgs.appendChild(card);
+}
+
+function openPushback(card, n) {
+  if (card.querySelector('.pushback-wrap')) return;
+  var wrap = document.createElement('div'); wrap.className = 'pushback-wrap';
+  var ta = document.createElement('textarea'); ta.className = 'pushback-ta';
+  ta.placeholder = 'Why don\'t you buy this? Tell the lens what it\'s missing...';
+  var sendBtn = document.createElement('button'); sendBtn.className = 'btn-primary';
+  sendBtn.style.marginTop = '8px'; sendBtn.textContent = 'Send pushback';
+  sendBtn.onclick = async function() {
+    var txt = ta.value.trim(); if (!txt || ST.busy) return;
+    ST.busy = true; sendBtn.disabled = true; ta.disabled = true;
+    try {
+      var lens = LENSES.find(function(l) { return l.n === n; });
+      var systemPrompt = 'You are responding to the user\'s pushback on a critical thinking lens.\n\n' +
+        'Original user position: "' + LF.positionBefore + '"\n' +
+        'Lens used: ' + lens.q + '\n' +
+        'Your previous response was: "' + LF.responses[n] + '"\n' +
+        'User\'s pushback: "' + txt + '"\n\n' +
+        'Respond honestly. If the user makes a fair point, acknowledge it specifically — don\'t just concede everything. If their pushback misses something, say so directly. Aim for 60-90 words. Do not flatter. Do not start with "Great point".';
+      var reply;
+      var isClaude = ST.selectedModel.indexOf('claude-') === 0;
+      if (isClaude) {
+        var r = await fetch('/api/anthropic', {
+          method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: ST.selectedModel, messages: [{ role: 'user', content: txt }], systemPrompt: systemPrompt, maxTokens: 200 })
+        });
+        var d = await r.json(); if (!r.ok) throw new Error(d.error || 'Failed');
+        reply = d.reply;
+      } else {
+        var r2 = await fetch('/api/chat', {
+          method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: txt, chatId: ST.cid, history: [], mode: 'lens', model: ST.selectedModel, lenses: [n], systemPrompt: systemPrompt })
+        });
+        var d2 = await r2.json(); if (!r2.ok) throw new Error(d2.error || 'Failed');
+        reply = d2.reply;
+      }
+      LF.pushbacks[n] = { user: txt, reply: reply };
+      var rep = document.createElement('div'); rep.className = 'pushback-reply'; rep.textContent = reply;
+      wrap.appendChild(rep);
+    } catch(err) {
+      var em = document.createElement('div'); em.className = 'err-msg'; em.textContent = 'Error: ' + err.message;
+      wrap.appendChild(em);
+    }
+    ST.busy = false;
+  };
+  wrap.appendChild(ta); wrap.appendChild(sendBtn);
+  card.appendChild(wrap);
+  setTimeout(function() { ta.focus(); }, 50);
+}
+
+// ===================== STEP 5: PROMPT POSITION AFTER =====================
+function renderStep5_PromptAfter() {
+  setStep('Step 5 of 5 — Where do you land?');
+  LF.step = 5;
+  var msgs = document.getElementById('msgs');
+
+  // Suggest an unused lens (if any) before the final step
+  var used = LF.selectedLenses;
+  var unused = LENSES.filter(function(l) { return used.indexOf(l.n) === -1; });
+  if (unused.length) {
+    var s = unused[Math.floor(Math.random() * unused.length)];
+    var sug = document.createElement('div'); sug.className = 'suggest-lens fi';
+    var lbl = document.createElement('div'); lbl.className = 'suggest-lens-lbl'; lbl.textContent = 'Optional';
+    var txt = document.createElement('div'); txt.className = 'suggest-lens-text';
+    txt.innerHTML = 'You haven\'t tried <strong>' + s.emoji + ' ' + s.q + '</strong>. Want one more push before you decide?';
+    var bRow = document.createElement('div');
+    var yBtn = document.createElement('button'); yBtn.className = 'btn-ghost'; yBtn.style.marginRight = '8px';
+    yBtn.textContent = 'Yes, add this lens';
+    yBtn.onclick = function() { sug.remove(); addOneLens(s.n); };
+    var nBtn = document.createElement('button'); nBtn.className = 'btn-ghost'; nBtn.textContent = 'Skip';
+    nBtn.onclick = function() { sug.remove(); };
+    bRow.appendChild(yBtn); bRow.appendChild(nBtn);
+    sug.appendChild(lbl); sug.appendChild(txt); sug.appendChild(bRow);
+    msgs.appendChild(sug);
+  }
+
+  var card = document.createElement('div'); card.className = 'step-card work fi';
+  var lbl2 = document.createElement('div'); lbl2.className = 'step-lbl'; lbl2.textContent = 'Step 5 of 5';
+  var title = document.createElement('div'); title.className = 'step-title'; title.textContent = 'Where do you land now?';
+  var sub = document.createElement('div'); sub.className = 'step-sub';
+  sub.textContent = 'Same as before? Changed? More unsure? All three are real answers.';
+
+  var ta = document.createElement('textarea'); ta.className = 'pos-ta'; ta.id = 'pos-after';
+  ta.placeholder = 'My updated thinking is...';
+
+  var confRow = document.createElement('div'); confRow.className = 'conf-row';
+  var confL = document.createElement('span'); confL.className = 'conf-lbl'; confL.textContent = 'How sure now?';
+  var slider = document.createElement('input');
+  slider.type = 'range'; slider.min = '1'; slider.max = '10'; slider.value = String(LF.confBefore); slider.step = '1';
+  slider.className = 'conf-slider'; slider.id = 'conf-after';
+  var val = document.createElement('span'); val.className = 'conf-val'; val.id = 'conf-after-val'; val.textContent = String(LF.confBefore);
+  var of = document.createElement('span'); of.className = 'conf-of'; of.textContent = '/ 10';
+  slider.oninput = function() { val.textContent = slider.value; };
+  confRow.appendChild(confL); confRow.appendChild(slider); confRow.appendChild(val); confRow.appendChild(of);
+
+  var rowBtn = document.createElement('div'); rowBtn.className = 'row-btn';
+  var btn = document.createElement('button'); btn.className = 'btn-primary'; btn.textContent = 'Save this thought →';
+  btn.disabled = true;
+  ta.oninput = function() { btn.disabled = ta.value.trim().length < 3; };
+  btn.onclick = function() {
+    LF.positionAfter = ta.value.trim();
+    LF.confAfter = parseInt(slider.value, 10);
+    ta.disabled = true; slider.disabled = true; btn.disabled = true;
+    finishFlow();
+  };
+  rowBtn.appendChild(btn);
+
+  card.appendChild(lbl2); card.appendChild(title); card.appendChild(sub);
+  card.appendChild(ta); card.appendChild(confRow); card.appendChild(rowBtn);
+  msgs.appendChild(card);
+  setTimeout(function() { ta.focus(); }, 100);
+}
+
+// Add a single additional lens after step 4 ended
+async function addOneLens(n) {
+  if (LF.selectedLenses.indexOf(n) !== -1) return;
+  if (ST.busy) return;
+  ST.busy = true;
+  var ld = appendLoading('Adding lens...');
+  try {
+    var systemPrompt = buildLensSystemPrompt([n], LF.positionBefore, LF.confBefore);
+    var isClaude = ST.selectedModel.indexOf('claude-') === 0;
+    var reply;
+    if (isClaude) {
+      var r = await fetch('/api/anthropic', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role: 'user', content: LF.question }], systemPrompt: systemPrompt, maxTokens: 250 })
+      });
+      var d = await r.json(); if (!r.ok) throw new Error(d.error || 'Failed');
+      reply = d.reply;
+    } else {
+      var r2 = await fetch('/api/chat', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: LF.question, chatId: ST.cid, history: [], mode: 'lens',
+          model: ST.selectedModel, lenses: [n],
+          userRole: ST.userRole,
+          ctxReason: LF.ctxReason, ctxPurpose: LF.ctxPurpose, ctxSource: LF.ctxSource,
+          positionBefore: LF.positionBefore, confidenceBefore: LF.confBefore,
+          systemPrompt: systemPrompt
+        })
+      });
+      var d2 = await r2.json(); if (!r2.ok) throw new Error(d2.error || 'Failed');
+      reply = d2.reply;
+    }
+    ld.remove();
+    var parsed = parseLensResponse(reply, [n]);
+    if (parsed[n]) {
+      LF.responses[n] = parsed[n];
+      LF.selectedLenses.push(n);
+      // Insert lens response before the step 5 card
+      var step5 = Array.from(document.getElementById('msgs').children).reverse().find(function(el) {
+        return el.classList.contains('step-card') && el.classList.contains('work');
+      });
+      var lens = LENSES.find(function(l) { return l.n === n; });
+      if (step5 && lens) {
+        var card = document.createElement('div'); card.className = 'lens-resp fi'; card.dataset.lens = n;
+        var head = document.createElement('div'); head.className = 'lens-resp-head';
+        var em = document.createElement('span'); em.className = 'lens-resp-emoji'; em.textContent = lens.emoji;
+        var qq = document.createElement('span'); qq.className = 'lens-resp-q'; qq.textContent = lens.q;
+        head.appendChild(em); head.appendChild(qq);
+        var body = document.createElement('div'); body.className = 'lens-resp-body'; body.textContent = parsed[n];
+        var acts = document.createElement('div'); acts.className = 'lens-resp-actions';
+        var pushBtn = document.createElement('button'); pushBtn.className = 'act-btn pushback'; pushBtn.innerHTML = '↩ Push back';
+        pushBtn.onclick = function() { openPushback(card, n); };
+        acts.appendChild(pushBtn);
+        card.appendChild(head); card.appendChild(body); card.appendChild(acts);
+        document.getElementById('msgs').insertBefore(card, step5);
+      }
+    }
+    scrollBottom();
+  } catch(err) {
+    ld.remove();
+    var em = document.createElement('div'); em.className = 'err-msg fi'; em.textContent = 'Error: ' + err.message;
+    document.getElementById('msgs').appendChild(em);
+  }
+  ST.busy = false;
+}
+
+// ===================== FINISH FLOW =====================
+function finishFlow() {
+  var deltaConf = LF.confAfter - LF.confBefore;
+  var absDelta = Math.abs(deltaConf);
+
+  // Determine outcome heuristically:
+  // - If text after differs significantly AND confidence dropped or stance flipped: 'changed'
+  // - If confidence dropped to <= 3 OR ends with question marks: 'unsure'
+  // - Otherwise 'held'
+  var before = LF.positionBefore.toLowerCase();
+  var after = LF.positionAfter.toLowerCase();
+  var endsUnsure = /\?\s*$/.test(LF.positionAfter) || /(not sure|unsure|don't know|i think it depends|it depends)/.test(after);
+  var bigShift = absDelta >= 3 || (before.length > 10 && after.indexOf(before.slice(0, 20)) === -1 && Math.abs(after.length - before.length) > before.length * 0.3);
+
+  if (endsUnsure && LF.confAfter <= 4) LF.outcome = 'unsure';
+  else if (bigShift || deltaConf <= -3) LF.outcome = 'changed';
+  else LF.outcome = 'held';
+
+  LF.step = 6;
+  setStep('Saved');
+
+  // Update stats locally
+  ST.stats.questions++;
+  if (LF.outcome === 'changed') ST.stats.changed++;
+  else if (LF.outcome === 'held') ST.stats.held++;
+  else ST.stats.unsure++;
+  LF.selectedLenses.forEach(function(n) {
+    ST.stats.lensFreq[n] = (ST.stats.lensFreq[n] || 0) + 1;
+    if (!ST.stats.outcomeByLens[n]) ST.stats.outcomeByLens[n] = { changed: 0, held: 0, unsure: 0 };
+    ST.stats.outcomeByLens[n][LF.outcome]++;
+  });
+  refreshSidebarStats();
+
+  renderOutcome();
+  persistFlow();
   scrollBottom();
 }
+
+function renderOutcome() {
+  var msgs = document.getElementById('msgs');
+  var card = document.createElement('div'); card.className = 'outcome-card fi';
+  var badge = document.createElement('span');
+  badge.className = 'outcome-badge ' + LF.outcome;
+  badge.textContent = LF.outcome === 'changed' ? 'Mind changed' : LF.outcome === 'unsure' ? 'Less certain' : 'Held firm';
+  var title = document.createElement('div'); title.className = 'outcome-title';
+  if (LF.outcome === 'changed') title.textContent = 'Something shifted.';
+  else if (LF.outcome === 'unsure') title.textContent = 'More questions than answers.';
+  else title.textContent = 'Pushed, but stayed.';
+  var detail = document.createElement('div'); detail.className = 'outcome-detail';
+  var delta = LF.confAfter - LF.confBefore;
+  var deltaTxt = delta === 0 ? 'same' : (delta > 0 ? '+' + delta : String(delta));
+  detail.innerHTML =
+    'Confidence: <strong>' + LF.confBefore + ' → ' + LF.confAfter + '</strong> (' + deltaTxt + ')<br>' +
+    'Lenses used: <strong>' + LF.selectedLenses.length + '</strong>' +
+    (Object.keys(LF.pushbacks).length ? ' &middot; Pushed back on <strong>' + Object.keys(LF.pushbacks).length + '</strong>' : '');
+  card.appendChild(badge); card.appendChild(title); card.appendChild(detail);
+
+  var rowBtn = document.createElement('div'); rowBtn.style.marginTop = '14px'; rowBtn.style.display = 'flex'; rowBtn.style.justifyContent = 'center'; rowBtn.style.gap = '10px';
+  var newBtn = document.createElement('button'); newBtn.className = 'btn-primary'; newBtn.textContent = 'New question';
+  newBtn.onclick = newChat;
+  var histBtn = document.createElement('button'); histBtn.className = 'btn-ghost'; histBtn.textContent = 'See my history';
+  histBtn.onclick = showHistory;
+  rowBtn.appendChild(newBtn); rowBtn.appendChild(histBtn);
+  card.appendChild(rowBtn);
+  msgs.appendChild(card);
+}
+
+// ===================== PERSISTENCE =====================
+// Save the completed flow via /api/chat as a single "save" call (lens mode, action=save)
+async function persistFlow() {
+  try {
+    await fetch('/api/chat', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'save_lens_session',
+        chatId: ST.cid,
+        mode: 'lens',
+        question: LF.question,
+        userRole: ST.userRole,
+        ctxReason: LF.ctxReason,
+        ctxPurpose: LF.ctxPurpose,
+        ctxSource: LF.ctxSource,
+        positionBefore: LF.positionBefore,
+        confidenceBefore: LF.confBefore,
+        lensesUsed: LF.selectedLenses,
+        responses: LF.responses,
+        pushbacks: LF.pushbacks,
+        positionAfter: LF.positionAfter,
+        confidenceAfter: LF.confAfter,
+        outcome: LF.outcome,
+        model: ST.selectedModel
+      })
+    });
+    loadHist();
+  } catch(e) {
+    // Non-fatal — user already saw their outcome card
+  }
+}
+
+// ===================== HISTORY (sidebar + full view) =====================
+async function loadHist() {
+  try {
+    var r = await fetch('/api/history', { credentials: 'same-origin' });
+    var d = await r.json();
+    var list = document.getElementById('sb-hist');
+    list.innerHTML = '<div class="sb-section-lbl">Recent thinking</div>';
+    var chats = (d.chats || []).filter(function(c) { return c.mode === 'lens'; });
+    if (!chats.length) {
+      var e = document.createElement('div'); e.className = 'sb-empty'; e.textContent = 'No questions yet. Ask one to begin.';
+      list.appendChild(e);
+      return;
+    }
+    // Compute stats from chats list
+    var stats = { questions: chats.length, changed: 0, held: 0, unsure: 0 };
+    chats.forEach(function(c) {
+      if (c.outcome === 'changed') stats.changed++;
+      else if (c.outcome === 'unsure') stats.unsure++;
+      else stats.held++;
+    });
+    ST.stats.questions = stats.questions;
+    ST.stats.changed = stats.changed;
+    ST.stats.held = stats.held;
+    ST.stats.unsure = stats.unsure;
+    refreshSidebarStats();
+
+    chats.slice(0, 30).forEach(function(c) {
+      var item = document.createElement('div'); item.className = 'sb-item';
+      item.onclick = function() { showHistoryItem(c.id); };
+      var t = document.createElement('div'); t.className = 'sb-item-title';
+      t.textContent = c.first_question || c.question || 'Question';
+      var meta = document.createElement('div'); meta.className = 'sb-item-meta';
+      var tag = document.createElement('span');
+      tag.className = 'sb-tag ' + (c.outcome || 'held');
+      tag.textContent = c.outcome === 'changed' ? 'Changed' : c.outcome === 'unsure' ? 'Unsure' : 'Held';
+      var date = document.createElement('span'); date.textContent = new Date(c.created_at).toLocaleDateString();
+      meta.appendChild(tag); meta.appendChild(date);
+      item.appendChild(t); item.appendChild(meta); list.appendChild(item);
+    });
+  } catch(e) { /* network errors are silent in the sidebar */ }
+}
+
+function refreshSidebarStats() {
+  document.getElementById('stat-q').textContent = ST.stats.questions;
+  document.getElementById('stat-c').textContent = ST.stats.changed;
+}
+
+async function showHistory() {
+  if (LF.step !== 0 && LF.step !== 6) {
+    if (!confirm('You\'re mid-thinking. Leave this question and view your history?')) return;
+  }
+  resetLF();
+  setStep('Your thinking history');
+  document.getElementById('msgs').innerHTML = '';
+  try {
+    var r = await fetch('/api/history', { credentials: 'same-origin' });
+    var d = await r.json();
+    var chats = (d.chats || []).filter(function(c) { return c.mode === 'lens'; });
+    renderHistoryOverlay(chats);
+  } catch(e) {
+    var em = document.createElement('div'); em.className = 'err-msg'; em.textContent = 'Could not load history.';
+    document.getElementById('msgs').appendChild(em);
+  }
+}
+
+function renderHistoryOverlay(chats) {
+  var msgs = document.getElementById('msgs');
+  var ov = document.createElement('div'); ov.className = 'history-overlay fi';
+  var title = document.createElement('div'); title.className = 'history-title'; title.textContent = 'Your thinking history';
+  var sub = document.createElement('div'); sub.className = 'history-sub'; sub.textContent = 'How your own mind has been moving.';
+  ov.appendChild(title); ov.appendChild(sub);
+
+  // Stats
+  var changed = 0, held = 0, unsure = 0;
+  var lensCount = {};
+  var lensShift = {};
+  chats.forEach(function(c) {
+    if (c.outcome === 'changed') changed++;
+    else if (c.outcome === 'unsure') unsure++;
+    else held++;
+    (c.lensesUsed || c.lenses_used || []).forEach(function(n) {
+      lensCount[n] = (lensCount[n] || 0) + 1;
+      if (c.outcome === 'changed') lensShift[n] = (lensShift[n] || 0) + 1;
+    });
+  });
+  var stats = document.createElement('div'); stats.className = 'history-stats';
+  stats.appendChild(makeStat(chats.length, 'Questions', 'thought through'));
+  stats.appendChild(makeStat(changed, 'Mind changed', chats.length ? Math.round(100*changed/chats.length) + '% of the time' : ''));
+  // Favorite lens
+  var favN = 0, favC = 0;
+  Object.keys(lensCount).forEach(function(n) { if (lensCount[n] > favC) { favC = lensCount[n]; favN = parseInt(n, 10); } });
+  var favLens = LENSES.find(function(l) { return l.n === favN; });
+  stats.appendChild(makeStat(favLens ? favLens.emoji : '—', 'Favorite lens', favLens ? favLens.q : 'pick one to begin'));
+  ov.appendChild(stats);
+
+  if (!chats.length) {
+    var empty = document.createElement('div'); empty.style.textAlign = 'center'; empty.style.padding = '20px'; empty.style.color = 'var(--tx3)'; empty.style.fontFamily = 'var(--fb)'; empty.style.fontStyle = 'italic';
+    empty.textContent = 'You haven\'t asked a question yet. Start with one — see what happens.';
+    ov.appendChild(empty);
+    msgs.appendChild(ov);
+    return;
+  }
+
+  // List
+  var list = document.createElement('div'); list.className = 'history-list';
+  chats.slice(0, 50).forEach(function(c) {
+    var item = document.createElement('div'); item.className = 'history-item';
+    item.onclick = function() { showHistoryItem(c.id); };
+    var left = document.createElement('div'); left.style.flex = '1'; left.style.minWidth = '0';
+    var q = document.createElement('div'); q.className = 'history-item-q'; q.textContent = c.first_question || c.question || 'Question';
+    var dline = document.createElement('div'); dline.className = 'history-item-d';
+    var cb = c.confidence_before != null ? c.confidence_before : (c.confidenceBefore != null ? c.confidenceBefore : '?');
+    var ca = c.confidence_after != null ? c.confidence_after : (c.confidenceAfter != null ? c.confidenceAfter : '?');
+    var lensesN = (c.lensesUsed || c.lenses_used || []).length;
+    var outcomeLbl = c.outcome === 'changed' ? 'Changed mind' : c.outcome === 'unsure' ? 'Less certain' : 'Held firm';
+    dline.textContent = outcomeLbl + ' · confidence ' + cb + ' → ' + ca + ' · ' + lensesN + ' lens' + (lensesN !== 1 ? 'es' : '') + ' · ' + new Date(c.created_at).toLocaleDateString();
+    left.appendChild(q); left.appendChild(dline);
+    var tag = document.createElement('span'); tag.className = 'sb-tag ' + (c.outcome || 'held');
+    tag.textContent = c.outcome === 'changed' ? 'Changed' : c.outcome === 'unsure' ? 'Unsure' : 'Held';
+    item.appendChild(tag); item.appendChild(left);
+    list.appendChild(item);
+  });
+  ov.appendChild(list);
+
+  // Pattern insight
+  var pattern = computePattern(chats, lensCount, lensShift);
+  if (pattern) {
+    var pat = document.createElement('div'); pat.className = 'history-pattern';
+    pat.innerHTML = pattern;
+    ov.appendChild(pat);
+  }
+
+  msgs.appendChild(ov);
+}
+
+function makeStat(val, lbl, sub) {
+  var d = document.createElement('div'); d.className = 'history-stat';
+  var l = document.createElement('div'); l.className = 'history-stat-lbl'; l.textContent = lbl;
+  var v = document.createElement('div'); v.className = 'history-stat-val'; v.textContent = val;
+  var s = document.createElement('div'); s.className = 'history-stat-sub'; s.textContent = sub;
+  d.appendChild(l); d.appendChild(v); d.appendChild(s);
+  return d;
+}
+
+function computePattern(chats, lensCount, lensShift) {
+  if (chats.length < 3) return null;
+  // Find lens that shifts the user most often
+  var bestN = 0, bestRate = 0;
+  Object.keys(lensCount).forEach(function(n) {
+    if (lensCount[n] < 2) return;
+    var rate = (lensShift[n] || 0) / lensCount[n];
+    if (rate > bestRate) { bestRate = rate; bestN = parseInt(n, 10); }
+  });
+  // Find least-used lens
+  var leastN = 0, leastC = Infinity;
+  LENSES.forEach(function(l) {
+    var c = lensCount[l.n] || 0;
+    if (c < leastC) { leastC = c; leastN = l.n; }
+  });
+  var bestLens = LENSES.find(function(l) { return l.n === bestN; });
+  var leastLens = LENSES.find(function(l) { return l.n === leastN; });
+  var out = '<strong>Pattern:</strong> ';
+  if (bestLens && bestRate >= 0.4) {
+    out += 'You change your mind most often after <strong>' + bestLens.emoji + ' ' + bestLens.q + '</strong>. ';
+  }
+  if (leastLens && leastC <= 1) {
+    out += 'You rarely use <strong>' + leastLens.emoji + ' ' + leastLens.q + '</strong> — try it next time?';
+  }
+  if (out === '<strong>Pattern:</strong> ') return null;
+  return out;
+}
+
+async function showHistoryItem(chatId) {
+  try {
+    var r = await fetch('/api/history?chatId=' + encodeURIComponent(chatId), { credentials: 'same-origin' });
+    var d = await r.json();
+    if (!d || !d.messages || !d.messages.length) return;
+    var m = d.messages[0]; // lens sessions are one "message" per session
+    resetLF();
+    setStep('Viewing past question');
+    var msgs = document.getElementById('msgs'); msgs.innerHTML = '';
+    appendUserMsg(m.question || '(question)');
+
+    // Pinned context if available
+    var role = m.userRole || m.user_role;
+    var reason = m.ctxReason || m.ctx_reason;
+    var purpose = m.ctxPurpose || m.ctx_purpose;
+    var source = m.ctxSource || m.ctx_source;
+    if (role || reason || purpose || source) {
+      var pc = document.createElement('div'); pc.className = 'pinned-pos fi';
+      pc.style.background = 'var(--sur2)'; pc.style.borderColor = 'var(--bor)';
+      var pclbl = document.createElement('div'); pclbl.className = 'pinned-pos-lbl';
+      pclbl.style.color = 'var(--tx3)'; pclbl.textContent = 'Context';
+      var pctxt = document.createElement('div'); pctxt.className = 'pinned-pos-text';
+      pctxt.style.fontStyle = 'normal';
+      var parts = [];
+      if (role) parts.push('<strong style="font-weight:600;color:var(--tx);">' + escapeHtml(role) + '</strong>');
+      if (reason) parts.push('asking for <em>' + escapeHtml(reason) + '</em>');
+      if (purpose) parts.push('will use it for <em>' + escapeHtml(purpose) + '</em>');
+      if (source) parts.push('from <em>' + escapeHtml(source) + '</em>');
+      pctxt.innerHTML = parts.join(' &middot; ');
+      pc.appendChild(pclbl); pc.appendChild(pctxt);
+      msgs.appendChild(pc);
+    }
+
+    // Pinned starting position
+    if (m.positionBefore || m.position_before) {
+      var pos = m.positionBefore || m.position_before;
+      var confB = m.confidenceBefore != null ? m.confidenceBefore : m.confidence_before;
+      var p = document.createElement('div'); p.className = 'pinned-pos fi';
+      var lbl = document.createElement('div'); lbl.className = 'pinned-pos-lbl'; lbl.textContent = 'Your starting position';
+      var txt = document.createElement('div'); txt.className = 'pinned-pos-text'; txt.textContent = '"' + pos + '"';
+      var conf = document.createElement('div'); conf.className = 'pinned-pos-conf'; conf.textContent = 'Confidence: ' + (confB != null ? confB : '?') + ' / 10';
+      p.appendChild(lbl); p.appendChild(txt); p.appendChild(conf);
+      msgs.appendChild(p);
+    }
+
+    // Lens responses
+    var lensesUsed = m.lensesUsed || m.lenses_used || [];
+    var responses = m.responses || {};
+    lensesUsed.forEach(function(n) {
+      var lens = LENSES.find(function(l) { return l.n === n; });
+      if (!lens) return;
+      var card = document.createElement('div'); card.className = 'lens-resp fi';
+      var head = document.createElement('div'); head.className = 'lens-resp-head';
+      var em = document.createElement('span'); em.className = 'lens-resp-emoji'; em.textContent = lens.emoji;
+      var qq = document.createElement('span'); qq.className = 'lens-resp-q'; qq.textContent = lens.q;
+      head.appendChild(em); head.appendChild(qq);
+      var body = document.createElement('div'); body.className = 'lens-resp-body';
+      body.textContent = responses[n] || responses[String(n)] || '(no response)';
+      card.appendChild(head); card.appendChild(body);
+      msgs.appendChild(card);
+    });
+
+    // Position after + outcome
+    var posA = m.positionAfter || m.position_after;
+    if (posA) {
+      var confA = m.confidenceAfter != null ? m.confidenceAfter : m.confidence_after;
+      var p2 = document.createElement('div'); p2.className = 'pinned-pos fi';
+      p2.style.background = 'var(--blt)'; p2.style.borderColor = 'rgba(46,109,168,.3)';
+      var lbl2 = document.createElement('div'); lbl2.className = 'pinned-pos-lbl'; lbl2.style.color = 'var(--bld)';
+      lbl2.textContent = 'Where you landed';
+      var txt2 = document.createElement('div'); txt2.className = 'pinned-pos-text'; txt2.textContent = '"' + posA + '"';
+      var conf2 = document.createElement('div'); conf2.className = 'pinned-pos-conf'; conf2.style.color = 'var(--bld)';
+      conf2.textContent = 'Confidence: ' + (confA != null ? confA : '?') + ' / 10 · ' + (m.outcome === 'changed' ? 'Mind changed' : m.outcome === 'unsure' ? 'Less certain' : 'Held firm');
+      p2.appendChild(lbl2); p2.appendChild(txt2); p2.appendChild(conf2);
+      msgs.appendChild(p2);
+    }
+    scrollBottom();
+  } catch(e) {
+    var em = document.createElement('div'); em.className = 'err-msg'; em.textContent = 'Could not load this item.';
+    document.getElementById('msgs').appendChild(em);
+  }
+}
+
+// ===================== EXPORT =====================
+function toggleExp() { document.getElementById('exp-menu').classList.toggle('open'); }
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#exp-btn') && !e.target.closest('#exp-menu'))
+    document.getElementById('exp-menu').classList.remove('open');
+});
+
+function loadScript(src) {
+  return new Promise(function(ok, fail) {
+    if (document.querySelector('script[src="' + src + '"]')) { ok(); return; }
+    var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = fail;
+    document.head.appendChild(s);
+  });
+}
+
+function buildExportText() {
+  if (LF.step !== 6) return null;
+  var lines = [];
+  lines.push('CONSPREAD — ' + new Date().toLocaleString());
+  lines.push('');
+  lines.push('Context:');
+  if (ST.userRole) lines.push('  I am a: ' + ST.userRole);
+  if (LF.ctxReason) lines.push('  Asking for: ' + LF.ctxReason);
+  if (LF.ctxPurpose) lines.push('  Will use for: ' + LF.ctxPurpose);
+  if (LF.ctxSource) lines.push('  Coming from: ' + LF.ctxSource);
+  lines.push('');
+  lines.push('Question: ' + LF.question);
+  lines.push('');
+  lines.push('Starting position (confidence ' + LF.confBefore + '/10):');
+  lines.push('  ' + LF.positionBefore);
+  lines.push('');
+  LF.selectedLenses.forEach(function(n) {
+    var lens = LENSES.find(function(l) { return l.n === n; });
+    lines.push('— ' + lens.q + ' —');
+    lines.push(LF.responses[n] || '(no response)');
+    if (LF.pushbacks[n]) {
+      lines.push('');
+      lines.push('  Your pushback: ' + LF.pushbacks[n].user);
+      lines.push('  Reply: ' + LF.pushbacks[n].reply);
+    }
+    lines.push('');
+  });
+  lines.push('Landing position (confidence ' + LF.confAfter + '/10):');
+  lines.push('  ' + LF.positionAfter);
+  lines.push('');
+  lines.push('Outcome: ' + (LF.outcome === 'changed' ? 'Mind changed' : LF.outcome === 'unsure' ? 'Less certain' : 'Held firm'));
+  return lines.join('\n');
+}
+
+async function exportAs(fmt) {
+  document.getElementById('exp-menu').classList.remove('open');
+  var text = buildExportText();
+  if (!text) { alert('Finish a question first — then you can export it.'); return; }
+  var title = 'Conspread - ' + new Date().toLocaleDateString();
+
+  if (fmt === 'txt') {
+    dlBlob(new Blob([text], { type: 'text/plain' }), 'conspread.txt'); return;
+  }
+  if (fmt === 'word') {
+    var esc = text.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;');
+    var html = '<html><head><meta charset="utf-8"><title>' + title + '<' + '/title><' + '/head><body><h1 style="font-family:Georgia">' + title + '<' + '/h1><pre style="font-family:Georgia;font-size:12pt;line-height:1.7;white-space:pre-wrap">' + esc + '<' + '/pre><' + '/body><' + '/html>';
+    dlBlob(new Blob([html], { type: 'application/msword' }), 'conspread.doc'); return;
+  }
+  if (fmt === 'pdf') {
+    try {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+      var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+      doc.setFontSize(16); doc.setFont('helvetica', 'bold'); doc.text(title, 15, 20);
+      doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+      var lines = doc.splitTextToSize(text, 182); var y = 32;
+      lines.forEach(function(l) { if (y > 278) { doc.addPage(); y = 20; } doc.text(l, 14, y); y += 6; });
+      doc.save('conspread.pdf');
+    } catch(e) { alert('PDF export failed: ' + e.message); } return;
+  }
+  if (fmt === 'excel') {
+    try {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
+      var wb = window.XLSX.utils.book_new();
+      var rows = [
+        ['Question', LF.question],
+        ['Position before', LF.positionBefore],
+        ['Confidence before', LF.confBefore],
+        ['Position after', LF.positionAfter],
+        ['Confidence after', LF.confAfter],
+        ['Outcome', LF.outcome],
+        [],
+        ['Lens', 'Response', 'Your pushback', 'Reply to pushback']
+      ];
+      LF.selectedLenses.forEach(function(n) {
+        var lens = LENSES.find(function(l) { return l.n === n; });
+        var pb = LF.pushbacks[n] || {};
+        rows.push([lens.q, LF.responses[n] || '', pb.user || '', pb.reply || '']);
+      });
+      var ws = window.XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols'] = [{wch:24},{wch:60},{wch:40},{wch:60}];
+      window.XLSX.utils.book_append_sheet(wb, ws, 'Conspread');
+      window.XLSX.writeFile(wb, 'conspread.xlsx');
+    } catch(e) { alert('Excel export failed: ' + e.message); } return;
+  }
+  if (fmt === 'ppt') {
+    try {
+      await loadScript('https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js');
+      var pptx = new window.PptxGenJS(); pptx.layout = 'LAYOUT_WIDE';
+      var ts = pptx.addSlide();
+      ts.addText('Conspread', { x: 1, y: 2, w: 11, h: 1, fontSize: 44, bold: true, color: '2d2820' });
+      ts.addText(LF.question, { x: 1, y: 3.2, w: 11, h: 1, fontSize: 20, color: '5c5040' });
+      var p1 = pptx.addSlide();
+      p1.addText('Starting position', { x: 0.4, y: 0.2, w: 12.5, h: 0.6, fontSize: 18, bold: true, color: 'b8902a' });
+      p1.addText(LF.positionBefore, { x: 0.4, y: 1, w: 12.5, h: 2.5, fontSize: 14, color: '2d2820' });
+      p1.addText('Confidence: ' + LF.confBefore + ' / 10', { x: 0.4, y: 3.7, w: 12.5, h: 0.5, fontSize: 12, color: '5c5040', italic: true });
+      LF.selectedLenses.forEach(function(n) {
+        var lens = LENSES.find(function(l) { return l.n === n; });
+        var sl = pptx.addSlide();
+        sl.addText(lens.q, { x: 0.4, y: 0.2, w: 12.5, h: 0.6, fontSize: 18, bold: true, color: 'b8902a' });
+        sl.addText(LF.responses[n] || '', { x: 0.4, y: 1, w: 12.5, h: 5, fontSize: 12, color: '2d2820' });
+      });
+      var p2 = pptx.addSlide();
+      p2.addText('Where I landed', { x: 0.4, y: 0.2, w: 12.5, h: 0.6, fontSize: 18, bold: true, color: '2e6da8' });
+      p2.addText(LF.positionAfter, { x: 0.4, y: 1, w: 12.5, h: 2.5, fontSize: 14, color: '2d2820' });
+      p2.addText('Confidence: ' + LF.confAfter + ' / 10', { x: 0.4, y: 3.7, w: 12.5, h: 0.5, fontSize: 12, color: '5c5040', italic: true });
+      p2.addText('Outcome: ' + (LF.outcome === 'changed' ? 'Mind changed' : LF.outcome === 'unsure' ? 'Less certain' : 'Held firm'),
+        { x: 0.4, y: 4.3, w: 12.5, h: 0.5, fontSize: 13, bold: true, color: '2e6da8' });
+      pptx.writeFile({ fileName: 'conspread.pptx' });
+    } catch(e) { alert('PPT export failed: ' + e.message); } return;
+  }
+}
+
+function dlBlob(blob, name) {
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+}
+
+// ===================== UTILS =====================
+function newChat() {
+  ST.cid = null;
+  resetLF();
+  showWelcome();
+  loadHist();
+}
+
+function logout() { window.location.href = '/api/auth/logout'; }
+
+function setQ(q) { var i = document.getElementById('qi'); i.value = q; i.focus(); rsz(i); }
+function onKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); doSend(); } }
+function rsz(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 150) + 'px'; }
+function scrollBottom() { setTimeout(function() { var m = document.getElementById('msgs'); m.scrollTop = 99999; }, 60); }
+function getIni(u) { return ((u.name || u.username || 'U').split(' ').map(function(w) { return w[0]; }).join('')).toUpperCase().slice(0, 2); }
 
 function appendLoading(txt) {
   var div = document.createElement('div'); div.className = 'load-card fi';
   var t = document.createElement('div'); t.className = 'load-title';
-  t.textContent = txt || (ST.mode === 'council' ? 'Assembling dynamic council...' : 'Thinking...');
+  t.textContent = txt || 'Thinking...';
   var dots = document.createElement('div'); dots.className = 'load-dots';
-  for (var i=0;i<3;i++) dots.appendChild(document.createElement('span'));
+  for (var i = 0; i < 3; i++) dots.appendChild(document.createElement('span'));
   div.appendChild(t); div.appendChild(dots);
   document.getElementById('msgs').appendChild(div);
   scrollBottom();
   return div;
 }
 
-function responseAnswer(r) {
-  if (!r) return '';
-  if (typeof r === 'string') return r;
-  if (typeof r.answer === 'string') return r.answer;
-  return '';
-}
-
-function responseAssumptions(r) {
-  if (!r || typeof r !== 'object' || !Array.isArray(r.assumptions)) return [];
-  return r.assumptions.filter(function(a) { return typeof a === 'string' && a.trim(); }).slice(0, 5);
-}
-
-function renderCouncil(council, responses, synthesis, question) {
-  var wrap = document.createElement('div'); wrap.className = 'council-wrap fi';
-  council.forEach(function(p, i) {
-    var answer = responseAnswer(responses[i] || '');
-    var assumptions = responseAssumptions(responses[i] || {});
-    var item = document.createElement('div'); item.className = 'persona-summary';
-    var head = document.createElement('div'); head.className = 'persona-head';
-    var name = document.createElement('div'); name.className = 'persona-name'; name.textContent = p.name + ' (' + p.title + ')';
-    var count = document.createElement('span'); count.className = 'assump-chip'; count.textContent = 'Assumptions: ' + assumptions.length;
-    head.appendChild(name); head.appendChild(count);
-    var summary = document.createElement('div'); summary.className = 'persona-summary-text'; summary.textContent = getShortSummary(answer);
-    var link = document.createElement('a'); link.className = 'persona-link'; link.href = '#'; link.textContent = 'Read full response';
-    link.onclick = function(e) { e.preventDefault(); toggleFull(item, answer, assumptions); };
-    item.appendChild(head); item.appendChild(summary); item.appendChild(link);
-    wrap.appendChild(item);
-  });
-
-  // Summary table
-  var table = document.createElement('table'); table.className = 'persona-table';
-  var thead = document.createElement('thead');
-  var trh = document.createElement('tr');
-  var th1 = document.createElement('th'); th1.textContent = 'Persona';
-  var th2 = document.createElement('th'); th2.textContent = 'Short Answer';
-  trh.appendChild(th1); trh.appendChild(th2);
-  thead.appendChild(trh);
-  table.appendChild(thead);
-  var tbody = document.createElement('tbody');
-  council.forEach(function(p, i) {
-    var tr = document.createElement('tr');
-    var td1 = document.createElement('td'); td1.textContent = p.name;
-    var td2 = document.createElement('td'); td2.textContent = getShortSummary(responseAnswer(responses[i] || ''));
-    tr.appendChild(td1); tr.appendChild(td2);
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-  wrap.appendChild(table);
-
-  // Theme Connections
-  var connections = getThemeConnections(council, responses);
-  if (connections.length) {
-    wrap.appendChild(makeCollapsible('Theme Connections', false, function(b) {
-      var ul = document.createElement('ul'); ul.className = 'fw-list';
-      connections.forEach(function(conn) {
-        var li = document.createElement('li');
-        li.textContent = '"' + conn.theme + '" mentioned by: ' + conn.personas.join(', ');
-        ul.appendChild(li);
-      });
-      b.appendChild(ul);
-    }));
-  }
-
-  // Synthesis
-  if (synthesis) {
-    wrap.appendChild(makeCollapsible('Synthesis', true, function(b) {
-      b.appendChild(buildSynthEl(synthesis));
-    }));
-  }
-
-  document.getElementById('msgs').appendChild(wrap);
-}
-
-function makeCollapsible(title, startOpen, fillFn) {
-  var sec = document.createElement('div'); sec.className = 'collapsible';
-  var hd = document.createElement('div'); hd.className = 'coll-head';
-  var ttl = document.createElement('span'); ttl.className = 'coll-title'; ttl.textContent = title;
-  var chev = document.createElement('span'); chev.className = 'coll-chev' + (startOpen ? ' open' : ''); chev.textContent = '▼';
-  hd.appendChild(ttl); hd.appendChild(chev);
-  var body = document.createElement('div'); body.className = 'coll-body' + (startOpen ? ' open' : '');
-  if (startOpen) fillFn(body);
-  var filled = startOpen;
-  hd.addEventListener('click', function() {
-    if (!filled) { fillFn(body); filled = true; }
-    body.classList.toggle('open'); chev.classList.toggle('open');
-  });
-  sec.appendChild(hd); sec.appendChild(body);
-  return sec;
-}
-
-function buildSynthEl(syn) {
-  var div = document.createElement('div');
-  if (syn.summary) {
-    var sum = document.createElement('div'); sum.className = 'syn-sum';
-    syn.summary.split('\n\n').filter(Boolean).forEach(function(t) {
-      var p = document.createElement('p'); p.textContent = t; sum.appendChild(p);
-    });
-    div.appendChild(sum);
-  }
-  var fw = syn.decision_framework || {};
-  [{label:'Key Questions',items:fw.key_questions},{label:'What Would Change Views',items:fw.evidence_that_would_change_views},{label:'Red Flags',items:fw.red_flags}].forEach(function(sec) {
-    if (!sec.items || !sec.items.length) return;
-    var s = document.createElement('div'); s.className = 'fw-sec';
-    var lbl = document.createElement('div'); lbl.className = 'fw-lbl'; lbl.textContent = sec.label;
-    s.appendChild(lbl);
-    var ul = document.createElement('ul'); ul.className = 'fw-list';
-    sec.items.forEach(function(it) { var li = document.createElement('li'); li.textContent = it; ul.appendChild(li); });
-    s.appendChild(ul); div.appendChild(s);
-  });
-  if (syn.open_questions && syn.open_questions.length) {
-    var s2 = document.createElement('div'); s2.className = 'fw-sec';
-    var lbl2 = document.createElement('div'); lbl2.className = 'fw-lbl'; lbl2.textContent = 'Open Questions';
-    s2.appendChild(lbl2);
-    syn.open_questions.forEach(function(oq) {
-      var item = document.createElement('div'); item.className = 'oq-item';
-      var q2 = document.createElement('div'); q2.className = 'oq-q'; q2.textContent = oq.question;
-      var why = document.createElement('div'); why.className = 'oq-why'; why.textContent = oq.why_unresolved;
-      item.appendChild(q2); item.appendChild(why); s2.appendChild(item);
-    });
-    div.appendChild(s2);
-  }
-  return div;
-}
-
-function getShortSummary(text) {
-  if (!text) return 'No response';
-  var sentences = text.split(/[.!?]+/).filter(function(s){ return s.trim().length > 0; });
-  return sentences[0] ? sentences[0].trim().slice(0, 100) + (sentences[0].length > 100 ? '...' : '') : text.slice(0, 100) + '...';
-}
-
-function toggleFull(item, fullText, assumptions) {
-  var fullDiv = item.querySelector('.persona-full');
-  if (!fullDiv) {
-    fullDiv = document.createElement('div'); fullDiv.className = 'persona-full';
-    var answer = document.createElement('div');
-    answer.textContent = fullText;
-    fullDiv.appendChild(answer);
-    if (assumptions && assumptions.length) {
-      var title = document.createElement('div');
-      title.className = 'persona-assumptions-title';
-      title.textContent = 'Assumptions';
-      fullDiv.appendChild(title);
-      var ul = document.createElement('ul');
-      ul.className = 'persona-assumptions';
-      assumptions.forEach(function(a) {
-        var li = document.createElement('li');
-        li.textContent = a;
-        ul.appendChild(li);
-      });
-      fullDiv.appendChild(ul);
-    }
-    item.appendChild(fullDiv);
-  }
-  fullDiv.style.display = fullDiv.style.display === 'block' ? 'none' : 'block';
-}
-
-function getThemeConnections(council, responses) {
-  var wordCounts = {};
-  var personaWords = {};
-  (responses||[]).forEach(function(r, i){
-    var answer = responseAnswer(r || '');
-    var words = {};
-    (answer||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
-      if (w.length > 4 && !STOP[w]) {
-        words[w] = true;
-        wordCounts[w] = (wordCounts[w]||0)+1;
-      }
-    });
-    personaWords[i] = words;
-  });
-  var themes = Object.keys(wordCounts).filter(function(w){ return wordCounts[w] > 1; }).sort(function(a,b){return wordCounts[b]-wordCounts[a];}).slice(0,5);
-  return themes.map(function(theme) {
-    var personas = [];
-    council.forEach(function(p, i) {
-      if (personaWords[i][theme]) personas.push(p.name);
-    });
-    return {theme: theme, personas: personas};
-  }).filter(function(conn){ return conn.personas.length > 1; });
-}
-
-function renderNormal(text) {
-  // Clean up formatting artifacts
-  var cleanText = text.replace(/^\s*[*#]+\s*/gm, '').replace(/\s*[*#]+\s*$/gm, '').trim();
-  var wrap = document.createElement('div'); wrap.className = 'ai-wrap fi';
-  var body = document.createElement('div'); body.className = 'ai-body'; body.dataset.response = 'normal'; body.textContent = cleanText;
-  var foot = document.createElement('div'); foot.className = 'ai-foot';
-  var spk = document.createElement('button'); spk.className = 'speak-btn';
-  spk.textContent = '🔊 Speak';
-  (function(txt, btn){ 
-    btn.onclick = function(){ 
-      speakText(txt); 
-      setTimeout(function() {
-        btn.textContent = currentUtterance ? '⏹ Stop' : '🔊 Speak';
-      }, 100);
-    }; 
-  })(cleanText, spk);
-  foot.appendChild(spk); wrap.appendChild(body); wrap.appendChild(foot);
-  document.getElementById('msgs').appendChild(wrap);
-}
-
-function getThemeConnections(council, responses) {
-  var wordCounts = {};
-  var personaWords = {};
-  (responses||[]).forEach(function(r, i){
-    var answer = responseAnswer(r || '');
-    var words = {};
-    (answer||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(function(w){
-      if (w.length > 4 && !STOP[w]) {
-        words[w] = true;
-        wordCounts[w] = (wordCounts[w]||0)+1;
-      }
-    });
-    personaWords[i] = words;
-  });
-  var themes = Object.keys(wordCounts).filter(function(w){ return wordCounts[w] > 1; }).sort(function(a,b){return wordCounts[b]-wordCounts[a];}).slice(0,5);
-  return themes.map(function(theme) {
-    var personas = [];
-    council.forEach(function(p, i) {
-      if (personaWords[i][theme]) personas.push(p.name);
-    });
-    return {theme: theme, personas: personas};
-  }).filter(function(conn){ return conn.personas.length > 1; });
-}
-
-// ===================== LENS MODE FUNCTIONS =====================
-function lensStep1Submit() {
-  var inp = document.getElementById('qi'), q = inp.value.trim();
-  if (!q || ST.busy) return;
-  var w = document.querySelector('.welcome'); if (w) w.remove();
-  LM.input = q;
-  LM.step = 1;
-  LM.responses = null;
-  LM.userView = '';
-  inp.value = ''; inp.style.height = 'auto';
-  // Clear cache if input changed
-  if (LM._lastInput !== q) { LM.cache = {}; LM._lastInput = q; }
-  var label = document.createElement('div');
-  label.className = 'lens-input-label fi';
-  label.textContent = q;
-  document.getElementById('msgs').appendChild(label);
-  renderLensPicker();
-  scrollBottom();
-}
-
-function renderLensPicker() {
-  var wrap = document.createElement('div'); wrap.className = 'lens-picker-wrap fi';
-  var ttl = document.createElement('div'); ttl.className = 'lens-picker-title'; ttl.textContent = 'Pick your lenses';
-  var sub = document.createElement('div'); sub.className = 'lens-picker-sub';
-  sub.textContent = 'Choose the questions you want to ask. Lenses 1 and 4 are pre-selected — change them if you like.';
-  wrap.appendChild(ttl); wrap.appendChild(sub);
-
-  var grid = document.createElement('div'); grid.className = 'lens-grid';
-  LENSES.forEach(function(lens) {
-    var card = document.createElement('div');
-    card.className = 'lens-card' + (LM.selectedLenses.indexOf(lens.n) !== -1 ? ' selected' : '');
-    card.dataset.lens = lens.n;
-    var em = document.createElement('div'); em.className = 'lens-card-emoji'; em.textContent = lens.emoji;
-    var q2 = document.createElement('div'); q2.className = 'lens-card-q'; q2.textContent = lens.q;
-    var d = document.createElement('div'); d.className = 'lens-card-desc'; d.textContent = lens.label;
-    card.appendChild(em); card.appendChild(q2); card.appendChild(d);
-    card.onclick = function() {
-      var idx = LM.selectedLenses.indexOf(lens.n);
-      if (idx !== -1) { LM.selectedLenses.splice(idx, 1); card.classList.remove('selected'); }
-      else { LM.selectedLenses.push(lens.n); card.classList.add('selected'); }
-      updateAnalyzeBtn();
-    };
-    grid.appendChild(card);
-  });
-  wrap.appendChild(grid);
-
-  var ctrl = document.createElement('div'); ctrl.className = 'lens-ctrl';
-  var selAll = document.createElement('button'); selAll.className = 'lens-select-all'; selAll.textContent = 'Use all 6';
-  selAll.onclick = function() {
-    LM.selectedLenses = [1,2,3,4,5,6];
-    grid.querySelectorAll('.lens-card').forEach(function(c) { c.classList.add('selected'); });
-    updateAnalyzeBtn();
-  };
-  var ab = document.createElement('button'); ab.className = 'lens-analyze-btn'; ab.id = 'lens-analyze-btn';
-  ab.textContent = 'Analyze with ' + LM.selectedLenses.length + ' lens' + (LM.selectedLenses.length !== 1 ? 'es' : '');
-  ab.onclick = runLensAnalysis;
-  ctrl.appendChild(selAll); ctrl.appendChild(ab);
-  wrap.appendChild(ctrl);
-  document.getElementById('msgs').appendChild(wrap);
-}
-
-function updateAnalyzeBtn() {
-  var btn = document.getElementById('lens-analyze-btn');
-  if (!btn) return;
-  var n = LM.selectedLenses.length;
-  btn.textContent = n ? ('Analyze with ' + n + ' lens' + (n !== 1 ? 'es' : '')) : 'Select at least one lens';
-  btn.disabled = !n;
-}
-
-async function runLensAnalysis() {
-  if (!LM.selectedLenses.length || ST.busy) return;
-  var q = LM.input;
-  var lenses = LM.selectedLenses.slice().sort(function(a,b){return a-b;});
-  var cacheKey = lenses.join(',');
-
-  if (LM.cache[cacheKey]) {
-    displayLensResponses(LM.cache[cacheKey], lenses);
-    showWhatDoYouThinkBox();
-    scrollBottom();
-    return;
-  }
-
-  ST.busy = true;
-  var ab = document.getElementById('lens-analyze-btn');
-  if (ab) ab.disabled = true;
-  var ld = appendLoading('Thinking through your lenses...');
-
-  try {
-    var reply;
-    var systemPrompt = buildLensSystemPrompt(lenses);
-    var isClaudeModel = ST.selectedModel.startsWith('claude-');
-    var maxTok = lenses.length === 1 ? 200 : 800;
-
-    if (isClaudeModel) {
-      var r = await fetch('/api/anthropic', {
-        method: 'POST', credentials: 'same-origin',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role:'user', content: q }], systemPrompt: systemPrompt, maxTokens: maxTok })
-      });
-      var d = await r.json();
-      if (!r.ok) throw new Error(d.error || 'Request failed');
-      reply = d.reply;
-    } else {
-      var r2 = await fetch('/api/chat', {
-        method: 'POST', credentials: 'same-origin',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ question: q, chatId: null, history: [], mode: 'lens', model: ST.selectedModel, lenses: lenses })
-      });
-      var d2 = await r2.json();
-      if (!r2.ok) throw new Error(d2.error || 'Request failed');
-      reply = d2.reply;
-    }
-
-    ld.remove();
-    var parsed = parseLensResponse(reply, lenses);
-    LM.cache[cacheKey] = parsed;
-    LM.responses = parsed;
-    LM.step = 2;
-    ST.hist.push({ question: q, lenses: lenses, responses: parsed, mode: 'lens' });
-    displayLensResponses(parsed, lenses);
-    showWhatDoYouThinkBox();
-    scrollBottom();
-  } catch(err) {
-    ld.remove();
-    if (ab) ab.disabled = false;
-    if (err && typeof err.message === 'string' && err.message.toLowerCase().indexOf('unauthorized') !== -1) { logout(); return; }
-    var em = document.createElement('div'); em.className = 'err-msg fi'; em.textContent = 'Error: ' + err.message;
-    document.getElementById('msgs').appendChild(em);
-  }
-  ST.busy = false;
-}
-
-function displayLensResponses(parsed, lenses) {
-  var wrap = document.createElement('div'); wrap.className = 'lens-responses-wrap fi';
-  (lenses || []).forEach(function(n) {
-    if (!parsed[n]) return;
-    var lens = LENSES.find(function(l) { return l.n === n; });
-    if (!lens) return;
-    var card = document.createElement('div'); card.className = 'lens-response-card'; card.dataset.lens = n;
-    var hdr = document.createElement('div'); hdr.className = 'lens-response-header'; hdr.textContent = lens.emoji + '  ' + lens.q;
-    var body = document.createElement('div'); body.className = 'lens-response-body'; body.textContent = parsed[n];
-    card.appendChild(hdr); card.appendChild(body);
-    wrap.appendChild(card);
-  });
-  document.getElementById('msgs').appendChild(wrap);
-}
-
-function showWhatDoYouThinkBox() {
-  var wrap = document.createElement('div'); wrap.className = 'lens-think-wrap fi';
-  var h3 = document.createElement('h3'); h3.textContent = 'Now — what do you think?';
-  var p = document.createElement('p'); p.textContent = 'You can change your mind, stay where you started, or feel less sure. All are real answers.';
-  var ta = document.createElement('textarea'); ta.className = 'lens-think-textarea'; ta.placeholder = 'Write your view here...';
-  var btn = document.createElement('button'); btn.className = 'lens-submit-btn'; btn.textContent = 'Submit my view';
-  btn.onclick = function() {
-    var view = ta.value.trim();
-    if (!view) return;
-    LM.userView = view;
-    var last = ST.hist[ST.hist.length - 1];
-    if (last && last.mode === 'lens') last.userView = view;
-    ta.disabled = true; btn.disabled = true;
-    LM.step = 3;
-    showReflection();
-    scrollBottom();
-  };
-  wrap.appendChild(h3); wrap.appendChild(p); wrap.appendChild(ta); wrap.appendChild(btn);
-  document.getElementById('msgs').appendChild(wrap);
-}
-
-function showReflection() {
-  var usedSet = LM.selectedLenses;
-  var unused = LENSES.filter(function(l) { return usedSet.indexOf(l.n) === -1; });
-  var used = usedSet.map(function(n) {
-    var l = LENSES.find(function(l) { return l.n === n; });
-    return l ? (l.emoji + ' ' + l.label) : ('Lens ' + n);
-  }).join(' and ');
-
-  var wrap = document.createElement('div'); wrap.className = 'lens-reflection-wrap fi';
-  var p1 = document.createElement('p'); p1.textContent = 'You used ' + used + '.';
-  wrap.appendChild(p1);
-
-  if (unused.length) {
-    var sug = unused[0];
-    var p2 = document.createElement('p'); p2.textContent = 'Want to try ' + sug.emoji + ' "' + sug.q + '" too?';
-    var btns = document.createElement('div'); btns.className = 'lens-reflection-btns';
-    var btnYes = document.createElement('button'); btnYes.className = 'icon-btn'; btnYes.textContent = 'Yes, add that lens';
-    btnYes.onclick = function() { btns.remove(); p2.remove(); addOneLens(sug); };
-    var btnNo = document.createElement('button'); btnNo.className = 'icon-btn'; btnNo.textContent = "No, I'm done";
-    btnNo.onclick = function() { wrap.remove(); };
-    btns.appendChild(btnYes); btns.appendChild(btnNo);
-    wrap.appendChild(p2); wrap.appendChild(btns);
-  }
-  document.getElementById('msgs').appendChild(wrap);
-}
-
-async function addOneLens(lens) {
-  var q = LM.input;
-  var cacheKey = 'single:' + lens.n;
-  if (LM.cache[cacheKey]) {
-    displayLensResponses(LM.cache[cacheKey], [lens.n]);
-    scrollBottom();
-    return;
-  }
-  ST.busy = true;
-  var ld = appendLoading('Adding lens...');
-  try {
-    var systemPrompt = buildLensSystemPrompt([lens.n]);
-    var isClaudeModel = ST.selectedModel.startsWith('claude-');
-    var reply;
-    if (isClaudeModel) {
-      var r = await fetch('/api/anthropic', {
-        method: 'POST', credentials: 'same-origin',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role:'user', content: q }], systemPrompt: systemPrompt, maxTokens: 200 })
-      });
-      var d = await r.json();
-      if (!r.ok) throw new Error(d.error || 'Request failed');
-      reply = d.reply;
-    } else {
-      var r2 = await fetch('/api/chat', {
-        method: 'POST', credentials: 'same-origin',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ question: q, chatId: null, history: [], mode: 'lens', model: ST.selectedModel, lenses: [lens.n] })
-      });
-      var d2 = await r2.json();
-      if (!r2.ok) throw new Error(d2.error || 'Request failed');
-      reply = d2.reply;
-    }
-    ld.remove();
-    var parsed = parseLensResponse(reply, [lens.n]);
-    LM.cache[cacheKey] = parsed;
-    if (LM.responses) Object.assign(LM.responses, parsed);
-    var last = ST.hist[ST.hist.length - 1];
-    if (last && last.mode === 'lens' && last.responses) Object.assign(last.responses, parsed);
-    displayLensResponses(parsed, [lens.n]);
-    scrollBottom();
-  } catch(err) {
-    ld.remove();
-    var em = document.createElement('div'); em.className = 'err-msg fi'; em.textContent = 'Error: ' + err.message;
-    document.getElementById('msgs').appendChild(em);
-  }
-  ST.busy = false;
-}
-
-// ===================== PATTERNS =====================
-function trackWords(text) {
-  text.toLowerCase().replace(/[^a-z\s]/g,'').split(/\s+/).forEach(function(w) {
-    if (w.length > 4 && !STOP[w]) ST.wordFreq[w] = (ST.wordFreq[w]||0)+1;
-  });
-}
-
-function renderPatterns() {
-  var old = document.getElementById('pattern-panel');
-  if (old) old.remove();
-  var top = Object.keys(ST.wordFreq).filter(function(w){ return ST.wordFreq[w]>1; })
-    .sort(function(a,b){ return ST.wordFreq[b]-ST.wordFreq[a]; }).slice(0,10);
-  if (!top.length) return;
-  var panel = document.createElement('div'); panel.id = 'pattern-panel'; panel.className = 'pattern-panel fi';
-  var lbl = document.createElement('div'); lbl.className = 'pattern-lbl'; lbl.textContent = 'Recurring themes this session:';
-  panel.appendChild(lbl);
-  var tags = document.createElement('div'); tags.className = 'pattern-tags';
-  top.forEach(function(w) {
-    var t = document.createElement('span'); t.className = 'pattern-tag';
-    t.textContent = w + ' x' + ST.wordFreq[w]; tags.appendChild(t);
-  });
-  panel.appendChild(tags);
-  document.getElementById('msgs').appendChild(panel);
-}
-
 // ===================== VOICE =====================
-var currentUtterance = null;
-
 function toggleVoice() {
   if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
     alert('Voice input is not supported in this browser. Try Chrome.'); return;
@@ -1135,197 +1759,7 @@ function toggleVoice() {
   recog.start();
 }
 
-function speakText(text) {
-  if (!('speechSynthesis' in window)) return;
-  if (currentUtterance) {
-    // Stop current speech
-    window.speechSynthesis.cancel();
-    currentUtterance = null;
-    return;
-  }
-  // Start new speech
-  currentUtterance = new SpeechSynthesisUtterance(text.slice(0,1200));
-  currentUtterance.rate = 0.95; currentUtterance.pitch = 1;
-  currentUtterance.onend = function() { currentUtterance = null; };
-  window.speechSynthesis.speak(currentUtterance);
-}
-
-// ===================== MUSIC =====================
-// Music functionality removed
-
-// ===================== EXPORT =====================
-function toggleExp() {
-  document.getElementById('exp-menu').classList.toggle('open');
-}
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('#exp-btn') && !e.target.closest('#exp-menu'))
-    document.getElementById('exp-menu').classList.remove('open');
-});
-
-function loadScript(src) {
-  return new Promise(function(ok, fail) {
-    if (document.querySelector('script[src="'+src+'"]')) { ok(); return; }
-    var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = fail;
-    document.head.appendChild(s);
-  });
-}
-
-function convText() {
-  var lines = ['CONSPREAD EXPORT - ' + new Date().toLocaleString(), ''];
-  ST.hist.forEach(function(h, i) {
-    lines.push('Q' + (i+1) + ': ' + h.question);
-    if (h.mode === 'council' && h.responses) {
-      h.responses.forEach(function(r, j) {
-        lines.push('  [' + (j+1) + '] ' + responseAnswer(r));
-        var assumptions = responseAssumptions(r);
-        if (assumptions.length) assumptions.forEach(function(a) { lines.push('      - assumption: ' + a); });
-      });
-    } else if (h.reply) { lines.push('Answer: ' + h.reply); }
-    lines.push('');
-  });
-  return lines.join('\n');
-}
-
-async function exportAs(fmt) {
-  document.getElementById('exp-menu').classList.remove('open');
-  if (!ST.hist.length) { alert('Nothing to export yet.'); return; }
-  var title = 'Conspread - ' + new Date().toLocaleDateString();
-  var text = convText();
-  if (fmt === 'txt') { dlBlob(new Blob([text],{type:'text/plain'}), 'conspread.txt'); return; }
-  if (fmt === 'word') {
-    var esc2 = text.split('&').join('&amp;').split('<').join('&lt;').split('>').join('&gt;');
-    var htmlOpen = '<html><head><meta charset="utf-8"><title>'+title+'<'+'/title><'+'/head><body><h1 style="font-family:Georgia">'+title+'<'+'/h1><pre style="font-family:Georgia;font-size:12pt;line-height:1.7;white-space:pre-wrap">';
-    var htmlClose = '<'+'/pre><'+'/body><'+'/html>';
-    var html = htmlOpen + esc2 + htmlClose;
-    dlBlob(new Blob([html],{type:'application/msword'}), 'conspread.doc'); return;
-  }
-  if (fmt === 'pdf') {
-    try {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-      var doc = new window.jspdf.jsPDF({unit:'mm',format:'a4'});
-      doc.setFontSize(16); doc.setFont('helvetica','bold'); doc.text(title,15,20);
-      doc.setFontSize(10); doc.setFont('helvetica','normal');
-      var lines = doc.splitTextToSize(text,182); var y = 32;
-      lines.forEach(function(l){ if(y>278){doc.addPage();y=20;} doc.text(l,14,y); y+=6; });
-      doc.save('conspread.pdf');
-    } catch(e) { alert('PDF export failed: '+e.message); } return;
-  }
-  if (fmt === 'excel') {
-    try {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
-      var wb = window.XLSX.utils.book_new();
-      var rows = [['#','Type','Content']];
-      ST.hist.forEach(function(h, i) {
-        rows.push([i+1,'Question',h.question]);
-        if (h.mode==='council'&&h.responses) h.responses.forEach(function(r,j){rows.push(['',j+1+'. View',responseAnswer(r)]);});
-        else if (h.reply) rows.push(['','Answer',h.reply]);
-      });
-      var ws = window.XLSX.utils.aoa_to_sheet(rows);
-      ws['!cols'] = [{wch:5},{wch:18},{wch:100}];
-      window.XLSX.utils.book_append_sheet(wb,ws,'Conspread');
-      window.XLSX.writeFile(wb,'conspread.xlsx');
-    } catch(e) { alert('Excel export failed: '+e.message); } return;
-  }
-  if (fmt === 'ppt') {
-    try {
-      await loadScript('https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js');
-      var pptx = new window.PptxGenJS(); pptx.layout = 'LAYOUT_WIDE';
-      var ts = pptx.addSlide();
-      ts.addText('Conspread',{x:1,y:2,w:11,h:1,fontSize:44,bold:true,color:'2d2820'});
-      ts.addText(title,{x:1,y:3.2,w:11,h:0.5,fontSize:16,color:'9c8870'});
-      ST.hist.forEach(function(h, idx) {
-        var sl = pptx.addSlide();
-        sl.addText('Q'+(idx+1)+': '+h.question.slice(0,120),{x:0.4,y:0.2,w:12.5,h:0.8,fontSize:15,bold:true,color:'2d2820'});
-        var y2 = 1.2;
-        if (h.mode==='council'&&h.responses) {
-          h.responses.slice(0,6).forEach(function(r,j){
-            sl.addText((j+1)+'. '+responseAnswer(r).slice(0,180),{x:0.4,y:y2,w:12.5,h:0.8,fontSize:9,color:'5c5040'}); y2+=0.85;
-          });
-        } else if (h.reply) {
-          sl.addText(h.reply.slice(0,600),{x:0.4,y:y2,w:12.5,h:4,fontSize:11,color:'5c5040'});
-        }
-      });
-      pptx.writeFile({fileName:'conspread.pptx'});
-    } catch(e) { alert('PPT export failed: '+e.message); } return;
-  }
-}
-
-function dlBlob(blob, name) {
-  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
-}
-
-// ===================== HISTORY =====================
-async function loadHist() {
-  try {
-    var r = await fetch('/api/history',{credentials:'same-origin'});
-    var d = await r.json();
-    var list = document.getElementById('sb-hist');
-    list.innerHTML = '';
-    if (!d.chats || !d.chats.length) { list.innerHTML = '<div class="sb-empty">No ' + (ST.mode === 'council' ? 'critical thinking' : 'normal conversation') + ' chats yet</div>'; return; }
-    // Filter chats by current mode
-    var filteredChats = d.chats.filter(function(c) { return c.mode === ST.mode; });
-    if (!filteredChats.length) { list.innerHTML = '<div class="sb-empty">No ' + (ST.mode === 'council' ? 'critical thinking' : 'normal conversation') + ' chats yet</div>'; return; }
-    filteredChats.forEach(function(c) {
-      var item = document.createElement('div');
-      item.className = 'sb-item' + (c.id === ST.cid ? ' active' : '');
-      item.onclick = function(){ loadChat(c.id); };
-      var t = document.createElement('div'); t.className = 'sb-item-title'; t.textContent = c.first_question || 'Session';
-      var meta = document.createElement('div'); meta.className = 'sb-item-meta';
-      var mode = document.createElement('span'); mode.className = 'sb-mode ' + (c.mode||'council');
-      mode.textContent = c.mode === 'normal' ? 'Chat' : 'Council';
-      var date = document.createElement('span'); date.textContent = new Date(c.created_at).toLocaleDateString();
-      meta.appendChild(mode); meta.appendChild(date);
-      item.appendChild(t); item.appendChild(meta); list.appendChild(item);
-    });
-  } catch(e) {}
-}
-
-async function loadChat(chatId) {
-  try {
-    var r = await fetch('/api/history?chatId='+chatId,{credentials:'same-origin'});
-    var d = await r.json();
-    if (!d || !d.messages || !d.messages.length) return;
-    ST.cid = chatId; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
-    var old = document.getElementById('pattern-panel'); if (old) old.remove();
-    var msgs = document.getElementById('msgs'); msgs.innerHTML = '';
-    d.messages.forEach(function(m) {
-      appendUserMsg(m.question);
-      if (m.mode === 'council' || m.council) {
-        ST.hist.push({question:m.question,responses:m.responses||[],mode:'council'});
-        renderCouncil(m.council||[],m.responses||[],m.synthesis,m.question);
-        trackWords((m.responses||[]).map(responseAnswer).join(' ')+' '+m.question);
-        var pc = (m.council && m.council.length) ? m.council.length : ((m.responses || []).length || 0);
-        document.getElementById('mode-badge').textContent = pc > 0 ? (pc + ' Perspectives') : 'Dynamic Perspectives';
-      } else {
-        ST.hist.push({question:m.question,reply:m.reply||'',mode:'normal'});
-        renderNormal(m.reply||'');
-        trackWords((m.reply||'')+' '+m.question);
-      }
-      ST.msgCount++;
-    });
-    if (ST.msgCount >= 3) renderPatterns();
-    scrollBottom(); loadHist();
-  } catch(e) { console.error(e); }
-}
-
-// ===================== UTILS =====================
-function newChat() {
-  ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
-  var old = document.getElementById('pattern-panel'); if (old) old.remove();
-  showWelcome();
-}
-
-function logout() {
-  window.location.href = '/api/auth/logout';
-}
-
-function setQ(q) { var i=document.getElementById('qi'); i.value=q; i.focus(); rsz(i); }
-function onKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();} }
-function rsz(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,150)+'px'; }
-function scrollBottom() { setTimeout(function(){ document.getElementById('msgs').scrollTop=9999; },60); }
-function getIni(u) { return ((u.name||u.username||'U').split(' ').map(function(w){return w[0];}).join('')).toUpperCase().slice(0,2); }
-
-// ==== TEXT SELECTION FOLLOW-UP ====
+// ===================== SELECTION ACTION =====================
 var selectionActionEl;
 function setupSelectionFollowUp() {
   selectionActionEl = document.createElement('div');
@@ -1348,7 +1782,7 @@ function setupSelectionFollowUp() {
     var node = sel.anchorNode;
     if (!node) { hideSelectionAction(); return; }
     var container = node.nodeType === 3 ? node.parentElement : node;
-    if (!container || !container.closest('.p-body, .ai-body')) { hideSelectionAction(); return; }
+    if (!container || !container.closest('.lens-resp-body, .pinned-pos-text, .pushback-reply')) { hideSelectionAction(); return; }
     var range = sel.getRangeAt(0);
     var rect = range.getBoundingClientRect();
     showSelectionAction(text, rect.right, rect.top);

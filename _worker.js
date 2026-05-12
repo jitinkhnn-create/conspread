@@ -2,6 +2,11 @@
 // CONSPREAD — _worker.js (API only)
 // Cloudflare Pages serves index.html as static.
 // Worker handles /api/* routes only.
+//
+// REWRITTEN: single mode ('lens') with position-first critical
+// thinking flow. Frontend builds the system prompt; worker passes
+// it through. New action 'save_lens_session' persists the full
+// completed session.
 // ================================================================
 
 const SAFE_AI = `You must always: be accurate and honest, acknowledge uncertainty,
@@ -21,76 +26,60 @@ const OPENROUTER_FREE_FALLBACKS = [
   'or:deepseek/deepseek-r1:free'
 ];
 
-// ===================== PERSPECTIVES =====================
+// ===================== LENS DEFINITIONS =====================
+// Mirror of the frontend LENSES array. Used only as a server-side
+// fallback if the frontend doesn't send a systemPrompt (it should).
 
-var PERSP_INSTRUCTIONS = {
-  'Personal|Emotional impact':        'How does this topic make people feel? Name the emotions it stirs — fear, excitement, sadness, hope — and say which kinds of people feel them and why. Be specific.',
-  'Personal|Daily life relevance':    'How does this show up in a person\'s everyday life? Give a concrete example someone aged 10-18 would recognise from their own day.',
-  'Personal|Self-reflection':         'What does this topic ask someone to examine about themselves? What personal belief, habit, or assumption might it challenge?',
-  'Ethical|Fairness':                 'Is this topic fair to everyone involved? Name who benefits and who might be left out or harmed — actual people or groups, not abstractions.',
-  'Ethical|Social responsibility':    'What do people, companies, or governments owe each other here? What does doing the right thing look like in practice?',
-  'Ethical|Environmental impact':     'How does this connect to the natural world? Describe the environmental effects — short-term and long-term — in plain terms.',
-  'Practical|Daily application':      'How would someone actually use or apply this in everyday life? Give concrete steps, situations, or tools.',
-  'Practical|Problem-solving':        'What problem does this topic solve, or what new problem does it create? What would a practical fix or workaround look like?',
-  'Practical|Real-world use':         'Where is this already being used in the world right now? Give a real or very plausible example of it in action.',
-  'Creative|Imaginative scenarios':   'Describe a surprising or unexpected situation this topic could lead to. Make it vivid, specific, and a little unexpected.',
-  'Creative|Storytelling':            'Write 2-3 sentences of a mini-story that brings this topic to life for a young reader. Make the reader feel something.',
-  'Creative|Artistic views':          'How might a poet, musician, or filmmaker see this topic differently from a scientist or politician? What feeling would they want to capture and why?',
-  'Historical|Past interpretations':  'How did people in a specific past time or place understand or deal with this topic? Name the era or culture — avoid vague "long ago."',
-  'Historical|Lessons from history':  'What lesson has history taught about this topic? Point to a real past mistake or success that still matters today.',
-  'Historical|Cultural evolution':    'How has the meaning or importance of this topic shifted across different cultures or over time? Name the change and what drove it.',
-  'Future-oriented|Long-term effects':'If current trends continue unchanged, where does this topic lead in 20-50 years? Be specific about likely consequences.',
-  'Future-oriented|Future innovations':'What new technology, idea, or social movement could change how we deal with this topic? Why might it matter?',
-  'Future-oriented|Trends ahead':     'What patterns visible today hint at where this topic is heading? Name a real, observable trend — not a wish or fear.'
+const LENS_DEFS = {
+  1: { q: 'The opposite view',
+       instruction: 'Steelman the strongest argument against the user\'s stated position. Do not soften it. Quote back the user\'s own logic and show where it cracks under pressure. Stay direct. 100-140 words.' },
+  2: { q: 'What you\'re assuming',
+       instruction: 'Surface 3-4 specific unspoken assumptions baked into the user\'s position or the question itself. Number them. For each, name the assumption in one sentence, then say in one sentence what changes if it\'s wrong. 100-140 words.' },
+  3: { q: 'Zoom in / zoom out',
+       instruction: 'Show how this question looks at three scales: one individual, a group or community of ~100, and a country or larger. The right answer can flip between scales. Be concrete with examples at each scale. 100-140 words.' },
+  4: { q: 'Who gains, who loses',
+       instruction: 'List 2-3 groups who benefit if the user\'s position is adopted, and 2-3 who lose. Then do the same for the opposite. Be specific about real people, industries, or institutions. End with one line: which of these is loudest in public debate, and why. 100-140 words.' },
+  5: { q: 'Has this happened before?',
+       instruction: 'Name 1-2 real historical episodes where a similar question or pattern came up. Briefly: when, where, what happened, how it was resolved (or not). End with one line: which historical pattern this most resembles, and why that\'s worth knowing. 100-140 words.' },
+  6: { q: '10 years from now',
+       instruction: 'Project forward 10 years. Describe two plausible futures: one where the user\'s position turned out right, and one where it turned out wrong. Be specific about what would have had to be true in each case. End with: what to watch for now to tell which is happening. 100-140 words.' }
 };
 
-function buildPerspectivesSystemPrompt(selectedPerspectives) {
-  var valid = (Array.isArray(selectedPerspectives) ? selectedPerspectives : []).filter(function(p) {
-    return p && p.category && p.subcategory && PERSP_INSTRUCTIONS[p.category + '|' + p.subcategory];
-  });
-  if (!valid.length) valid = [{ category: 'Personal', subcategory: 'Emotional impact' }];
+function buildLensSystemPromptServerFallback(lenses, position, conf, context) {
+  var valid = (Array.isArray(lenses) ? lenses : [])
+    .map(function(n) { return parseInt(n, 10); })
+    .filter(function(n) { return LENS_DEFS[n]; });
+  if (!valid.length) valid = [1];
 
-  var header = SAFE_AI + '\n\nYou are a multi-perspective thinking tool for readers aged 10 and above. The user gives you a topic. Respond through EACH perspective listed below.\n\nFor each perspective: write 80-120 words in plain language a 10-year-old can follow. No jargon. No preaching. Never start any response with "Great question!" or similar filler.\n\nUse this EXACT tag format (the app parses it):\n\n';
-  var tagBlock = valid.map(function(p) {
-    return '[P:' + p.category + '|' + p.subcategory + ']\n(your response here)\n[/P:' + p.category + '|' + p.subcategory + ']';
-  }).join('\n\n');
-  var instrBlock = '\n\nPerspective instructions:\n\n' + valid.map(function(p) {
-    var k = p.category + '|' + p.subcategory;
-    return '[P:' + k + ']\n' + p.category + ' — ' + p.subcategory + ':\n' + PERSP_INSTRUCTIONS[k];
+  var tagBlock = valid.map(function(n) {
+    return '[L' + n + ']\n(your response here)\n[/L' + n + ']';
   }).join('\n\n');
 
-  return header + tagBlock + instrBlock;
-}
+  var instr = valid.map(function(n) {
+    return '[L' + n + '] — ' + LENS_DEFS[n].q + ':\n' + LENS_DEFS[n].instruction;
+  }).join('\n\n');
 
-function parsePerspectivesResponse(text, selectedPerspectives) {
-  var result = {};
-  (selectedPerspectives || []).forEach(function(p) {
-    var k = p.category + '|' + p.subcategory;
-    var escaped = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var rx = new RegExp('\\[P:' + escaped + '\\]([\\s\\S]*?)\\[/P:' + escaped + '\\]');
-    var m = (text || '').match(rx);
-    if (m) result[k] = m[1].trim();
-  });
-  // Fallback: if nothing parsed, put raw text under first key
-  if (!Object.keys(result).length && selectedPerspectives && selectedPerspectives.length) {
-    var first = selectedPerspectives[0];
-    result[first.category + '|' + first.subcategory] = text || '';
+  var ctxBlock = '';
+  if (context && (context.userRole || context.ctxReason || context.ctxPurpose || context.ctxSource)) {
+    ctxBlock = 'USER CONTEXT (use silently to calibrate tone, examples, and depth — DO NOT repeat it back, DO NOT start with "as a ___"):\n';
+    if (context.userRole)   ctxBlock += '- The user is a ' + context.userRole + '.\n';
+    if (context.ctxReason)  ctxBlock += '- Asking for: ' + context.ctxReason + '.\n';
+    if (context.ctxPurpose) ctxBlock += '- Will use answer for: ' + context.ctxPurpose + '.\n';
+    if (context.ctxSource)  ctxBlock += '- Question is coming from: ' + context.ctxSource + '.\n';
+    ctxBlock += '\nAdapt examples to their situation; never patronize, never flatter.\n\n';
   }
-  return result;
+
+  return SAFE_AI + '\n\n' +
+    'You are a critical thinking tool. The user has stated their position BEFORE you respond. Your job is NOT to flatter or summarize. Your job is to push.\n\n' +
+    ctxBlock +
+    'USER POSITION: "' + (position || '(none stated)') + '"\n' +
+    'USER CONFIDENCE: ' + (conf != null ? conf : '?') + '/10\n\n' +
+    'Write the response for each requested lens using EXACTLY this format:\n\n' + tagBlock + '\n\n' +
+    'Lens instructions:\n\n' + instr + '\n\n' +
+    'Rules: Plain language. No jargon. Never start with "Great question!" or any flattery. Do not hedge. Stay focused on the user\'s specific position, not generic talking points. Treat the user as a serious thinker who can handle a real challenge.';
 }
 
-function normalSystemPrompt() {
-  return `You are Conspread, a helpful and thoughtful assistant.
-
-Style rules:
-- Plain, direct English. No jargon.
-- Short paragraphs. Get to the point quickly.
-- Be honest about uncertainty.
-- Be constructive and give actionable insight.
-- Friendly but not sycophantic.
-
-${SAFE_AI}`;
-}
+// ===================== MODEL FALLBACK PLUMBING (unchanged) =====================
 
 function uniqueModels(list) {
   var seen = {};
@@ -291,33 +280,35 @@ function mapHFErrorToClient(err) {
   return null;
 }
 
-function trimConfirmation(text) {
-  return (text || '').replace(/^\s*(Sure!?|Of course!?|Here you go:?|Absolutely!?|Great!?)[,!.\s]*/i, '').trim();
-}
+// ===================== LENS CALL =====================
 
-async function normalReply(question, history, token, model, env) {
-  var msgs = [{ role: 'system', content: normalSystemPrompt() }];
-  (history || []).slice(-6).forEach(function(h) {
-    msgs.push({ role: 'user', content: h.question });
-    if (h.reply) msgs.push({ role: 'assistant', content: trimConfirmation(h.reply) });
-  });
-  msgs.push({ role: 'user', content: question });
-  return callHFWithRetry(msgs, token, model, { max_tokens: 1024, temperature: 0.70 }, 2, env);
-}
-
-async function perspectivesReply(question, selectedPerspectives, token, model, env) {
-  var persp = (Array.isArray(selectedPerspectives) ? selectedPerspectives : []).filter(function(p) {
-    return p && p.category && p.subcategory;
-  });
-  if (!persp.length) persp = [{ category: 'Personal', subcategory: 'Emotional impact' }];
-  var systemPrompt = buildPerspectivesSystemPrompt(persp);
-  var maxTokens = Math.min(3000, Math.max(400, persp.length * 200));
+async function lensReply(question, options, token, model, env) {
+  // The frontend builds the systemPrompt and sends it. We respect it.
+  // Fallback: if no systemPrompt was provided, we build one server-side.
+  var systemPrompt = options.systemPrompt;
+  if (!systemPrompt) {
+    systemPrompt = buildLensSystemPromptServerFallback(
+      options.lenses,
+      options.positionBefore,
+      options.confidenceBefore,
+      {
+        userRole:   options.userRole,
+        ctxReason:  options.ctxReason,
+        ctxPurpose: options.ctxPurpose,
+        ctxSource:  options.ctxSource
+      }
+    );
+  }
+  var lensCount = (Array.isArray(options.lenses) ? options.lenses.length : 1);
+  var maxTokens = Math.min(3000, Math.max(400, lensCount * 220));
   var msgs = [
     { role: 'system', content: systemPrompt },
-    { role: 'user', content: question }
+    { role: 'user',   content: question }
   ];
   return callHFWithRetry(msgs, token, model, { max_tokens: maxTokens, temperature: 0.72 }, 2, env);
 }
+
+// ===================== SESSION HELPERS (unchanged) =====================
 
 async function mkSid() {
   var a = new Uint8Array(32);
@@ -348,6 +339,8 @@ function jres(data, status) {
     headers: { 'Content-Type': 'application/json' }
   });
 }
+
+// ===================== AUTH (unchanged) =====================
 
 async function onLogin(req, env) {
   var p = new URLSearchParams({
@@ -405,53 +398,111 @@ async function onSession(req, env) {
   return s ? jres({ authenticated: true, user: s.user }) : jres({ authenticated: false });
 }
 
+// ===================== CHAT (rewritten) =====================
+
 async function onChat(req, env) {
   if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
   var s = await getSession(req, env);
   if (!s) return jres({ error: 'Unauthorized' }, 401);
+
   var body;
   try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
-  var question = body.question, chatId = body.chatId, history = body.history, mode = body.mode, model = body.model;
+
+  // ===== Branch A: persist a completed lens session =====
+  if (body.action === 'save_lens_session') {
+    try {
+      var cid = body.chatId || crypto.randomUUID();
+      var key = 'chat:' + s.user.id + ':' + cid;
+
+      var record = {
+        id: cid,
+        mode: 'lens',
+        created_at: Date.now(),
+        first_question: (body.question || '').slice(0, 200),
+        // Single "message" representing the whole completed session
+        messages: [{
+          id: crypto.randomUUID(),
+          mode: 'lens',
+          timestamp: Date.now(),
+          question: body.question || '',
+          userRole: body.userRole || '',
+          ctxReason: body.ctxReason || '',
+          ctxPurpose: body.ctxPurpose || '',
+          ctxSource: body.ctxSource || '',
+          positionBefore: body.positionBefore || '',
+          confidenceBefore: typeof body.confidenceBefore === 'number' ? body.confidenceBefore : null,
+          lensesUsed: Array.isArray(body.lensesUsed) ? body.lensesUsed : [],
+          responses: body.responses || {},
+          pushbacks: body.pushbacks || {},
+          positionAfter: body.positionAfter || '',
+          confidenceAfter: typeof body.confidenceAfter === 'number' ? body.confidenceAfter : null,
+          outcome: (body.outcome === 'changed' || body.outcome === 'held' || body.outcome === 'unsure') ? body.outcome : 'held',
+          model: body.model || ''
+        }]
+      };
+
+      // Keep top-level fields for cheap list-rendering without fetching full record
+      record.outcome = record.messages[0].outcome;
+      record.confidence_before = record.messages[0].confidenceBefore;
+      record.confidence_after = record.messages[0].confidenceAfter;
+      record.lenses_count = record.messages[0].lensesUsed.length;
+
+      // Metadata is what list() returns. Keep it small (< 1024 bytes).
+      var meta = {
+        first_question: record.first_question.slice(0, 100),
+        created_at: record.created_at,
+        mode: 'lens',
+        outcome: record.outcome,
+        confidence_before: record.confidence_before,
+        confidence_after: record.confidence_after,
+        lenses_count: record.lenses_count
+      };
+
+      await env.CHATS.put(key, JSON.stringify(record), {
+        expirationTtl: 604800,
+        metadata: meta
+      });
+
+      return jres({ ok: true, chatId: cid });
+    } catch (err) {
+      return jres({ error: 'Save failed: ' + (err.message || 'unknown') }, 500);
+    }
+  }
+
+  // ===== Branch B: a lens model call =====
+  var question = body.question;
+  var chatId = body.chatId;
+  var mode = body.mode;
+  var model = body.model;
   if (!question || !question.trim()) return jres({ error: 'Question required' }, 400);
   if (question.length > 2000) return jres({ error: 'Too long' }, 400);
+
+  // We only accept lens mode from the new frontend. Anything else, we still
+  // try to handle as a lens call to keep things resilient.
   var defaultModel = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
   var modelCandidates = getModelCandidates(model || defaultModel, env);
+
   try {
-    var cid = chatId || crypto.randomUUID();
-    var key = 'chat:' + s.user.id + ':' + cid;
-    var cd;
-    try {
-      var ex = await env.CHATS.get(key);
-      cd = ex ? JSON.parse(ex) : { messages: [], created_at: Date.now(), first_question: question, mode: mode || 'perspectives' };
-    } catch (e) {
-      cd = { messages: [], created_at: Date.now(), first_question: question, mode: mode || 'perspectives' };
-    }
-
-    if (mode === 'perspectives') {
-      var selectedPerspectives = Array.isArray(body.perspectives) ? body.perspectives : [];
-      var perspText = await perspectivesReply(question.trim(), selectedPerspectives, s.hf_token, modelCandidates, env);
-      cd.messages.push({ id: crypto.randomUUID(), question: question, reply: perspText, perspectives: selectedPerspectives, mode: 'perspectives', timestamp: Date.now() });
-      await env.CHATS.put(key, JSON.stringify(cd), {
-        expirationTtl: 604800,
-        metadata: { first_question: question.slice(0, 100), created_at: cd.created_at, mode: 'perspectives' }
-      });
-      return jres({ chatId: cid, reply: perspText });
-    }
-
-    if (mode === 'normal') {
-      var reply = await normalReply(question, history, s.hf_token, modelCandidates, env);
-      cd.messages.push({ id: crypto.randomUUID(), question: question, reply: reply, mode: 'normal', timestamp: Date.now() });
-      await env.CHATS.put(key, JSON.stringify(cd), {
-        expirationTtl: 604800,
-        metadata: { first_question: question.slice(0, 100), created_at: cd.created_at, mode: 'normal' }
-      });
-      return jres({ chatId: cid, reply: reply });
-    }
-
-    // Fallback
-    var fallbackReply = await normalReply(question, history, s.hf_token, modelCandidates, env);
-    return jres({ chatId: cid, reply: fallbackReply });
-
+    var cid2 = chatId || crypto.randomUUID();
+    var replyText = await lensReply(
+      question.trim(),
+      {
+        systemPrompt:    body.systemPrompt,
+        lenses:          body.lenses,
+        positionBefore:  body.positionBefore,
+        confidenceBefore:body.confidenceBefore,
+        userRole:        body.userRole,
+        ctxReason:       body.ctxReason,
+        ctxPurpose:      body.ctxPurpose,
+        ctxSource:       body.ctxSource
+      },
+      s.hf_token,
+      modelCandidates,
+      env
+    );
+    // Note: we don't persist anything on individual lens or pushback calls.
+    // The frontend collects everything and sends save_lens_session at the end.
+    return jres({ chatId: cid2, reply: replyText });
   } catch (err) {
     if (isHF401(err)) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -467,6 +518,8 @@ async function onChat(req, env) {
     return jres({ error: err.message || 'Processing failed' }, 500);
   }
 }
+
+// ===================== IMAGE (unchanged) =====================
 
 async function onImage(req, env) {
   if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
@@ -512,29 +565,48 @@ async function onImage(req, env) {
   }
 }
 
+// ===================== HISTORY (rewritten to expose lens fields) =====================
+
 async function onHistory(req, env) {
   var s = await getSession(req, env);
   if (!s) return jres({ error: 'Unauthorized' }, 401);
   var chatId = new URL(req.url).searchParams.get('chatId');
+
+  // ===== Single chat fetch =====
   if (chatId) {
     try {
       var raw = await env.CHATS.get('chat:' + s.user.id + ':' + chatId);
-      return raw ? new Response(raw, { headers: { 'Content-Type': 'application/json' } }) : jres({ messages: [] });
+      if (!raw) return jres({ messages: [] });
+      // The frontend's showHistoryItem reads m.positionBefore, m.responses,
+      // m.lensesUsed, m.outcome, etc., directly off message objects. Our
+      // saved record stores all of that on messages[0], so passing it
+      // through unchanged works.
+      return new Response(raw, { headers: { 'Content-Type': 'application/json' } });
     } catch (e) { return jres({ messages: [] }); }
   }
+
+  // ===== Chat list =====
   try {
     var list = await env.CHATS.list({ prefix: 'chat:' + s.user.id + ':' });
     var chats = list.keys.map(function(k) {
+      var meta = k.metadata || {};
+      var id = k.name.split(':').slice(2).join(':');
       return {
-        id: k.name.split(':').slice(2).join(':'),
-        first_question: (k.metadata && k.metadata.first_question) || 'Session',
-        created_at: (k.metadata && k.metadata.created_at) || 0,
-        mode: (k.metadata && k.metadata.mode) || 'perspectives'
+        id: id,
+        first_question: meta.first_question || 'Session',
+        created_at: meta.created_at || 0,
+        mode: meta.mode || 'lens',
+        outcome: meta.outcome || null,
+        confidence_before: typeof meta.confidence_before === 'number' ? meta.confidence_before : null,
+        confidence_after: typeof meta.confidence_after === 'number' ? meta.confidence_after : null,
+        lenses_count: typeof meta.lenses_count === 'number' ? meta.lenses_count : null
       };
-    }).sort(function(a, b) { return b.created_at - a.created_at; }).slice(0, 30);
+    }).sort(function(a, b) { return b.created_at - a.created_at; }).slice(0, 50);
     return jres({ chats: chats });
   } catch (e) { return jres({ chats: [] }); }
 }
+
+// ===================== ANTHROPIC (unchanged) =====================
 
 async function onAnthropicChat(req, env) {
   if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
@@ -572,6 +644,8 @@ async function onAnthropicChat(req, env) {
     return jres({ error: err.message || 'Anthropic request failed' }, 500);
   }
 }
+
+// ===================== ROUTER (unchanged) =====================
 
 export default {
   async fetch(request, env) {
