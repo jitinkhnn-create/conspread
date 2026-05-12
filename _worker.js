@@ -21,156 +21,62 @@ const OPENROUTER_FREE_FALLBACKS = [
   'or:deepseek/deepseek-r1:free'
 ];
 
-function councilPrompt(topic, targetCount, history) {
-  var prior = (history || []).slice(-3).map(function(h, i) {
-    return (i + 1) + '. ' + (h && h.question ? h.question : '');
-  }).join('\n');
-  return SAFE_AI + `
+// ===================== PERSPECTIVES =====================
 
-You are assembling a critical thinking council. For the topic below, select EXACTLY ${targetCount} specialists
-whose perspectives create maximum intellectual friction.
+var PERSP_INSTRUCTIONS = {
+  'Personal|Emotional impact':        'How does this topic make people feel? Name the emotions it stirs — fear, excitement, sadness, hope — and say which kinds of people feel them and why. Be specific.',
+  'Personal|Daily life relevance':    'How does this show up in a person\'s everyday life? Give a concrete example someone aged 10-18 would recognise from their own day.',
+  'Personal|Self-reflection':         'What does this topic ask someone to examine about themselves? What personal belief, habit, or assumption might it challenge?',
+  'Ethical|Fairness':                 'Is this topic fair to everyone involved? Name who benefits and who might be left out or harmed — actual people or groups, not abstractions.',
+  'Ethical|Social responsibility':    'What do people, companies, or governments owe each other here? What does doing the right thing look like in practice?',
+  'Ethical|Environmental impact':     'How does this connect to the natural world? Describe the environmental effects — short-term and long-term — in plain terms.',
+  'Practical|Daily application':      'How would someone actually use or apply this in everyday life? Give concrete steps, situations, or tools.',
+  'Practical|Problem-solving':        'What problem does this topic solve, or what new problem does it create? What would a practical fix or workaround look like?',
+  'Practical|Real-world use':         'Where is this already being used in the world right now? Give a real or very plausible example of it in action.',
+  'Creative|Imaginative scenarios':   'Describe a surprising or unexpected situation this topic could lead to. Make it vivid, specific, and a little unexpected.',
+  'Creative|Storytelling':            'Write 2-3 sentences of a mini-story that brings this topic to life for a young reader. Make the reader feel something.',
+  'Creative|Artistic views':          'How might a poet, musician, or filmmaker see this topic differently from a scientist or politician? What feeling would they want to capture and why?',
+  'Historical|Past interpretations':  'How did people in a specific past time or place understand or deal with this topic? Name the era or culture — avoid vague "long ago."',
+  'Historical|Lessons from history':  'What lesson has history taught about this topic? Point to a real past mistake or success that still matters today.',
+  'Historical|Cultural evolution':    'How has the meaning or importance of this topic shifted across different cultures or over time? Name the change and what drove it.',
+  'Future-oriented|Long-term effects':'If current trends continue unchanged, where does this topic lead in 20-50 years? Be specific about likely consequences.',
+  'Future-oriented|Future innovations':'What new technology, idea, or social movement could change how we deal with this topic? Why might it matter?',
+  'Future-oriented|Trends ahead':     'What patterns visible today hint at where this topic is heading? Name a real, observable trend — not a wish or fear.'
+};
 
-TOPIC: "${topic}"
-RECENT CONVERSATION CONTEXT:
-${prior || 'none'}
+function buildPerspectivesSystemPrompt(selectedPerspectives) {
+  var valid = (Array.isArray(selectedPerspectives) ? selectedPerspectives : []).filter(function(p) {
+    return p && p.category && p.subcategory && PERSP_INSTRUCTIONS[p.category + '|' + p.subcategory];
+  });
+  if (!valid.length) valid = [{ category: 'Personal', subcategory: 'Emotional impact' }];
 
-Rules:
-1. Include at least one contrarian/devil's advocate
-2. Cover at least 4 different epistemic styles
-3. Select for genuine disciplinary diversity
-4. Each persona must have fundamentally different assumptions from the others
+  var header = SAFE_AI + '\n\nYou are a multi-perspective thinking tool for readers aged 10 and above. The user gives you a topic. Respond through EACH perspective listed below.\n\nFor each perspective: write 80-120 words in plain language a 10-year-old can follow. No jargon. No preaching. Never start any response with "Great question!" or similar filler.\n\nUse this EXACT tag format (the app parses it):\n\n';
+  var tagBlock = valid.map(function(p) {
+    return '[P:' + p.category + '|' + p.subcategory + ']\n(your response here)\n[/P:' + p.category + '|' + p.subcategory + ']';
+  }).join('\n\n');
+  var instrBlock = '\n\nPerspective instructions:\n\n' + valid.map(function(p) {
+    var k = p.category + '|' + p.subcategory;
+    return '[P:' + k + ']\n' + p.category + ' — ' + p.subcategory + ':\n' + PERSP_INSTRUCTIONS[k];
+  }).join('\n\n');
 
-For EACH persona return:
-- id: snake_case unique identifier
-- name: realistic full name
-- title: professional title
-- intellectual_tradition: named school of thought
-- epistemology: one sentence on how they determine truth
-- core_commitment: one non-negotiable belief
-- friction_with: array of 2-3 reasoning types they challenge
-- forbidden_rhetoric: array of 3 phrases they never use
-- vocabulary_register: one of "highly_technical"|"accessible_academic"|"philosophical"|"empirical_quantitative"|"narrative_qualitative"|"policy_pragmatic"
-- known_bias: honest blind spot
-- signature_approach: how they structure arguments
-- avatar_initials: 2 capital letters
-
-Return ONLY a valid JSON array of exactly ${targetCount} objects. No markdown, no explanation.`;
+  return header + tagBlock + instrBlock;
 }
 
-function personaPrompt(persona, allPersonas) {
-  var others = allPersonas
-    .filter(function(p) { return p.id !== persona.id; })
-    .map(function(p) { return p.name + ' (' + p.title + ')'; })
-    .join(', ');
-  return SAFE_AI + `
-
-You ARE ${persona.name}, ${persona.title}.
-
-YOUR IDENTITY:
-- Tradition: ${persona.intellectual_tradition}
-- Epistemology: ${persona.epistemology}
-- Core belief (NON-NEGOTIABLE): ${persona.core_commitment}
-- Known bias: ${persona.known_bias}
-- How you argue: ${persona.signature_approach}
-
-STRICT RULES:
-1. Challenge these types of reasoning: ${Array.isArray(persona.friction_with) ? persona.friction_with.join(', ') : persona.friction_with}
-2. Never say: ${Array.isArray(persona.forbidden_rhetoric) ? persona.forbidden_rhetoric.join(' | ') : persona.forbidden_rhetoric}
-3. Write in ${persona.vocabulary_register} style
-4. Do NOT start by agreeing with the question framing - find friction immediately
-5. Use plain, direct English. Maximum 3 short paragraphs. No jargon.
-6. Be concrete - use real examples, not abstractions
-7. Argue as yourself: your vocabulary, your blind spots included
-
-Other council members (you respond INDEPENDENTLY): ${others}
-
-Respond in this exact JSON shape and nothing else:
-{"answer":"150-200 words. Lead with your sharpest insight. No filler.","assumptions":["3-5 concise assumptions this answer relies on"]}`;
-}
-
-function synthesisPrompt(question, personas, responses) {
-  var blocks = personas.map(function(p, i) {
-    var r = responses[i] || {};
-    var assumptions = Array.isArray(r.assumptions) && r.assumptions.length
-      ? '\nAssumptions: ' + r.assumptions.join('; ')
-      : '';
-    return '[' + p.name + ', ' + p.title + ']:\n' + responseText(r) + assumptions;
-  }).join('\n\n---\n\n');
-  return SAFE_AI + `
-
-Synthesize this council debate WITHOUT forcing consensus. Write in plain English.
-
-QUESTION: "${question}"
-
-COUNCIL RESPONSES:
-${blocks}
-
-Return ONLY this JSON (no markdown fences):
-{"summary":"3-4 paragraphs covering genuine disagreements and what remains unresolved. Plain English.","decision_framework":{"key_questions":["3-5 questions someone must answer before deciding"],"evidence_that_would_change_views":["what each perspective would need to see"],"red_flags":["3-4 warning signs"]},"open_questions":[{"question":"unresolved question","why_unresolved":"specific reason"}]}`;
-}
-
-function councilPackPrompt(topic, targetCount, history) {
-  var prior = (history || []).slice(-3).map(function(h, i) {
-    return (i + 1) + '. ' + (h && h.question ? h.question : '');
-  }).join('\n');
-  return SAFE_AI + `
-
-Generate a critical thinking council and each member's response in one pass.
-
-TOPIC: "${topic}"
-RECENT CONVERSATION CONTEXT:
-${prior || 'none'}
-TARGET COUNCIL SIZE: ${targetCount}
-
-Requirements:
-1. Create exactly ${targetCount} genuinely different personas.
-2. Include at least one contrarian perspective.
-3. Ensure strong disciplinary diversity and conflicting assumptions.
-4. Each response must be direct, concrete, and 120-180 words.
-5. For each response provide 3-5 concise assumptions.
-
-Return ONLY valid JSON in this exact shape:
-{
-  "council": [
-    {
-      "id":"snake_case",
-      "name":"full name",
-      "title":"professional title",
-      "intellectual_tradition":"school of thought",
-      "epistemology":"one sentence",
-      "core_commitment":"one belief",
-      "friction_with":["a","b","c"],
-      "forbidden_rhetoric":["x","y","z"],
-      "vocabulary_register":"accessible_academic",
-      "known_bias":"one blind spot",
-      "signature_approach":"argument method",
-      "avatar_initials":"AB"
-    }
-  ],
-  "responses": [
-    {
-      "answer":"response text",
-      "assumptions":["assumption 1","assumption 2","assumption 3"]
-    }
-  ]
-}`;
-}
-
-function buildLensSystemPrompt(selectedLenses) {
-  var lensTexts = {
-    1: 'LENS 1 — Where does this come from?\nIdentify factual claims if any. Point out where this information would come from, how someone could check it, what sources would be trustworthy. If it is opinion rather than checkable, say so. End with one short question inviting the user to think, like "If you wanted to check this, where would you look first?"',
-    2: 'LENS 2 — Whose voice is missing?\nNotice whose perspective the input is told from. Name one or two concrete perspectives NOT in the input — actual people or roles, not "many groups." Say what would look different from those perspectives. End with: "Whose view do you think matters most here, and why?"',
-    3: 'LENS 3 — What does this want me to feel?\nName the feeling the input seems designed to create. Point to specific words or framings that produce it. Say why someone might want the reader to feel that. Do not assume bad intent. End with: "Does noticing the feeling change what you think of the message?"',
-    4: "LENS 4 — What's the strongest argument the other way?\nIdentify the position implied or stated. Build the BEST argument someone smart could make on the OTHER side — not a strawman. Begin with: \"If someone smart disagreed, here is the best thing they could say:\" Do not declare a winner. End with: \"What part of that argument is hardest to dismiss?\"",
-    5: 'LENS 5 — Is this opinion, fact, or in between?\nSort the input into: fact you can check, opinion someone holds, or a mix. Explain WHY — point at specific words. If a mix, say which parts are checkable and which are values. Do not dismiss opinions. End with: "What would change your mind about this?"',
-    6: "LENS 6 — How does this connect to what you already know?\nSuggest two or three things from ordinary life that this input matches or conflicts with. Be concrete — \"Most kids have noticed...\" or \"If you have ever...\" Do not pretend to know the user's life. End with: \"Does this match what you have seen, or does it surprise you?\""
-  };
-  var selected = (Array.isArray(selectedLenses) ? selectedLenses : []).filter(function(n) { return lensTexts[n]; });
-  if (!selected.length) selected = [1, 4];
-  var base = 'You are a multi-lens thinking tool for readers age 10+. The user gives you a claim, headline, or question. You must respond through EACH of the following lenses. For each lens, write 60-100 words in plain language a 10-year-old can follow. No jargon. Do not be preachy. Do not begin any lens with "Great question!"\n\nRespond in this EXACT format — use these headers exactly so the app can parse them:\n\n';
-  var tags = selected.map(function(n) { return '[LENS_' + n + ']\n(your response)\n[/LENS_' + n + ']'; }).join('\n\n');
-  var lensBody = selected.map(function(n) { return lensTexts[n]; }).join('\n\n');
-  return base + tags + '\n\nThe lenses to apply:\n\n' + lensBody;
+function parsePerspectivesResponse(text, selectedPerspectives) {
+  var result = {};
+  (selectedPerspectives || []).forEach(function(p) {
+    var k = p.category + '|' + p.subcategory;
+    var escaped = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var rx = new RegExp('\\[P:' + escaped + '\\]([\\s\\S]*?)\\[/P:' + escaped + '\\]');
+    var m = (text || '').match(rx);
+    if (m) result[k] = m[1].trim();
+  });
+  // Fallback: if nothing parsed, put raw text under first key
+  if (!Object.keys(result).length && selectedPerspectives && selectedPerspectives.length) {
+    var first = selectedPerspectives[0];
+    result[first.category + '|' + first.subcategory] = text || '';
+  }
+  return result;
 }
 
 function normalSystemPrompt() {
@@ -184,91 +90,6 @@ Style rules:
 - Friendly but not sycophantic.
 
 ${SAFE_AI}`;
-}
-
-function normalizeCouncil(council, count, topic) {
-  var safeCount = Math.max(4, Math.min(10, count || 6));
-  var out = [];
-  (Array.isArray(council) ? council : []).forEach(function(p, idx) {
-    if (!p || typeof p !== 'object' || out.length >= safeCount) return;
-    var n = out.length + 1;
-    out.push({
-      id: (typeof p.id === 'string' && p.id.trim()) ? p.id.trim() : 'perspective_' + n,
-      name: (typeof p.name === 'string' && p.name.trim()) ? p.name.trim() : ('Perspective ' + n),
-      title: (typeof p.title === 'string' && p.title.trim()) ? p.title.trim() : 'Independent Council Analyst',
-      intellectual_tradition: (typeof p.intellectual_tradition === 'string' && p.intellectual_tradition.trim()) ? p.intellectual_tradition.trim() : 'Interdisciplinary critical analysis',
-      epistemology: (typeof p.epistemology === 'string' && p.epistemology.trim()) ? p.epistemology.trim() : 'Uses evidence and reasoning with explicit uncertainty.',
-      core_commitment: (typeof p.core_commitment === 'string' && p.core_commitment.trim()) ? p.core_commitment.trim() : 'Avoid brittle conclusions.',
-      friction_with: Array.isArray(p.friction_with) && p.friction_with.length ? p.friction_with.slice(0, 3) : ['unchecked assumptions', 'single-cause thinking'],
-      forbidden_rhetoric: Array.isArray(p.forbidden_rhetoric) && p.forbidden_rhetoric.length ? p.forbidden_rhetoric.slice(0, 3) : ['obviously', 'everyone knows', 'it is simple'],
-      vocabulary_register: (typeof p.vocabulary_register === 'string' && p.vocabulary_register.trim()) ? p.vocabulary_register.trim() : 'accessible_academic',
-      known_bias: (typeof p.known_bias === 'string' && p.known_bias.trim()) ? p.known_bias.trim() : 'May miss domain-specific nuance.',
-      signature_approach: (typeof p.signature_approach === 'string' && p.signature_approach.trim()) ? p.signature_approach.trim() : 'Makes assumptions explicit, then tests implications.',
-      avatar_initials: (typeof p.avatar_initials === 'string' && p.avatar_initials.trim()) ? p.avatar_initials.trim().slice(0, 2).toUpperCase() : ('P' + n)
-    });
-  });
-  return out.slice(0, safeCount);
-}
-
-function chooseCouncilSize(question, history) {
-  var text = ((question || '') + ' ' + (history || []).map(function(h) { return h && h.question ? h.question : ''; }).join(' ')).toLowerCase();
-  var score = 0;
-  if ((question || '').length > 140) score += 1;
-  if ((history || []).length >= 2) score += 1;
-  if ((history || []).length >= 5) score += 1;
-  if (/(compare|versus|trade[\s-]?off|scenario|policy|ethical|ethics|regulation|strategy|system|geopolit|multi|stakeholder|uncertain|risk|long[-\s]?term)/.test(text)) score += 1;
-  if (/(urgent|quick|brief|simple|eli5|in short|tl;dr)/.test(text)) score -= 1;
-  if (score <= 0) return 4;
-  if (score === 1) return 6;
-  if (score === 2) return 8;
-  return 10;
-}
-
-function responseText(r) {
-  if (!r) return '';
-  if (typeof r === 'string') return r;
-  if (typeof r.answer === 'string') return r.answer;
-  return '';
-}
-
-function normalizePersonaResponse(raw, persona) {
-  if (raw && typeof raw === 'object' && typeof raw.answer === 'string') {
-    var assumptions = Array.isArray(raw.assumptions) ? raw.assumptions.filter(function(a) { return typeof a === 'string' && a.trim(); }).slice(0, 5) : [];
-    return { answer: raw.answer.trim(), assumptions: assumptions };
-  }
-  if (typeof raw !== 'string') {
-    return fallbackPersonaReply(persona);
-  }
-  var clean = raw.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
-  try {
-    var parsed = JSON.parse(clean);
-    return normalizePersonaResponse(parsed, persona);
-  } catch (e) {
-    return { answer: clean, assumptions: [] };
-  }
-}
-
-function parseJSONLoose(raw) {
-  if (raw && typeof raw === 'object') return raw;
-  if (typeof raw !== 'string') throw new Error('Invalid JSON payload');
-  var clean = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-  try { return JSON.parse(clean); } catch (e) {}
-  var first = clean.indexOf('{');
-  var last = clean.lastIndexOf('}');
-  if (first >= 0 && last > first) {
-    return JSON.parse(clean.slice(first, last + 1));
-  }
-  throw new Error('Invalid JSON payload');
-}
-
-function normalizeResponseList(responses, targetCount, council) {
-  var safeCount = Math.min(Array.isArray(council) ? council.length : 0, Math.max(2, Math.min(10, targetCount || 4)));
-  var out = [];
-  (Array.isArray(responses) ? responses : []).forEach(function(r, i) {
-    if (out.length >= safeCount) return;
-    out.push(normalizePersonaResponse(r, council && council[i]));
-  });
-  return out;
 }
 
 function uniqueModels(list) {
@@ -411,52 +232,6 @@ async function callHF(messages, token, model, opts, env) {
   return d.choices[0].message.content;
 }
 
-async function buildCouncil(topic, history, token, model, env) {
-  var targetCount = chooseCouncilSize(topic, history);
-  var txt = await callHFWithRetry([{ role:'user', content: councilPrompt(topic, targetCount, history) }], token, model, { max_tokens:2500, temperature:0.85 }, 3, env);
-  var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
-  var arr = JSON.parse(clean);
-  var council = normalizeCouncil(arr, targetCount, topic);
-  if (!Array.isArray(council) || council.length < 2) {
-    throw new Error('Council generation unavailable right now. Please retry in a moment.');
-  }
-  return council;
-}
-
-async function buildCouncilPack(topic, history, token, model, env) {
-  var targetCount = chooseCouncilSize(topic, history);
-  var txt = await callHFWithRetry([{ role:'user', content: councilPackPrompt(topic, targetCount, history) }], token, model, { max_tokens:3200, temperature:0.78 }, 3, env);
-  var parsed = parseJSONLoose(txt);
-  var council = normalizeCouncil(parsed.council, targetCount, topic);
-  var responses = normalizeResponseList(parsed.responses, targetCount, council);
-  if (!Array.isArray(council) || council.length < 2) {
-    throw new Error('Council generation unavailable right now. Please retry in a moment.');
-  }
-  if (!Array.isArray(responses) || responses.length < 2) {
-    throw new Error('Council responses are temporarily unavailable. Please retry.');
-  }
-  while (responses.length < council.length) {
-    responses.push(fallbackPersonaReply(council[responses.length]));
-  }
-  return { council: council, responses: responses.slice(0, council.length) };
-}
-
-async function personaReply(persona, all, question, history, token, model, env) {
-  var idx = all.findIndex(function(p) { return p.id === persona.id; });
-  var hist = (history || []).slice(-3).flatMap(function(h) {
-    var pr = h.responses && h.responses[idx];
-    var priorAnswer = responseText(pr);
-    return pr
-      ? [{ role:'user', content: h.question }, { role:'assistant', content: priorAnswer }]
-      : [{ role:'user', content: h.question }];
-  });
-  var msgs = [{ role:'system', content: personaPrompt(persona, all) }]
-    .concat(hist)
-    .concat([{ role:'user', content: question }]);
-  var raw = await callHFWithRetry(msgs, token, model, { max_tokens: 420, temperature: 0.76 }, 2, env);
-  return normalizePersonaResponse(raw, persona);
-}
-
 function isHF401(err) {
   return !!(err && typeof err.message === 'string' && err.message.startsWith('HF 401'));
 }
@@ -516,70 +291,27 @@ function mapHFErrorToClient(err) {
   return null;
 }
 
-function fallbackPersonaReply(persona) {
-  var name = (persona && persona.name) ? persona.name : 'This council member';
-  return {
-    answer: name + ' could not submit a response due to a temporary inference issue. Treat this as missing input rather than agreement.',
-    assumptions: ['Inference service returned an intermittent upstream failure for this perspective.']
-  };
-}
-
-async function buildPersonaResponses(council, question, history, token, model, env) {
-  var responses = [];
-  var failures = 0;
-  // Limit concurrency to reduce 429/5xx bursts from upstream router.
-  for (var i = 0; i < council.length; i += 2) {
-    var chunk = council.slice(i, i + 2);
-    var chunkResults = await Promise.all(chunk.map(async function(p) {
-      try {
-        return await personaReply(p, council, question, history, token, model, env);
-      } catch (err) {
-        if (isHF401(err)) throw err;
-        failures += 1;
-        return fallbackPersonaReply(p);
-      }
-    }));
-    responses = responses.concat(chunkResults);
-  }
-  if (failures >= council.length) {
-    throw new Error('Council responses are temporarily unavailable. Please retry.');
-  }
-  return responses;
-}
-
-async function buildSynthesis(question, council, responses, token, model, env) {
-  try {
-    var txt = await callHFWithRetry([{ role:'user', content: synthesisPrompt(question, council, responses) }], token, model, { max_tokens:1500, temperature:0.62 }, 2, env);
-    var clean = txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
-    return JSON.parse(clean);
-  } catch(e) {
-    return {
-      summary: responses.map(function(r) { return responseText(r); }).join('\n\n'),
-      decision_framework:{ key_questions:[], evidence_that_would_change_views:[], red_flags:[] },
-      open_questions:[]
-    };
-  }
-}
-
 function trimConfirmation(text) {
   return (text || '').replace(/^\s*(Sure!?|Of course!?|Here you go:?|Absolutely!?|Great!?)[,!.\s]*/i, '').trim();
 }
 
 async function normalReply(question, history, token, model, env) {
-  var msgs = [{ role:'system', content: normalSystemPrompt() }];
+  var msgs = [{ role: 'system', content: normalSystemPrompt() }];
   (history || []).slice(-6).forEach(function(h) {
-    msgs.push({ role:'user', content: h.question });
-    if (h.reply) msgs.push({ role:'assistant', content: trimConfirmation(h.reply) });
+    msgs.push({ role: 'user', content: h.question });
+    if (h.reply) msgs.push({ role: 'assistant', content: trimConfirmation(h.reply) });
   });
-  msgs.push({ role:'user', content: question });
-  return callHFWithRetry(msgs, token, model, { max_tokens:1024, temperature:0.70 }, 2, env);
+  msgs.push({ role: 'user', content: question });
+  return callHFWithRetry(msgs, token, model, { max_tokens: 1024, temperature: 0.70 }, 2, env);
 }
 
-async function lensReply(question, selectedLenses, token, model, env) {
-  var lenses = (Array.isArray(selectedLenses) ? selectedLenses : []).map(Number).filter(function(n) { return n >= 1 && n <= 6; });
-  if (!lenses.length) lenses = [1, 4];
-  var systemPrompt = buildLensSystemPrompt(lenses);
-  var maxTokens = lenses.length === 1 ? 200 : 800;
+async function perspectivesReply(question, selectedPerspectives, token, model, env) {
+  var persp = (Array.isArray(selectedPerspectives) ? selectedPerspectives : []).filter(function(p) {
+    return p && p.category && p.subcategory;
+  });
+  if (!persp.length) persp = [{ category: 'Personal', subcategory: 'Emotional impact' }];
+  var systemPrompt = buildPerspectivesSystemPrompt(persp);
+  var maxTokens = Math.min(3000, Math.max(400, persp.length * 200));
   var msgs = [
     { role: 'system', content: systemPrompt },
     { role: 'user', content: question }
@@ -590,7 +322,7 @@ async function lensReply(question, selectedLenses, token, model, env) {
 async function mkSid() {
   var a = new Uint8Array(32);
   crypto.getRandomValues(a);
-  return Array.from(a, function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+  return Array.from(a, function(b) { return b.toString(16).padStart(2, '0'); }).join('');
 }
 
 function getSid(req) {
@@ -607,13 +339,13 @@ async function getSession(req, env) {
     var s = JSON.parse(raw);
     if (s.expires_at < Date.now()) { await env.SESSIONS.delete(sid); return null; }
     return s;
-  } catch(e) { return null; }
+  } catch (e) { return null; }
 }
 
 function jres(data, status) {
   return new Response(JSON.stringify(data), {
     status: status || 200,
-    headers: { 'Content-Type':'application/json' }
+    headers: { 'Content-Type': 'application/json' }
   });
 }
 
@@ -649,35 +381,39 @@ async function onCallback(req, env) {
     user: { id: ui.sub, name: ui.name || ui.preferred_username, username: ui.preferred_username },
     created_at: Date.now(), expires_at: Date.now() + 86400000
   }), { expirationTtl: 86400 });
-  return new Response(null, { status: 302, headers: {
-    'Location': env.APP_URL,
-    'Set-Cookie': 'session=' + sid + '; HttpOnly; Secure; SameSite=Strict; Max-Age=86400; Path=/'
-  }});
+  return new Response(null, {
+    status: 302, headers: {
+      'Location': env.APP_URL,
+      'Set-Cookie': 'session=' + sid + '; HttpOnly; Secure; SameSite=Strict; Max-Age=86400; Path=/'
+    }
+  });
 }
 
 async function onLogout(req, env) {
   var sid = getSid(req);
-  if (sid) try { await env.SESSIONS.delete(sid); } catch(e) {}
-  return new Response(null, { status: 302, headers: {
-    'Location': env.APP_URL,
-    'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
-  }});
+  if (sid) try { await env.SESSIONS.delete(sid); } catch (e) {}
+  return new Response(null, {
+    status: 302, headers: {
+      'Location': env.APP_URL,
+      'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
+    }
+  });
 }
 
 async function onSession(req, env) {
   var s = await getSession(req, env);
-  return s ? jres({ authenticated:true, user:s.user }) : jres({ authenticated:false });
+  return s ? jres({ authenticated: true, user: s.user }) : jres({ authenticated: false });
 }
 
 async function onChat(req, env) {
-  if (req.method !== 'POST') return jres({ error:'Method not allowed' }, 405);
+  if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
   var s = await getSession(req, env);
-  if (!s) return jres({ error:'Unauthorized' }, 401);
+  if (!s) return jres({ error: 'Unauthorized' }, 401);
   var body;
-  try { body = await req.json(); } catch(e) { return jres({ error:'Invalid JSON' }, 400); }
+  try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
   var question = body.question, chatId = body.chatId, history = body.history, mode = body.mode, model = body.model;
-  if (!question || !question.trim()) return jres({ error:'Question required' }, 400);
-  if (question.length > 2000) return jres({ error:'Too long' }, 400);
+  if (!question || !question.trim()) return jres({ error: 'Question required' }, 400);
+  if (question.length > 2000) return jres({ error: 'Too long' }, 400);
   var defaultModel = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
   var modelCandidates = getModelCandidates(model || defaultModel, env);
   try {
@@ -686,43 +422,37 @@ async function onChat(req, env) {
     var cd;
     try {
       var ex = await env.CHATS.get(key);
-      cd = ex ? JSON.parse(ex) : { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
-    } catch(e) {
-      cd = { messages:[], created_at:Date.now(), first_question:question, mode: mode||'council' };
+      cd = ex ? JSON.parse(ex) : { messages: [], created_at: Date.now(), first_question: question, mode: mode || 'perspectives' };
+    } catch (e) {
+      cd = { messages: [], created_at: Date.now(), first_question: question, mode: mode || 'perspectives' };
     }
-    if (mode === 'lens') {
-      var lenses = Array.isArray(body.lenses) && body.lenses.length
-        ? body.lenses.map(Number).filter(function(n) { return n >= 1 && n <= 6; })
-        : [1, 4];
-      var lensText = await lensReply(question.trim(), lenses, s.hf_token, modelCandidates, env);
-      return jres({ reply: lensText });
+
+    if (mode === 'perspectives') {
+      var selectedPerspectives = Array.isArray(body.perspectives) ? body.perspectives : [];
+      var perspText = await perspectivesReply(question.trim(), selectedPerspectives, s.hf_token, modelCandidates, env);
+      cd.messages.push({ id: crypto.randomUUID(), question: question, reply: perspText, perspectives: selectedPerspectives, mode: 'perspectives', timestamp: Date.now() });
+      await env.CHATS.put(key, JSON.stringify(cd), {
+        expirationTtl: 604800,
+        metadata: { first_question: question.slice(0, 100), created_at: cd.created_at, mode: 'perspectives' }
+      });
+      return jres({ chatId: cid, reply: perspText });
     }
+
     if (mode === 'normal') {
       var reply = await normalReply(question, history, s.hf_token, modelCandidates, env);
-      cd.messages.push({ id:crypto.randomUUID(), question:question, reply:reply, mode:'normal', timestamp:Date.now() });
-      await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
-        metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'normal' } });
-      return jres({ chatId:cid, reply:reply });
-    } else {
-      var councilPack;
-      try {
-        councilPack = await buildCouncilPack(question.trim(), history, s.hf_token, modelCandidates, env);
-      } catch (packErr) {
-        // Fallback path for models that do not reliably emit large structured JSON in one shot.
-        var fallbackCouncil = await buildCouncil(question.trim(), history, s.hf_token, modelCandidates, env);
-        var fallbackResponses = await buildPersonaResponses(fallbackCouncil, question, history, s.hf_token, modelCandidates, env);
-        councilPack = { council: fallbackCouncil, responses: fallbackResponses };
-      }
-      var council = councilPack.council;
-      var responses = councilPack.responses;
-      var synthesis = await buildSynthesis(question, council, responses, s.hf_token, modelCandidates, env);
-      cd.messages.push({ id:crypto.randomUUID(), question:question, council:council, responses:responses, synthesis:synthesis, mode:'council', timestamp:Date.now() });
-      await env.CHATS.put(key, JSON.stringify(cd), { expirationTtl:604800,
-        metadata: { first_question: question.slice(0,100), created_at: cd.created_at, mode:'council' } });
-      return jres({ chatId:cid, council:council, responses:responses, synthesis:synthesis });
+      cd.messages.push({ id: crypto.randomUUID(), question: question, reply: reply, mode: 'normal', timestamp: Date.now() });
+      await env.CHATS.put(key, JSON.stringify(cd), {
+        expirationTtl: 604800,
+        metadata: { first_question: question.slice(0, 100), created_at: cd.created_at, mode: 'normal' }
+      });
+      return jres({ chatId: cid, reply: reply });
     }
-  } catch(err) {
-    // If the Hugging Face token is invalid/expired, force a logout so the client can re-authenticate.
+
+    // Fallback
+    var fallbackReply = await normalReply(question, history, s.hf_token, modelCandidates, env);
+    return jres({ chatId: cid, reply: fallbackReply });
+
+  } catch (err) {
     if (isHF401(err)) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
@@ -734,20 +464,17 @@ async function onChat(req, env) {
     }
     var hfMapped = mapHFErrorToClient(err);
     if (hfMapped) return jres({ error: hfMapped.error }, hfMapped.status);
-    if (err && typeof err.message === 'string' && /Council (generation|responses) .*unavailable/.test(err.message)) {
-      return jres({ error: err.message }, 503);
-    }
     return jres({ error: err.message || 'Processing failed' }, 500);
   }
 }
 
 async function onImage(req, env) {
-  if (req.method !== 'POST') return jres({ error:'Method not allowed' }, 405);
+  if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
   var s = await getSession(req, env);
-  if (!s) return jres({ error:'Unauthorized' }, 401);
+  if (!s) return jres({ error: 'Unauthorized' }, 401);
   var body;
-  try { body = await req.json(); } catch(e) { return jres({ error:'Invalid JSON' }, 400); }
-  if (!body.prompt) return jres({ error:'Prompt required' }, 400);
+  try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
+  if (!body.prompt) return jres({ error: 'Prompt required' }, 400);
   try {
     var res = await fetch('https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell', {
       method: 'POST',
@@ -756,7 +483,6 @@ async function onImage(req, env) {
     });
     if (!res.ok) {
       var errText = await res.text();
-      // Treat 401s as an authorization issue so the client can logout/relogin.
       if (res.status === 401) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
           status: 401,
@@ -766,11 +492,11 @@ async function onImage(req, env) {
           }
         });
       }
-      return jres({ error: 'Image generation failed: ' + errText.slice(0,200) }, 502);
+      return jres({ error: 'Image generation failed: ' + errText.slice(0, 200) }, 502);
     }
     var imgBuffer = await res.arrayBuffer();
     return new Response(imgBuffer, { headers: { 'Content-Type': res.headers.get('content-type') || 'image/jpeg' } });
-  } catch(err) {
+  } catch (err) {
     if (err && typeof err.message === 'string' && err.message.startsWith('HF 401')) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
@@ -788,13 +514,13 @@ async function onImage(req, env) {
 
 async function onHistory(req, env) {
   var s = await getSession(req, env);
-  if (!s) return jres({ error:'Unauthorized' }, 401);
+  if (!s) return jres({ error: 'Unauthorized' }, 401);
   var chatId = new URL(req.url).searchParams.get('chatId');
   if (chatId) {
     try {
       var raw = await env.CHATS.get('chat:' + s.user.id + ':' + chatId);
-      return raw ? new Response(raw, { headers:{'Content-Type':'application/json'} }) : jres({ messages:[] });
-    } catch(e) { return jres({ messages:[] }); }
+      return raw ? new Response(raw, { headers: { 'Content-Type': 'application/json' } }) : jres({ messages: [] });
+    } catch (e) { return jres({ messages: [] }); }
   }
   try {
     var list = await env.CHATS.list({ prefix: 'chat:' + s.user.id + ':' });
@@ -803,11 +529,11 @@ async function onHistory(req, env) {
         id: k.name.split(':').slice(2).join(':'),
         first_question: (k.metadata && k.metadata.first_question) || 'Session',
         created_at: (k.metadata && k.metadata.created_at) || 0,
-        mode: (k.metadata && k.metadata.mode) || 'council'
+        mode: (k.metadata && k.metadata.mode) || 'perspectives'
       };
-    }).sort(function(a,b) { return b.created_at - a.created_at; }).slice(0, 30);
+    }).sort(function(a, b) { return b.created_at - a.created_at; }).slice(0, 30);
     return jres({ chats: chats });
-  } catch(e) { return jres({ chats:[] }); }
+  } catch (e) { return jres({ chats: [] }); }
 }
 
 async function onAnthropicChat(req, env) {
@@ -815,7 +541,7 @@ async function onAnthropicChat(req, env) {
   var s = await getSession(req, env);
   if (!s) return jres({ error: 'Unauthorized' }, 401);
   var body;
-  try { body = await req.json(); } catch(e) { return jres({ error: 'Invalid JSON' }, 400); }
+  try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
   var model = body.model, messages = body.messages, systemPrompt = body.systemPrompt;
   var maxTokens = Math.min(body.maxTokens || 1024, 2048);
   if (!model || !model.startsWith('claude-')) return jres({ error: 'Invalid model' }, 400);
@@ -842,7 +568,7 @@ async function onAnthropicChat(req, env) {
     var text = data.content && data.content[0] && data.content[0].text;
     if (!text) return jres({ error: 'Empty response from Anthropic' }, 502);
     return jres({ reply: text });
-  } catch(err) {
+  } catch (err) {
     return jres({ error: err.message || 'Anthropic request failed' }, 500);
   }
 }
