@@ -146,58 +146,14 @@ body::before {
 @keyframes pulse { 0%,100%{opacity:.2;transform:scale(.7)} 50%{opacity:1;transform:scale(1)} }
 .err-msg { background: #fff5f5; border: 1px solid #ffcccc; border-radius: var(--r2); padding: 14px 18px; color: var(--err); font-size: 14px; font-family: var(--fb); }
 
-/* PERSONA CARDS */
-.council-wrap { display: flex; flex-direction: column; gap: 14px; }
-.persona-summary { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; transition: box-shadow var(--t); }
-.persona-summary:hover { box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-.persona-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-.persona-name { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 0; }
-.assump-chip { font-family: var(--fu); font-size: 11px; color: var(--gd); background: var(--glt); border: 1px solid rgba(184,144,42,.35); border-radius: 999px; padding: 3px 8px; white-space: nowrap; }
-.persona-summary-text { font-family: var(--fb); font-size: 16px; color: var(--tx); margin-bottom: 10px; }
-.persona-full { display: none; font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); white-space: pre-wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--bor); }
-.persona-assumptions-title { margin-top: 10px; font-family: var(--fu); font-size: 12px; letter-spacing: .03em; color: var(--tx3); text-transform: uppercase; }
-.persona-assumptions { margin: 6px 0 0 20px; padding: 0; }
-.persona-assumptions li { margin: 4px 0; font-size: 14px; color: var(--tx2); }
-.persona-link { color: var(--blue); text-decoration: none; font-size: 14px; font-weight: 600; }
-.persona-link:hover { text-decoration: underline; }
-.persona-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); overflow: hidden; }
-.persona-table th, .persona-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--bor); }
-.persona-table th { background: var(--sur2); font-family: var(--fu); font-weight: 600; color: var(--tx); }
-.persona-table td { font-family: var(--fb); color: var(--tx); }
-.persona-table tr:hover { background: var(--sur2); }
-
-/* COLLAPSIBLE */
-.collapsible { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); overflow: hidden; }
-.coll-head { padding: 12px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; transition: background var(--t); }
-.coll-head:hover { background: var(--sur2); }
-.coll-title { font-family: var(--fd); font-size: 16px; font-weight: 700; color: var(--tx); flex: 1; }
-.coll-chev { color: var(--tx3); font-size: 11px; transition: transform .2s; }
-.coll-chev.open { transform: rotate(180deg); }
-.coll-body { display: none; padding: 18px 20px; }
-.coll-body.open { display: block; }
-
-/* SYNTHESIS */
-.syn-sum { font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); margin-bottom: 20px; }
-.syn-sum p + p { margin-top: 12px; }
-.fw-sec { margin-bottom: 18px; }
-.fw-sec:last-child { margin-bottom: 0; }
-.fw-lbl { font-family: var(--fu); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--gd); font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-.fw-lbl::after { content: ''; flex: 1; height: 1px; background: var(--bor); }
-.fw-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-.fw-list li { display: flex; align-items: flex-start; gap: 10px; font-family: var(--fb); font-size: 15px; color: var(--tx); line-height: 1.6; }
-.fw-list li::before { content: '→'; color: var(--gd); flex-shrink: 0; font-size: 11px; margin-top: 4px; }
-.oq-item { background: var(--sur2); border: 1px solid var(--bor); border-radius: var(--r); padding: 12px 16px; margin-bottom: 10px; }
-.oq-item:last-child { margin-bottom: 0; }
-.oq-q { font-family: var(--fb); font-size: 15px; font-weight: 600; color: var(--tx); margin-bottom: 4px; }
-.oq-why { font-family: var(--fb); font-size: 13px; font-style: italic; color: var(--tx2); }
-
-/* MIND MAP */
-.mindmap-canvas { width: 100%; height: auto; border-radius: var(--r); background: var(--bg); display: block; }
-.mindmap-node { cursor: pointer; transition: transform .15s ease, opacity .15s ease; }
-.mindmap-node:hover { transform: scale(1.05); opacity: .9; }
-.mindmap-highlight { stroke: var(--gold); stroke-width: 3px; }
-.highlighted { background: rgba(184,144,42,0.18); border-radius: 12px; }
-.mindmap-label { user-select: none; pointer-events: none; }
+/* PERSPECTIVE RESPONSES */
+.persp-responses-wrap { display: flex; flex-direction: column; gap: 18px; }
+.persp-cat-section { background: var(--sur); border: 1px solid var(--bor); border-left-width: 4px; border-radius: var(--r2); padding: 16px 18px; }
+.persp-cat-section-title { font-family: var(--fd); font-size: 17px; font-weight: 700; margin-bottom: 14px; }
+.persp-response-card { padding: 12px 0; border-top: 1px solid var(--bor); }
+.persp-response-card:first-of-type { border-top: none; padding-top: 0; }
+.persp-response-sub { font-family: var(--fu); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.persp-response-body { font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx); }
 
 .selection-action {
   position: fixed; top: 0; left: 0; padding: 8px 12px; background: var(--sur); border: 1px solid var(--bor); border-radius: 999px;
@@ -250,58 +206,39 @@ body::before {
   #msgs { padding: 16px 14px 8px; }
 }
 
-/* LENS MODE */
-.lens-input-label { background: var(--glt); border: 1px solid rgba(184,144,42,.4); border-radius: 12px 12px 4px 12px; padding: 12px 18px; font-family: var(--fb); font-size: 15px; color: var(--tx); margin-bottom: 4px; max-width: 640px; align-self: flex-end; }
-.lens-picker-wrap { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 20px; }
-.lens-picker-title { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
-.lens-picker-sub { font-size: 13px; color: var(--tx3); font-family: var(--fb); margin-bottom: 16px; }
-.lens-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
-.lens-card { background: var(--bg); border: 2px solid var(--bor); border-left-width: 4px; border-radius: var(--r); padding: 12px 14px; cursor: pointer; transition: all .2s ease; user-select: none; }
-.lens-card[data-lens="1"] { border-left-color: #2e6da8; }
-.lens-card[data-lens="2"] { border-left-color: #8e44ad; }
-.lens-card[data-lens="3"] { border-left-color: #c0392b; }
-.lens-card[data-lens="4"] { border-left-color: #b8902a; }
-.lens-card[data-lens="5"] { border-left-color: #27ae60; }
-.lens-card[data-lens="6"] { border-left-color: #16a085; }
-.lens-card.selected { background: var(--sur); box-shadow: 0 0 0 2px rgba(184,144,42,.25); border-color: var(--bor2); }
-.lens-card[data-lens="1"].selected { box-shadow: 0 0 0 2px rgba(46,109,168,.3); }
-.lens-card[data-lens="2"].selected { box-shadow: 0 0 0 2px rgba(142,68,173,.3); }
-.lens-card[data-lens="3"].selected { box-shadow: 0 0 0 2px rgba(192,57,43,.3); }
-.lens-card[data-lens="4"].selected { box-shadow: 0 0 0 2px rgba(184,144,42,.3); }
-.lens-card[data-lens="5"].selected { box-shadow: 0 0 0 2px rgba(39,174,96,.3); }
-.lens-card[data-lens="6"].selected { box-shadow: 0 0 0 2px rgba(22,160,133,.3); }
-.lens-card:hover { background: var(--sur); }
-.lens-card-emoji { font-size: 18px; margin-bottom: 5px; }
-.lens-card-q { font-family: var(--fu); font-size: 11px; font-weight: 600; color: var(--tx); margin-bottom: 2px; line-height: 1.4; }
-.lens-card-desc { font-family: var(--fb); font-size: 10px; color: var(--tx3); font-style: italic; }
-.lens-ctrl { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.lens-select-all { background: none; border: none; color: var(--blue); font-size: 12px; cursor: pointer; font-family: var(--fu); text-decoration: underline; padding: 0; }
-.lens-analyze-btn { margin-left: auto; padding: 9px 20px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
-.lens-analyze-btn:hover:not(:disabled) { background: var(--gl); }
-.lens-analyze-btn:disabled { opacity: .4; cursor: not-allowed; }
-.lens-responses-wrap { display: flex; flex-direction: column; gap: 12px; }
-.lens-response-card { background: var(--sur); border: 1px solid var(--bor); border-left-width: 4px; border-radius: var(--r2); padding: 16px 18px; }
-.lens-response-card[data-lens="1"] { border-left-color: #2e6da8; }
-.lens-response-card[data-lens="2"] { border-left-color: #8e44ad; }
-.lens-response-card[data-lens="3"] { border-left-color: #c0392b; }
-.lens-response-card[data-lens="4"] { border-left-color: #b8902a; }
-.lens-response-card[data-lens="5"] { border-left-color: #27ae60; }
-.lens-response-card[data-lens="6"] { border-left-color: #16a085; }
-.lens-response-header { font-family: var(--fu); font-size: 11px; font-weight: 700; color: var(--tx2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
-.lens-response-body { font-family: var(--fb); font-size: 16px; line-height: 1.75; color: var(--tx); }
-.lens-think-wrap { background: var(--sur); border: 2px solid var(--gold); border-radius: var(--r2); padding: 24px; }
-.lens-think-wrap h3 { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
-.lens-think-wrap > p { font-family: var(--fb); font-size: 14px; color: var(--tx3); margin-bottom: 16px; }
-.lens-think-textarea { width: 100%; min-height: 130px; padding: 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 16px; color: var(--tx); resize: vertical; outline: none; transition: border-color .2s; }
-.lens-think-textarea:focus { border-color: var(--gold); }
-.lens-submit-btn { margin-top: 12px; padding: 10px 22px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
-.lens-submit-btn:hover:not(:disabled) { background: var(--gl); }
-.lens-submit-btn:disabled { opacity: .4; cursor: not-allowed; }
-.lens-reflection-wrap { background: var(--sur2); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; }
-.lens-reflection-wrap p { font-family: var(--fb); font-size: 15px; color: var(--tx2); margin-bottom: 8px; }
-.lens-reflection-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+/* PERSPECTIVES PICKER */
+.persp-input-label { background: var(--glt); border: 1px solid rgba(184,144,42,.4); border-radius: 12px 12px 4px 12px; padding: 12px 18px; font-family: var(--fb); font-size: 15px; color: var(--tx); margin-bottom: 4px; max-width: 640px; align-self: flex-end; }
+.persp-picker-wrap { background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 20px; }
+.persp-picker-title { font-family: var(--fd); font-size: 18px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
+.persp-picker-sub { font-size: 13px; color: var(--tx3); font-family: var(--fb); margin-bottom: 16px; }
+.persp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.persp-cat-card { background: var(--bg); border: 1px solid var(--bor); border-top-width: 3px; border-radius: var(--r); padding: 12px 14px; }
+.persp-cat-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.persp-cat-lbl { font-family: var(--fu); font-size: 12px; font-weight: 700; }
+.persp-selall { background: none; border: 1px solid; border-radius: 20px; padding: 2px 9px; font-size: 10px; font-family: var(--fu); font-weight: 600; cursor: pointer; transition: all var(--t); }
+.persp-selall:hover { opacity: .7; }
+.persp-sub-list { display: flex; flex-direction: column; gap: 6px; }
+.persp-sub-row { display: flex; align-items: center; gap: 8px; font-family: var(--fb); font-size: 13px; color: var(--tx2); cursor: pointer; user-select: none; }
+.persp-sub-row input[type=checkbox] { accent-color: var(--gold); width: 14px; height: 14px; cursor: pointer; flex-shrink: 0; }
+.persp-sub-row:hover { color: var(--tx); }
+.persp-ctrl { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.persp-select-all { background: none; border: none; color: var(--blue); font-size: 12px; cursor: pointer; font-family: var(--fu); text-decoration: underline; padding: 0; }
+.persp-analyze-btn { margin-left: auto; padding: 9px 20px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
+.persp-analyze-btn:hover:not(:disabled) { background: var(--gl); }
+.persp-analyze-btn:disabled { opacity: .4; cursor: not-allowed; }
+.persp-think-wrap { background: var(--sur); border: 2px solid var(--gold); border-radius: var(--r2); padding: 24px; }
+.persp-think-wrap h3 { font-family: var(--fd); font-size: 22px; font-weight: 700; color: var(--tx); margin-bottom: 6px; }
+.persp-think-wrap > p { font-family: var(--fb); font-size: 14px; color: var(--tx3); margin-bottom: 16px; }
+.persp-think-textarea { width: 100%; min-height: 130px; padding: 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 16px; color: var(--tx); resize: vertical; outline: none; transition: border-color .2s; }
+.persp-think-textarea:focus { border-color: var(--gold); }
+.persp-submit-btn { margin-top: 12px; padding: 10px 22px; background: var(--gold); color: #fff; border: none; border-radius: var(--r); font-family: var(--fu); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--t); }
+.persp-submit-btn:hover:not(:disabled) { background: var(--gl); }
+.persp-submit-btn:disabled { opacity: .4; cursor: not-allowed; }
+.persp-reflection-wrap { background: var(--sur2); border: 1px solid var(--bor); border-radius: var(--r2); padding: 18px 20px; }
+.persp-reflection-wrap p { font-family: var(--fb); font-size: 15px; color: var(--tx2); margin-bottom: 8px; }
+.persp-reflection-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 @media (max-width: 680px) {
-  .lens-grid { grid-template-columns: 1fr 1fr; }
+  .persp-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -332,11 +269,11 @@ body::before {
   <div class="land-sub">Think deeper. See wider.</div>
   <div class="land-user" id="land-user"></div>
   <div class="mode-cards">
-    <div class="mode-card council" onclick="enterMode('lens')">
-      <div class="mc-ico">🔍</div>
-      <div class="mc-title">Lens Mode</div>
-      <div class="mc-desc">Pick thinking lenses to examine what you read or hear. Ask sharp questions, then write your own view.</div>
-      <button class="mc-btn">Start Thinking →</button>
+    <div class="mode-card council" onclick="enterMode('perspectives')">
+      <div class="mc-ico">🔭</div>
+      <div class="mc-title">Perspectives</div>
+      <div class="mc-desc">Enter any topic. Choose from Personal, Ethical, Practical, Creative, Historical, or Future-oriented perspectives — and see the same idea through different eyes.</div>
+      <button class="mc-btn">Explore Perspectives →</button>
     </div>
     <div class="mode-card normal" onclick="enterMode('normal')">
       <div class="mc-ico">💬</div>
@@ -436,84 +373,75 @@ body::before {
 // ===================== STATE =====================
 var ST = {
   user: null, mode: null, cid: null, hist: [], busy: false,
-  voiceOn: false, audioCtx: null, masterGain: null,
-  wordFreq: {}, msgCount: 0, selectedModel: 'Qwen/Qwen3-30B-A3B-Instruct-2507'
+  voiceOn: false, wordFreq: {}, msgCount: 0, selectedModel: 'Qwen/Qwen3-30B-A3B-Instruct-2507'
 };
 
-var PCOLS = [
-  {bg:'#b8902a',lt:'#fdf0cc',dk:'#6a4a10'},
-  {bg:'#2e6da8',lt:'#ddeeff',dk:'#1a3d6a'},
-  {bg:'#27ae60',lt:'#d4f5e0',dk:'#145a30'},
-  {bg:'#c0392b',lt:'#fde8e8',dk:'#7a1a15'},
-  {bg:'#8e44ad',lt:'#eeddf5',dk:'#4a1a6a'},
-  {bg:'#16a085',lt:'#d0f0ea',dk:'#0a4035'},
-  {bg:'#d35400',lt:'#fde8d0',dk:'#7a2a00'},
-  {bg:'#2c3e50',lt:'#d8dde5',dk:'#151e28'}
+// PERSPECTIVES DATA
+var PERSPECTIVES = [
+  { category:'Personal',        emoji:'🧍', color:'#e67e22', subcategories:['Emotional impact','Daily life relevance','Self-reflection'] },
+  { category:'Ethical',         emoji:'⚖️',  color:'#8e44ad', subcategories:['Fairness','Social responsibility','Environmental impact'] },
+  { category:'Practical',       emoji:'🔧', color:'#2e6da8', subcategories:['Daily application','Problem-solving','Real-world use'] },
+  { category:'Creative',        emoji:'🎨', color:'#27ae60', subcategories:['Imaginative scenarios','Storytelling','Artistic views'] },
+  { category:'Historical',      emoji:'📜', color:'#c0392b', subcategories:['Past interpretations','Lessons from history','Cultural evolution'] },
+  { category:'Future-oriented', emoji:'🔭', color:'#16a085', subcategories:['Long-term effects','Future innovations','Trends ahead'] }
 ];
 
 var STOP = {};
 'the a an and or but in on at to for of with by from is are was were be been have has had do does did will would could should may might that this these those their they them we our you your i it its not all more than what how when where which who if then also even just very can get much many some most other about up out so well said know think use used make made good new first last long great little own right big high such give come here'.split(' ').forEach(function(w){ STOP[w]=1; });
 
 // ===================== LENS MODE STATE =====================
-var LM = {
-  step: 0,         // 0=initial, 1=lens-picker shown, 2=responses shown, 3=reflection
-  input: '',
-  selectedLenses: [1, 4],
-  responses: null,
-  userView: '',
-  cache: {}
+// PERSPECTIVES MODE STATE
+var PM = {
+  step: 0, input: '', selected: [], responses: null, userView: '', cache: {}
 };
 
-var LENSES = [
-  { n:1, emoji:'🔍', q:'Where does this come from?',                   label:'Trace the source' },
-  { n:2, emoji:'👁️',  q:'Whose voice is missing?',                     label:'Find hidden perspectives' },
-  { n:3, emoji:'🎭', q:'What does this want me to feel?',              label:'Spot the emotion' },
-  { n:4, emoji:'⚖️',  q:"What's the strongest argument the other way?", label:'Steelman the opposite' },
-  { n:5, emoji:'📊', q:'Is this opinion, fact, or in between?',        label:'Sort the claim' },
-  { n:6, emoji:'🔗', q:'How does this connect to what I already know?', label:'Link to your life' }
-];
-
-function buildLensSystemPrompt(selectedLenses) {
-  var lensTexts = {
-    1: 'LENS 1 — Where does this come from?\nIdentify factual claims if any. Point out where this information would come from, how someone could check it, what sources would be trustworthy. If it is opinion rather than checkable, say so. End with one short question inviting the user to think, like "If you wanted to check this, where would you look first?"',
-    2: 'LENS 2 — Whose voice is missing?\nNotice whose perspective the input is told from. Name one or two concrete perspectives NOT in the input — actual people or roles, not "many groups." Say what would look different from those perspectives. End with: "Whose view do you think matters most here, and why?"',
-    3: 'LENS 3 — What does this want me to feel?\nName the feeling the input seems designed to create. Point to specific words or framings that produce it. Say why someone might want the reader to feel that. Do not assume bad intent. End with: "Does noticing the feeling change what you think of the message?"',
-    4: "LENS 4 — What's the strongest argument the other way?\nIdentify the position implied or stated. Build the BEST argument someone smart could make on the OTHER side — not a strawman. Begin with: \"If someone smart disagreed, here is the best thing they could say:\" Do not declare a winner. End with: \"What part of that argument is hardest to dismiss?\"",
-    5: 'LENS 5 — Is this opinion, fact, or in between?\nSort the input into: fact you can check, opinion someone holds, or a mix. Explain WHY — point at specific words. If a mix, say which parts are checkable and which are values. Do not dismiss opinions. End with: "What would change your mind about this?"',
-    6: "LENS 6 — How does this connect to what you already know?\nSuggest two or three things from ordinary life that this input matches or conflicts with. Be concrete — \"Most kids have noticed...\" or \"If you have ever...\" Do not pretend to know the user's life. End with: \"Does this match what you have seen, or does it surprise you?\""
-  };
-  var selected = (Array.isArray(selectedLenses) ? selectedLenses : []).filter(function(n) { return lensTexts[n]; });
-  if (!selected.length) selected = [1, 4];
-  var base = 'You are a multi-lens thinking tool for readers age 10+. The user gives you a claim, headline, or question. You must respond through EACH of the following lenses. For each lens, write 60-100 words in plain language a 10-year-old can follow. No jargon. Do not be preachy. Do not begin any lens with "Great question!"\n\nRespond in this EXACT format — use these headers exactly so the app can parse them:\n\n';
-  var tags = selected.map(function(n) { return '[LENS_' + n + ']\n(your response)\n[/LENS_' + n + ']'; }).join('\n\n');
-  var lensBody = selected.map(function(n) { return lensTexts[n]; }).join('\n\n');
-  return base + tags + '\n\nThe lenses to apply:\n\n' + lensBody;
-}
-
-function parseLensResponse(text, selectedLenses) {
+// PERSPECTIVES RESPONSE PARSER
+function parsePerspectivesResponse(text, selectedPerspectives) {
   var result = {};
-  (selectedLenses || []).forEach(function(n) {
-    var rx = new RegExp('\\[LENS_' + n + '\\]([\\s\\S]*?)\\[/LENS_' + n + '\\]');
+  (selectedPerspectives || []).forEach(function(p) {
+    var k = p.category + '|' + p.subcategory;
+    var escaped = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var rx = new RegExp('\\[P:' + escaped + '\\]([\\s\\S]*?)\\[/P:' + escaped + '\\]');
     var m = (text || '').match(rx);
-    if (m) result[n] = m[1].trim();
+    if (m) result[k] = m[1].trim();
   });
-  if (!Object.keys(result).length && selectedLenses && selectedLenses.length) {
-    result[selectedLenses[0]] = text || '';
+  if (!Object.keys(result).length && selectedPerspectives && selectedPerspectives.length) {
+    result[selectedPerspectives[0].category + '|' + selectedPerspectives[0].subcategory] = text || '';
   }
   return result;
 }
 
-function buildContextWindow(hist) {
-  var WINDOW = 8;
-  var full = hist.slice(-WINDOW);
-  var older = hist.slice(0, hist.length - WINDOW);
-  if (!older.length) return { history: full, prefix: '' };
-  var summary = older.map(function(h) {
-    var q = (h.question || '').split(/[.?!]/)[0].trim().slice(0, 80);
-    var a = (h.reply || '').replace(/^\s*(Sure!?|Of course!?|Here you go:?|Absolutely!?)\s*/i, '').split(/[.?!]/)[0].trim().slice(0, 80);
-    return q + (a ? '. ' + a : '');
-  }).filter(Boolean).join('. ');
-  return { history: full, prefix: 'Previous context: ' + summary };
+// CLIENT-SIDE PERSPECTIVE PROMPT (for Claude path)
+var PERSP_INSTRUCTIONS_CLIENT = {
+  'Personal|Emotional impact':        'How does this topic make people feel? Name the emotions — fear, excitement, sadness, hope — and say which kinds of people feel them and why.',
+  'Personal|Daily life relevance':    'How does this show up in everyday life? Give a concrete example a 10-18 year old would recognise from their own day.',
+  'Personal|Self-reflection':         'What does this topic ask someone to examine about themselves? What belief, habit, or assumption might it challenge?',
+  'Ethical|Fairness':                 'Is this topic fair to everyone involved? Name who benefits and who might be left out or harmed.',
+  'Ethical|Social responsibility':    'What do people, companies, or governments owe each other here? What does doing the right thing look like in practice?',
+  'Ethical|Environmental impact':     'How does this connect to the natural world? Describe the environmental effects — short-term and long-term.',
+  'Practical|Daily application':      'How would someone actually use or apply this in everyday life? Give concrete steps, situations, or tools.',
+  'Practical|Problem-solving':        'What problem does this topic solve, or create? What would a practical fix look like?',
+  'Practical|Real-world use':         'Where is this already being used in the world? Give a real or plausible example in action.',
+  'Creative|Imaginative scenarios':   'Describe a surprising or unexpected situation this topic could lead to. Make it vivid and specific.',
+  'Creative|Storytelling':            'Write 2-3 sentences of a mini-story that brings this topic to life for a young reader.',
+  'Creative|Artistic views':          'How might a poet, musician, or filmmaker see this differently? What feeling would they want to capture?',
+  'Historical|Past interpretations':  'How did people in a specific past time or place deal with this topic? Name the era or culture.',
+  'Historical|Lessons from history':  'What lesson has history taught about this topic? Point to a real past mistake or success.',
+  'Historical|Cultural evolution':    'How has the meaning of this topic shifted across cultures or over time? Name the change.',
+  'Future-oriented|Long-term effects':'Where does this topic lead in 20-50 years if nothing changes? Be specific about consequences.',
+  'Future-oriented|Future innovations':'What new technology or idea could change how we deal with this? Why might it matter?',
+  'Future-oriented|Trends ahead':     'What patterns visible today hint at where this is heading? Name a real, observable trend.'
+};
+
+function buildPerspectivesSystemPromptClient(selected) {
+  var tagBlock = selected.map(function(p) {
+    return '[P:' + p.category + '|' + p.subcategory + ']\n(your response here)\n[/P:' + p.category + '|' + p.subcategory + ']';
+  }).join('\n\n');
+  var instrBlock = selected.map(function(p) {
+    var k = p.category + '|' + p.subcategory;
+    return '[P:' + k + ']\n' + p.category + ' — ' + p.subcategory + ':\n' + (PERSP_INSTRUCTIONS_CLIENT[k] || '');
+  }).join('\n\n');
+  return 'You must always be accurate and honest, acknowledge uncertainty, distinguish facts from opinions.\n\nYou are a multi-perspective thinking tool for readers aged 10+. For each perspective write 80-120 words in plain language. No jargon. No preaching. Never start with "Great question!"\n\nUse this EXACT tag format:\n\n' + tagBlock + '\n\nPerspective instructions:\n\n' + instrBlock;
 }
 
 // ===================== INIT =====================
@@ -527,9 +455,7 @@ async function init() {
   setupSelectionFollowUp();
 }
 
-function showLogin() {
-  show('lp'); hide('landing'); hide('app');
-}
+function showLogin() { show('lp'); hide('landing'); hide('app'); }
 
 function showLanding() {
   hide('lp'); show('landing'); hide('app');
@@ -538,22 +464,21 @@ function showLanding() {
 
 function enterMode(mode) {
   ST.mode = mode; ST.cid = null; ST.hist = []; ST.wordFreq = {}; ST.msgCount = 0;
-  LM.step = 0; LM.input = ''; LM.responses = null; LM.userView = ''; LM.cache = {}; LM.selectedLenses = [1, 4];
+  PM.step = 0; PM.input = ''; PM.responses = null; PM.userView = ''; PM.cache = {}; PM.selected = [];
   ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
   var modelSelect = document.getElementById('model-select');
   var hasSavedModel = Array.from(modelSelect.options).some(function(opt) { return opt.value === ST.selectedModel; });
   if (!hasSavedModel) ST.selectedModel = 'Qwen/Qwen3-30B-A3B-Instruct-2507';
   modelSelect.value = ST.selectedModel;
   hide('landing'); show('app');
-  var ini = getIni(ST.user);
-  document.getElementById('sb-av').textContent = ini;
+  document.getElementById('sb-av').textContent = getIni(ST.user);
   document.getElementById('sb-name').textContent = ST.user.name || ST.user.username;
-  if (mode === 'lens') {
-    document.getElementById('sb-mode-lbl').textContent = 'Lens';
-    document.getElementById('mode-badge').textContent = 'Lens Mode';
+  if (mode === 'perspectives') {
+    document.getElementById('sb-mode-lbl').textContent = 'Perspectives';
+    document.getElementById('mode-badge').textContent = 'Perspectives Mode';
     document.getElementById('mode-badge').className = 'badge badge-gold';
     document.getElementById('sb-role').textContent = 'Critical Thinking';
-    document.getElementById('qi').placeholder = 'Type something you read, heard, or aren\'t sure about.';
+    document.getElementById('qi').placeholder = 'Enter a topic, question, or statement to explore...';
   } else {
     document.getElementById('sb-mode-lbl').textContent = 'Chat';
     document.getElementById('mode-badge').textContent = 'Conversation';
@@ -566,11 +491,7 @@ function enterMode(mode) {
 }
 
 function goBack() { hide('app'); show('landing'); }
-function changeModel(model) {
-  ST.selectedModel = model;
-  // Save to localStorage for persistence
-  localStorage.setItem('selectedModel', model);
-}
+function changeModel(model) { ST.selectedModel = model; localStorage.setItem('selectedModel', model); }
 function show(id) { document.getElementById(id).classList.remove('h'); }
 function hide(id) { document.getElementById(id).classList.add('h'); }
 
