@@ -54,15 +54,15 @@ body::before {
 .l-note { margin-top: 14px; font-size: 11px; color: var(--tx3); font-family: var(--fb); font-style: italic; }
 
 /* LANDING */
-#landing { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); padding: 32px; }
+#landing { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: var(--bg); padding: 40px 32px 32px; overflow-y: auto; }
 #landing.h { display: none; }
-.land-logo { font-family: var(--fd); font-size: 64px; font-weight: 700; color: var(--tx); letter-spacing: .04em; text-align: center; line-height: 1; }
+.land-logo { font-family: var(--fd); font-size: 64px; font-weight: 700; color: var(--tx); letter-spacing: .04em; text-align: center; line-height: 1; margin-top: auto; }
 .land-logo span { color: var(--gold); }
 .land-sub { font-family: var(--fb); font-size: 21px; font-style: italic; color: var(--tx2); text-align: center; margin: 10px 0 6px; }
-.land-user { font-size: 13px; color: var(--tx3); text-align: center; margin-bottom: 36px; }
-.land-pitch { max-width: 540px; text-align: center; font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx2); margin-bottom: 32px; }
+.land-user { font-size: 13px; color: var(--tx3); text-align: center; margin-bottom: 16px; }
+.land-pitch { max-width: 540px; text-align: center; font-family: var(--fb); font-size: 16px; line-height: 1.8; color: var(--tx2); margin-bottom: 20px; }
 .land-pitch strong { color: var(--tx); font-weight: 600; }
-.land-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.land-cta { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: auto; }
 .btn-begin {
   display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px;
   background: var(--gold); color: #fff; border: none; border-radius: var(--r2);
@@ -323,6 +323,68 @@ body::before {
 @keyframes fi { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 .fi { animation: fi .3s ease forwards; }
 
+/* GUEST BUTTON */
+.btn-guest {
+  display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+  padding: 11px 24px; background: transparent; color: var(--tx2);
+  border: 1px solid var(--bor2); border-radius: var(--r2);
+  font-family: var(--fu); font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all var(--t);
+}
+.btn-guest:hover { background: var(--sur2); border-color: var(--bor); color: var(--tx); }
+.l-sep { display: flex; align-items: center; gap: 10px; margin: 12px 0; color: var(--tx3); font-family: var(--fb); font-size: 12px; font-style: italic; }
+.l-sep::before, .l-sep::after { content: ''; flex: 1; height: 1px; background: var(--bor); }
+
+/* GUEST BANNER (app header) */
+.guest-banner { background: var(--glt); border-bottom: 1px solid rgba(184,144,42,.2); padding: 7px 20px; display: flex; align-items: center; gap: 10px; font-family: var(--fb); font-size: 13px; color: var(--gd); flex-shrink: 0; }
+.guest-banner a { color: var(--gd); font-weight: 600; text-decoration: underline; cursor: pointer; margin-left: auto; }
+.guest-banner.h { display: none; }
+
+/* SIGN-IN PROMPT (outcome) */
+.signin-prompt { background: var(--blt); border: 1px solid rgba(46,109,168,.25); border-radius: var(--r2); padding: 18px 22px; max-width: 720px; text-align: center; }
+.signin-prompt p { font-family: var(--fb); font-size: 15px; color: var(--bld); line-height: 1.6; margin-bottom: 14px; }
+
+/* WHAT CHANGED CHIPS */
+.what-changed-wrap { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--bor); }
+.what-changed-lbl { font-family: var(--fu); font-size: 11px; color: var(--tx3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+.what-changed-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.wc-opt { padding: 7px 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: 20px; font-family: var(--fb); font-size: 13px; color: var(--tx2); cursor: pointer; transition: all var(--t); user-select: none; }
+.wc-opt:hover { background: var(--sur); border-color: var(--bor); }
+.wc-opt.selected { background: var(--blt); border-color: var(--blue); color: var(--bld); }
+
+/* EVIDENCE FIELD */
+.evidence-wrap { margin-top: 14px; }
+.evidence-lbl { font-family: var(--fu); font-size: 11px; color: var(--tx3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.evidence-ta { width: 100%; min-height: 56px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--bor2); border-radius: var(--r); font-family: var(--fb); font-size: 14px; color: var(--tx); resize: vertical; outline: none; line-height: 1.5; transition: border-color .2s; }
+.evidence-ta:focus { border-color: var(--gold); }
+
+/* EXAMPLE CARD */
+.example-card { max-width: 500px; width: 100%; margin: 0 auto 28px; background: var(--sur); border: 1px solid var(--bor); border-radius: var(--r2); padding: 16px 20px; text-align: left; }
+.example-card-lbl { font-family: var(--fu); font-size: 9px; color: var(--tx3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; text-align: center; }
+.example-q { font-family: var(--fd); font-size: 15px; font-weight: 700; color: var(--tx); margin-bottom: 10px; }
+.example-row { display: flex; gap: 8px; margin-bottom: 7px; align-items: flex-start; }
+.example-tag { font-family: var(--fu); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 2px 7px; border-radius: 3px; flex-shrink: 0; margin-top: 3px; }
+.example-tag.before { background: var(--glt); color: var(--gd); }
+.example-tag.lens { background: var(--sur2); color: var(--tx2); }
+.example-tag.after { background: var(--blt); color: var(--bld); }
+.example-text { font-family: var(--fb); font-size: 13px; color: var(--tx); line-height: 1.55; }
+.example-delta { font-family: var(--fu); font-size: 11px; color: var(--tx3); text-align: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--bor); }
+.example-delta strong { color: var(--gold); }
+
+/* OUTCOME — what changed / evidence display */
+.outcome-extra { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--bor); text-align: left; }
+.outcome-extra-row { margin-bottom: 8px; }
+.outcome-extra-lbl { font-family: var(--fu); font-size: 10px; color: var(--tx3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+.outcome-extra-val { font-family: var(--fb); font-size: 14px; color: var(--tx); line-height: 1.55; font-style: italic; }
+
+/* COLLAPSIBLE OPTIONAL CONTEXT */
+.ctx-optional-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; font-family: var(--fu); font-size: 11px; color: var(--tx3); cursor: pointer; padding: 4px 0; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; transition: color var(--t); }
+.ctx-optional-toggle:hover { color: var(--tx2); }
+.ctx-optional-toggle .toggle-arrow { font-size: 10px; transition: transform var(--t); display: inline-block; }
+.ctx-optional-toggle.open .toggle-arrow { transform: rotate(90deg); }
+.ctx-optional-section { display: none; }
+.ctx-optional-section.open { display: block; }
+
 @media (max-width: 680px) {
   #sb { position: absolute; top: 0; bottom: 0; left: 0; z-index: 50; box-shadow: 4px 0 20px rgba(0,0,0,.1); }
   #msgs { padding: 16px 14px 8px; }
@@ -348,24 +410,34 @@ body::before {
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       Continue with Google
     </a>
-    <p class="l-note">Sign in with your Google account to get started</p>
+    <div class="l-sep">or</div>
+    <button onclick="enterAppGuest()" class="btn-guest">Try it without signing in</button>
+    <p class="l-note">Sign in with Google to save your thinking history across sessions</p>
   </div>
 </div>
 
 <!-- LANDING -->
 <div id="landing" class="h">
   <div class="land-logo">Conspr<span>e</span>ad</div>
-  <div class="land-sub">Think for yourself. Out loud.</div>
+  <div class="land-sub">A gym for independent reasoning.</div>
   <div class="land-user" id="land-user"></div>
   <div class="land-pitch">
-    Most tools give you answers. This one asks <strong>what you think first</strong> — then puts your position through six lenses designed to push back, not flatter. You finish by saying where you actually land. Over time, you'll see your own mind on a timeline.
+    Most tools give you answers. This one makes you <strong>commit to a position first</strong> — then puts it through six lenses that push back, not flatter. You finish by saying where you actually land. Over time, you see your own mind on a timeline.
+  </div>
+  <div class="example-card">
+    <div class="example-card-lbl">One real example</div>
+    <div class="example-q">"AI will replace most jobs in 10 years"</div>
+    <div class="example-row"><span class="example-tag before">Before</span><span class="example-text">"Probably true — automation is moving fast and we've seen industries collapse." &nbsp;<em style="color:var(--tx3);font-size:12px;">Confidence: 7/10</em></span></div>
+    <div class="example-row"><span class="example-tag lens">⚖️ Lens</span><span class="example-text">Tech companies gain while mid-skill workers lose — but retraining markets have always lagged technology by 10–20 years. The directional claim may be right; the 10-year timing may not.</span></div>
+    <div class="example-row"><span class="example-tag after">After</span><span class="example-text">"Jobs will shift, not disappear en masse in 10 years. The word 'most' is doing too much work." &nbsp;<em style="color:var(--tx3);font-size:12px;">Confidence: 4/10</em></span></div>
+    <div class="example-delta">Confidence: <strong>7 → 4</strong> &nbsp;·&nbsp; Less certain, more precise</div>
   </div>
   <div class="land-cta">
     <button class="btn-begin" onclick="enterApp()">
       Begin
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </button>
-    <div class="land-foot">Not for quick facts. For things you're genuinely unsure about, or things you think you're sure about but might not be.</div>
+    <div class="land-foot">Not for quick facts. For things you think you're sure about — but might not be. Friction is the point.</div>
   </div>
 </div>
 
@@ -408,6 +480,10 @@ body::before {
     </div>
   </nav>
   <div id="mn">
+    <div class="guest-banner h" id="guest-banner">
+      Thinking as a guest — your session won't be saved.
+      <a href="/api/auth/login">Sign in with Google to save your history</a>
+    </div>
     <header class="mh">
       <button class="btn-sb" onclick="document.getElementById('sb').classList.toggle('c')">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -477,7 +553,8 @@ var ST = {
   user: null, cid: null, busy: false, voiceOn: false,
   selectedModel: 'gm:gemini-2.0-flash',
   stats: { questions: 0, changed: 0, held: 0, unsure: 0, lensFreq: {}, outcomeByLens: {} },
-  userRole: ''   // persistent: "I am a ___"
+  userRole: '',   // persistent: "I am a ___"
+  anon: false     // true when running as a guest without sign-in
 };
 
 // Lens-flow state for the active question
@@ -494,7 +571,9 @@ var LF = {
   pushbacks: {},
   positionAfter: '',
   confAfter: 5,
-  outcome: null
+  outcome: null,
+  whatChanged: '',          // which dimension shifted most
+  evidenceToChange: ''      // what would change the user's mind
 };
 
 var recog = null;
@@ -551,6 +630,37 @@ function enterApp() {
   loadHist();
 }
 
+function enterAppGuest() {
+  ST.anon = true;
+  ST.user = { name: 'Guest', username: 'guest' };
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-2.0-flash';
+  ST.userRole = localStorage.getItem('userRole') || '';
+  var ms = document.getElementById('model-select');
+  if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
+    ms.value = ST.selectedModel;
+  } else {
+    ST.selectedModel = 'gm:gemini-2.0-flash';
+    ms.value = ST.selectedModel;
+  }
+  hide('lp'); show('app');
+  // Show guest banner and update sidebar
+  document.getElementById('guest-banner').classList.remove('h');
+  document.getElementById('sb-av').textContent = 'G';
+  document.getElementById('sb-name').textContent = 'Guest';
+  document.getElementById('sb-role').textContent = 'Try it out';
+  // Replace logout btn with sign-in link
+  var logoutBtn = document.querySelector('.btn-logout');
+  if (logoutBtn) {
+    logoutBtn.title = 'Sign in';
+    logoutBtn.onclick = function() { window.location.href = '/api/auth/login'; };
+    logoutBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>';
+  }
+  showWelcome();
+  // Show sign-in prompt in empty sidebar history
+  var sbHist = document.getElementById('sb-hist');
+  sbHist.innerHTML = '<div class="sb-section-lbl">Recent thinking</div><div class="sb-empty">Sign in to save and review your thinking history.</div>';
+}
+
 function changeModel(m) { ST.selectedModel = m; localStorage.setItem('selectedModel', m); }
 function show(id) { document.getElementById(id).classList.remove('h'); }
 function hide(id) { document.getElementById(id).classList.add('h'); }
@@ -591,6 +701,7 @@ function resetLF() {
   LF.positionBefore = ''; LF.confBefore = 5;
   LF.selectedLenses = []; LF.responses = {}; LF.pushbacks = {};
   LF.positionAfter = ''; LF.confAfter = 5; LF.outcome = null;
+  LF.whatChanged = ''; LF.evidenceToChange = '';
 }
 
 function setStep(label) { document.getElementById('mh-step').textContent = label; }
@@ -627,12 +738,12 @@ function renderStep1_Context() {
   var lbl = document.createElement('div'); lbl.className = 'step-lbl';
   lbl.textContent = 'Step 1 of 5';
   var title = document.createElement('div'); title.className = 'step-title';
-  title.textContent = 'A bit of context first';
+  title.textContent = 'Who is asking?';
   var intro = document.createElement('div'); intro.className = 'ctx-intro';
-  intro.textContent = 'These four lines change how the lenses respond. A student asking for a debate gets a different push than a parent making a household rule. One sentence each is enough.';
+  intro.textContent = 'One line about you. A student debating gets different push-back than a manager making a decision. This is saved for next time.';
   card.appendChild(lbl); card.appendChild(title); card.appendChild(intro);
 
-  // Field 1: I am a ___ (role) — show saved or prompt fresh
+  // Field 1: I am a ___ (role) — required, show saved or prompt fresh
   var roleSaved = ST.userRole && ST.userRole.length > 1;
   if (roleSaved) {
     var saved = document.createElement('div'); saved.className = 'ctx-saved';
@@ -649,6 +760,17 @@ function renderStep1_Context() {
     buildRoleField(card, false);
   }
 
+  // Optional context toggle (fields 2–4)
+  var optToggle = document.createElement('button'); optToggle.type = 'button'; optToggle.className = 'ctx-optional-toggle';
+  optToggle.innerHTML = '<span class="toggle-arrow">▶</span> Optional — add more context for sharper lenses';
+  var optSection = document.createElement('div'); optSection.className = 'ctx-optional-section';
+  optToggle.onclick = function() {
+    var open = optSection.classList.toggle('open');
+    optToggle.classList.toggle('open', open);
+  };
+  card.appendChild(optToggle);
+  card.appendChild(optSection);
+
   // Field 2: I'm asking this for ___ (reason)
   var f2 = document.createElement('div'); f2.className = 'ctx-field';
   var l2 = document.createElement('label'); l2.className = 'ctx-label';
@@ -656,7 +778,7 @@ function renderStep1_Context() {
   var i2 = document.createElement('input'); i2.type = 'text'; i2.className = 'ctx-input'; i2.id = 'ctx-reason';
   i2.placeholder = 'a class debate next week';
   f2.appendChild(l2); f2.appendChild(i2);
-  card.appendChild(f2);
+  optSection.appendChild(f2);
 
   // Field 3: I'll use this for ___ (purpose)
   var f3 = document.createElement('div'); f3.className = 'ctx-field';
@@ -665,7 +787,7 @@ function renderStep1_Context() {
   var i3 = document.createElement('input'); i3.type = 'text'; i3.className = 'ctx-input'; i3.id = 'ctx-purpose';
   i3.placeholder = 'arguing my side and anticipating theirs';
   f3.appendChild(l3); f3.appendChild(i3);
-  card.appendChild(f3);
+  optSection.appendChild(f3);
 
   // Field 4: Where it's coming from (source) — chips
   var f4 = document.createElement('div'); f4.className = 'ctx-field';
@@ -681,7 +803,6 @@ function renderStep1_Context() {
       b.classList.add('selected');
       document.getElementById('ctx-source-custom').value = '';
       LF.ctxSource = s;
-      updateCtxContinueBtn();
     };
     sourceRow.appendChild(b);
   });
@@ -697,19 +818,18 @@ function renderStep1_Context() {
     } else {
       LF.ctxSource = '';
     }
-    updateCtxContinueBtn();
   };
   f4.appendChild(customSrc);
-  card.appendChild(f4);
+  optSection.appendChild(f4);
 
-  // Continue button
+  // Continue button — only role is required now
   var rowBtn = document.createElement('div'); rowBtn.className = 'row-btn';
   var btn = document.createElement('button'); btn.className = 'btn-primary'; btn.id = 'ctx-continue';
   btn.textContent = 'Continue →';
   btn.disabled = true;
   btn.onclick = function() {
-    LF.ctxReason = document.getElementById('ctx-reason').value.trim();
-    LF.ctxPurpose = document.getElementById('ctx-purpose').value.trim();
+    LF.ctxReason = (document.getElementById('ctx-reason') || {}).value ? document.getElementById('ctx-reason').value.trim() : '';
+    LF.ctxPurpose = (document.getElementById('ctx-purpose') || {}).value ? document.getElementById('ctx-purpose').value.trim() : '';
     // ctxSource already tracked
     var roleInp = document.getElementById('ctx-role');
     if (roleInp && roleInp.value.trim()) {
@@ -723,14 +843,14 @@ function renderStep1_Context() {
     renderStep2_Position();
     scrollBottom();
   };
-  i2.oninput = updateCtxContinueBtn;
-  i3.oninput = updateCtxContinueBtn;
   rowBtn.appendChild(btn);
   card.appendChild(rowBtn);
 
   msgs.appendChild(card);
+  // If role already saved, button can be enabled immediately
+  updateCtxContinueBtn();
   setTimeout(function() {
-    var firstFocusable = roleSaved ? i2 : document.getElementById('ctx-role');
+    var firstFocusable = roleSaved ? btn : document.getElementById('ctx-role');
     if (firstFocusable) firstFocusable.focus();
   }, 100);
 }
@@ -758,12 +878,7 @@ function updateCtxContinueBtn() {
   if (!btn) return;
   var roleInp = document.getElementById('ctx-role');
   var roleOk = ST.userRole || (roleInp && roleInp.value.trim().length >= 2);
-  var reason = document.getElementById('ctx-reason');
-  var purpose = document.getElementById('ctx-purpose');
-  var reasonOk = reason && reason.value.trim().length >= 2;
-  var purposeOk = purpose && purpose.value.trim().length >= 2;
-  var sourceOk = !!LF.ctxSource;
-  btn.disabled = !(roleOk && reasonOk && purposeOk && sourceOk);
+  btn.disabled = !roleOk;
 }
 
 // ===================== PINNED CONTEXT (compact summary, visible during flow) =====================
@@ -848,6 +963,25 @@ function renderPinnedPosition() {
   msgs.appendChild(p);
 }
 
+// ===================== ADAPTIVE LENS ORDERING =====================
+function adaptiveLensOrder(position) {
+  var pos = (position || '').toLowerCase();
+  // Detect signal words in the stated position and surface the most diagnostic lens first
+  var moralized = /\b(should|must|ought|right|wrong|moral|ethical|fair|unfair|deserve|justice|immoral)\b/.test(pos);
+  var overCertain = /\b(obviously|clearly|definitely|certainly|always|never|everyone|nobody|no one|proven|undeniable)\b/.test(pos);
+  var historical  = /\b(history|historically|used to|always been|traditional|before|past|precedent|decades|century)\b/.test(pos);
+  var futureward  = /\b(will|future|years from now|eventually|trend|going to|long.term|in \d+ years)\b/.test(pos);
+
+  var order;
+  if (moralized)    order = [4, 1, 2, 3, 5, 6]; // Who gains, who loses first
+  else if (overCertain) order = [2, 1, 4, 3, 5, 6]; // Assumptions first
+  else if (historical)  order = [5, 2, 4, 1, 3, 6]; // History first
+  else if (futureward)  order = [6, 2, 4, 1, 3, 5]; // 10 years from now first
+  else              order = [1, 2, 3, 4, 5, 6]; // default
+
+  return order.map(function(n) { return LENSES.find(function(l) { return l.n === n; }); });
+}
+
 // ===================== STEP 3: PICK LENSES =====================
 function renderStep3_LensPicker() {
   setStep('Step 3 of 5 — Pick your lenses');
@@ -860,18 +994,26 @@ function renderStep3_LensPicker() {
   var sub = document.createElement('div'); sub.className = 'step-sub';
   sub.textContent = 'Pick at least one. You can always add more after you read.';
 
+  var orderedLenses = adaptiveLensOrder(LF.positionBefore);
+  var recommendedN = orderedLenses[0] ? orderedLenses[0].n : 1;
   var grid = document.createElement('div'); grid.className = 'lens-grid';
-  LENSES.forEach(function(lens) {
+  orderedLenses.forEach(function(lens, idx) {
     var c = document.createElement('div'); c.className = 'lens-card'; c.dataset.n = lens.n;
     var head = document.createElement('div'); head.className = 'lens-card-head';
     var em = document.createElement('span'); em.className = 'lens-card-emoji'; em.textContent = lens.emoji;
     var qq = document.createElement('span'); qq.className = 'lens-card-q'; qq.textContent = lens.q;
     head.appendChild(em); head.appendChild(qq);
+    if (idx === 0) {
+      var rec = document.createElement('span');
+      rec.style.cssText = 'font-family:var(--fu);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:1px 6px;border-radius:3px;background:var(--glt);color:var(--gd);margin-left:auto;flex-shrink:0;';
+      rec.textContent = 'Start here';
+      head.appendChild(rec);
+    }
     var d = document.createElement('div'); d.className = 'lens-card-desc'; d.textContent = lens.label;
     c.appendChild(head); c.appendChild(d);
     c.onclick = function() {
-      var idx = LF.selectedLenses.indexOf(lens.n);
-      if (idx !== -1) { LF.selectedLenses.splice(idx, 1); c.classList.remove('selected'); }
+      var idx2 = LF.selectedLenses.indexOf(lens.n);
+      if (idx2 !== -1) { LF.selectedLenses.splice(idx2, 1); c.classList.remove('selected'); }
       else { LF.selectedLenses.push(lens.n); c.classList.add('selected'); }
       updateLensControls();
     };
@@ -993,7 +1135,11 @@ function buildLensSystemPrompt(lenses, position, conf) {
     'USER CONFIDENCE: ' + conf + '/10\n\n' +
     'Write the response for each requested lens using EXACTLY this format:\n\n' + tagBlock + '\n\n' +
     'Lens instructions:\n\n' + instr + '\n\n' +
-    'Rules: Plain language. No jargon. Never start with "Great question!" or any flattery. Do not hedge. Stay focused on the user\'s specific position, not generic talking points. Treat the user as a serious thinker who can handle a real challenge.';
+    'Rules: Plain language. No jargon. Never start with "Great question!" or any flattery. Do not hedge. Stay focused on the user\'s specific position, not generic talking points. Treat the user as a serious thinker who can handle a real challenge.\n' +
+    'CRITICAL — Format for every lens response:\n' +
+    '1. Open with exactly one sentence that steelmans the user: "Stated at its strongest, your position is that [charitable restatement]."\n' +
+    '2. Then deliver the lens pushback.\n' +
+    '3. End with exactly one direct question that forces the user to confront the hardest version of what you just said.';
 }
 
 function parseLensResponse(text, lenses) {
@@ -1140,6 +1286,30 @@ function renderStep5_PromptAfter() {
   slider.oninput = function() { val.textContent = slider.value; };
   confRow.appendChild(confL); confRow.appendChild(slider); confRow.appendChild(val); confRow.appendChild(of);
 
+  // What changed most? (optional chips)
+  var wcWrap = document.createElement('div'); wcWrap.className = 'what-changed-wrap';
+  var wcLbl = document.createElement('div'); wcLbl.className = 'what-changed-lbl'; wcLbl.textContent = 'What changed most? (optional)';
+  var wcOpts = document.createElement('div'); wcOpts.className = 'what-changed-opts';
+  var wcChoices = ['My view changed', 'My confidence changed', 'My framing changed', 'Still undecided, but clearer', 'Nothing moved'];
+  wcChoices.forEach(function(choice) {
+    var chip = document.createElement('span'); chip.className = 'wc-opt'; chip.textContent = choice;
+    chip.onclick = function() {
+      wcOpts.querySelectorAll('.wc-opt').forEach(function(c) { c.classList.remove('selected'); });
+      chip.classList.add('selected');
+      LF.whatChanged = choice;
+    };
+    wcOpts.appendChild(chip);
+  });
+  wcWrap.appendChild(wcLbl); wcWrap.appendChild(wcOpts);
+
+  // What evidence would change your mind?
+  var evWrap = document.createElement('div'); evWrap.className = 'evidence-wrap';
+  var evLbl = document.createElement('div'); evLbl.className = 'evidence-lbl'; evLbl.textContent = 'What would meaningfully change your mind? (optional)';
+  var evTa = document.createElement('textarea'); evTa.className = 'evidence-ta'; evTa.id = 'evidence-ta';
+  evTa.placeholder = 'If I saw strong evidence that…';
+  evTa.oninput = function() { LF.evidenceToChange = evTa.value.trim(); };
+  evWrap.appendChild(evLbl); evWrap.appendChild(evTa);
+
   var rowBtn = document.createElement('div'); rowBtn.className = 'row-btn';
   var btn = document.createElement('button'); btn.className = 'btn-primary'; btn.textContent = 'Save this thought →';
   btn.disabled = true;
@@ -1147,13 +1317,15 @@ function renderStep5_PromptAfter() {
   btn.onclick = function() {
     LF.positionAfter = ta.value.trim();
     LF.confAfter = parseInt(slider.value, 10);
+    LF.evidenceToChange = evTa.value.trim();
     ta.disabled = true; slider.disabled = true; btn.disabled = true;
+    evTa.disabled = true;
     finishFlow();
   };
   rowBtn.appendChild(btn);
 
   card.appendChild(lbl2); card.appendChild(title); card.appendChild(sub);
-  card.appendChild(ta); card.appendChild(confRow); card.appendChild(rowBtn);
+  card.appendChild(ta); card.appendChild(confRow); card.appendChild(wcWrap); card.appendChild(evWrap); card.appendChild(rowBtn);
   msgs.appendChild(card);
   setTimeout(function() { ta.focus(); }, 100);
 }
@@ -1283,19 +1455,53 @@ function renderOutcome() {
     (Object.keys(LF.pushbacks).length ? ' &middot; Pushed back on <strong>' + Object.keys(LF.pushbacks).length + '</strong>' : '');
   card.appendChild(badge); card.appendChild(title); card.appendChild(detail);
 
+  // Extra fields from Step 5
+  if (LF.whatChanged || LF.evidenceToChange) {
+    var extra = document.createElement('div'); extra.className = 'outcome-extra';
+    if (LF.whatChanged) {
+      var wrow = document.createElement('div'); wrow.className = 'outcome-extra-row';
+      var wlbl = document.createElement('div'); wlbl.className = 'outcome-extra-lbl'; wlbl.textContent = 'What changed most';
+      var wval = document.createElement('div'); wval.className = 'outcome-extra-val'; wval.textContent = LF.whatChanged;
+      wrow.appendChild(wlbl); wrow.appendChild(wval); extra.appendChild(wrow);
+    }
+    if (LF.evidenceToChange) {
+      var erow = document.createElement('div'); erow.className = 'outcome-extra-row';
+      var elbl = document.createElement('div'); elbl.className = 'outcome-extra-lbl'; elbl.textContent = 'What would change your mind';
+      var eval2 = document.createElement('div'); eval2.className = 'outcome-extra-val'; eval2.textContent = '"' + LF.evidenceToChange + '"';
+      erow.appendChild(elbl); erow.appendChild(eval2); extra.appendChild(erow);
+    }
+    card.appendChild(extra);
+  }
+
   var rowBtn = document.createElement('div'); rowBtn.style.marginTop = '14px'; rowBtn.style.display = 'flex'; rowBtn.style.justifyContent = 'center'; rowBtn.style.gap = '10px';
   var newBtn = document.createElement('button'); newBtn.className = 'btn-primary'; newBtn.textContent = 'New question';
   newBtn.onclick = newChat;
-  var histBtn = document.createElement('button'); histBtn.className = 'btn-ghost'; histBtn.textContent = 'See my history';
-  histBtn.onclick = showHistory;
-  rowBtn.appendChild(newBtn); rowBtn.appendChild(histBtn);
+  if (!ST.anon) {
+    var histBtn = document.createElement('button'); histBtn.className = 'btn-ghost'; histBtn.textContent = 'See my history';
+    histBtn.onclick = showHistory;
+    rowBtn.appendChild(newBtn); rowBtn.appendChild(histBtn);
+  } else {
+    rowBtn.appendChild(newBtn);
+  }
   card.appendChild(rowBtn);
   msgs.appendChild(card);
+
+  // Guest: show sign-in prompt to save this session
+  if (ST.anon) {
+    var sp = document.createElement('div'); sp.className = 'signin-prompt fi';
+    sp.innerHTML = '<p>This session wasn\'t saved. Sign in with Google to keep a timeline of how your thinking changes — which lenses move you, which topics create false certainty, and where you grow more precise.</p>';
+    var sa = document.createElement('a'); sa.href = '/api/auth/login'; sa.className = 'btn-hf';
+    sa.style.cssText = 'display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:13px;border-radius:var(--r2);text-decoration:none;';
+    sa.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Sign in with Google';
+    sp.appendChild(sa);
+    msgs.appendChild(sp);
+  }
 }
 
 // ===================== PERSISTENCE =====================
 // Save the completed flow via /api/chat as a single "save" call (lens mode, action=save)
 async function persistFlow() {
+  if (ST.anon) return; // Guest sessions are not saved
   try {
     await fetch('/api/chat', {
       method: 'POST', credentials: 'same-origin',
@@ -1328,6 +1534,7 @@ async function persistFlow() {
 
 // ===================== HISTORY (sidebar + full view) =====================
 async function loadHist() {
+  if (ST.anon) return; // No history for guest sessions
   try {
     var r = await fetch('/api/history', { credentials: 'same-origin' });
     var d = await r.json();
@@ -1374,6 +1581,7 @@ function refreshSidebarStats() {
 }
 
 async function showHistory() {
+  if (ST.anon) { alert('Sign in with Google to save and review your thinking history.'); return; }
   if (LF.step !== 0 && LF.step !== 6) {
     if (!confirm('You\'re mid-thinking. Leave this question and view your history?')) return;
   }
@@ -1471,31 +1679,59 @@ function makeStat(val, lbl, sub) {
 }
 
 function computePattern(chats, lensCount, lensShift) {
-  if (chats.length < 3) return null;
-  // Find lens that shifts the user most often
+  if (chats.length < 2) return null;
+  var insights = [];
+
+  // Lens that shifts the user most
   var bestN = 0, bestRate = 0;
   Object.keys(lensCount).forEach(function(n) {
     if (lensCount[n] < 2) return;
     var rate = (lensShift[n] || 0) / lensCount[n];
     if (rate > bestRate) { bestRate = rate; bestN = parseInt(n, 10); }
   });
-  // Find least-used lens
+  var bestLens = LENSES.find(function(l) { return l.n === bestN; });
+  if (bestLens && bestRate >= 0.4) {
+    insights.push('You change your mind most often after <strong>' + bestLens.emoji + ' ' + bestLens.q + '</strong> (' + Math.round(bestRate * 100) + '% of the time).');
+  }
+
+  // Least-used lens
   var leastN = 0, leastC = Infinity;
   LENSES.forEach(function(l) {
     var c = lensCount[l.n] || 0;
     if (c < leastC) { leastC = c; leastN = l.n; }
   });
-  var bestLens = LENSES.find(function(l) { return l.n === bestN; });
   var leastLens = LENSES.find(function(l) { return l.n === leastN; });
-  var out = '<strong>Pattern:</strong> ';
-  if (bestLens && bestRate >= 0.4) {
-    out += 'You change your mind most often after <strong>' + bestLens.emoji + ' ' + bestLens.q + '</strong>. ';
+  if (leastLens && leastC === 0) {
+    insights.push('You\'ve never tried <strong>' + leastLens.emoji + ' ' + leastLens.q + '</strong> — it might be your blind spot.');
   }
-  if (leastLens && leastC <= 1) {
-    out += 'You rarely use <strong>' + leastLens.emoji + ' ' + leastLens.q + '</strong> — try it next time?';
+
+  // Overconfidence pattern: started high, ended lower more than 50% of the time
+  if (chats.length >= 3) {
+    var highStart = chats.filter(function(c) { return (c.confidence_before || c.confidenceBefore || 0) >= 7; });
+    var highStartDropped = highStart.filter(function(c) {
+      var cb = c.confidence_before != null ? c.confidence_before : (c.confidenceBefore || 0);
+      var ca = c.confidence_after != null ? c.confidence_after : (c.confidenceAfter || 0);
+      return ca < cb;
+    });
+    if (highStart.length >= 2 && highStartDropped.length / highStart.length >= 0.6) {
+      insights.push('When you start with high confidence (7+), you almost always end less certain. That\'s epistemic honesty.');
+    }
+
+    // Reverse: consistently held firm
+    var held = chats.filter(function(c) { return c.outcome === 'held'; });
+    if (held.length / chats.length >= 0.7 && chats.length >= 4) {
+      insights.push('You hold your positions firmly — ' + Math.round(100 * held.length / chats.length) + '% of the time unchanged. Are you being principled or stubborn? Worth asking.');
+    }
+
+    // Change rate
+    var changed = chats.filter(function(c) { return c.outcome === 'changed'; });
+    if (changed.length / chats.length >= 0.5 && chats.length >= 4) {
+      insights.push('You\'ve changed your mind in more than half your sessions. That\'s rare — and the point of this.');
+    }
   }
-  if (out === '<strong>Pattern:</strong> ') return null;
-  return out;
+
+  if (!insights.length) return null;
+  return '<strong>Your patterns so far:</strong><br>' + insights.join('<br>');
 }
 
 async function showHistoryItem(chatId) {

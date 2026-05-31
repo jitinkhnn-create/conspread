@@ -460,14 +460,14 @@ async function onSession(req, env) {
 
 async function onChat(req, env) {
   if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
-  var s = await getSession(req, env);
-  if (!s) return jres({ error: 'Unauthorized' }, 401);
 
   var body;
   try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
 
-  // ===== Branch A: persist a completed lens session =====
+  // ===== Branch A: persist a completed lens session (requires auth) =====
   if (body.action === 'save_lens_session') {
+    var s = await getSession(req, env);
+    if (!s) return jres({ error: 'Unauthorized' }, 401);
     try {
       var cid = body.chatId || crypto.randomUUID();
       var key = 'chat:' + s.user.id + ':' + cid;
