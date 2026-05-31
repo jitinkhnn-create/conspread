@@ -345,10 +345,10 @@ body::before {
       <li>For anyone who suspects they've been taught what to think, not how</li>
     </ul>
     <a href="/api/auth/login" class="btn-hf">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7.07l-8 4-8-4V8.5L12 4.18z"/></svg>
-      Continue with Hugging Face
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
     </a>
-    <p class="l-note">Uses your HF account for authentication and AI inference</p>
+    <p class="l-note">Sign in with your Google account to get started</p>
   </div>
 </div>
 
@@ -423,16 +423,17 @@ body::before {
         </button>
         <div class="model-wrap">
           <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
-            <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B [balanced]</option>
-            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B [highest quality]</option>
-            <option value="Qwen/Qwen3-Next-80B-A3B-Instruct-FP8">Qwen3-Next 80B [long context]</option>
-            <option value="Qwen/Qwen3-Coder-30B-A3B-Instruct">Qwen3 Coder 30B</option>
-            <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2</option>
-            <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1 [reasoning]</option>
+            <option value="gm:gemini-2.0-flash">Gemini 2.0 Flash [free]</option>
+            <option value="gm:gemini-1.5-flash">Gemini 1.5 Flash [free]</option>
+            <option value="or:meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B [free]</option>
             <option value="or:openrouter/free">OpenRouter Auto Free</option>
-            <option value="or:meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B Free</option>
-            <option value="or:mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 Free</option>
-            <option value="or:deepseek/deepseek-r1:free">DeepSeek R1 Free</option>
+            <option value="or:mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 [free]</option>
+            <option value="or:deepseek/deepseek-r1:free">DeepSeek R1 [free]</option>
+            <option disabled>── HuggingFace (needs HF_TOKEN) ──</option>
+            <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B</option>
+            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B</option>
+            <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2</option>
+            <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1</option>
             <option disabled>── Claude (Anthropic) ──</option>
             <option value="claude-opus-4-6-20250514">Claude Opus 4.6</option>
             <option value="claude-sonnet-4-6-20250514">Claude Sonnet 4.6</option>
@@ -474,7 +475,7 @@ body::before {
 // ===================== STATE =====================
 var ST = {
   user: null, cid: null, busy: false, voiceOn: false,
-  selectedModel: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
+  selectedModel: 'gm:gemini-2.0-flash',
   stats: { questions: 0, changed: 0, held: 0, unsure: 0, lensFreq: {}, outcomeByLens: {} },
   userRole: ''   // persistent: "I am a ___"
 };
@@ -534,13 +535,13 @@ function showLanding() {
 }
 
 function enterApp() {
-  ST.selectedModel = localStorage.getItem('selectedModel') || 'Qwen/Qwen3-30B-A3B-Instruct-2507';
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-2.0-flash';
   ST.userRole = localStorage.getItem('userRole') || '';
   var ms = document.getElementById('model-select');
   if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
     ms.value = ST.selectedModel;
   } else {
-    ST.selectedModel = 'Qwen/Qwen3-30B-A3B-Instruct-2507';
+    ST.selectedModel = 'gm:gemini-2.0-flash';
     ms.value = ST.selectedModel;
   }
   hide('landing'); show('app');

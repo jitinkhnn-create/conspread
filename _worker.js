@@ -26,6 +26,11 @@ const OPENROUTER_FREE_FALLBACKS = [
   'or:deepseek/deepseek-r1:free'
 ];
 
+const GEMINI_FREE_FALLBACKS = [
+  'gm:gemini-2.0-flash',
+  'gm:gemini-1.5-flash'
+];
+
 // ===================== LENS DEFINITIONS =====================
 // Mirror of the frontend LENSES array. Used only as a server-side
 // fallback if the frontend doesn't send a systemPrompt (it should).
@@ -104,17 +109,37 @@ function toOrModel(raw) {
   return v.startsWith('or:') ? v : ('or:' + v);
 }
 
+function isGeminiModel(model) {
+  return typeof model === 'string' && model.startsWith('gm:');
+}
+
+function stripGeminiPrefix(model) {
+  return isGeminiModel(model) ? model.slice(3) : model;
+}
+
 function getModelCandidates(selectedModel, env) {
-  var base = uniqueModels(
-    [selectedModel, env.HF_MODEL]
-      .concat(splitCsvModels(env.HF_MODEL_FALLBACKS))
-      .concat(BUILTIN_MODEL_FALLBACKS)
-  );
-  if (env && env.OPENROUTER_API_KEY) {
-    var orModels = splitCsvModels(env.OPENROUTER_FREE_MODELS).map(toOrModel).filter(Boolean);
-    return uniqueModels(base.concat(orModels).concat(OPENROUTER_FREE_FALLBACKS));
+  var hasHFToken = !!(env && env.HF_TOKEN);
+  var hasOR = !!(env && env.OPENROUTER_API_KEY);
+  var hasGM = !!(env && env.GEMINI_API_KEY);
+
+  var candidates = selectedModel ? [selectedModel] : [];
+
+  if (hasHFToken) {
+    if (env.HF_MODEL) candidates.push(env.HF_MODEL);
+    candidates = candidates.concat(splitCsvModels(env.HF_MODEL_FALLBACKS));
+    candidates = candidates.concat(BUILTIN_MODEL_FALLBACKS);
   }
-  return base;
+
+  if (hasOR) {
+    var orCustom = splitCsvModels(env.OPENROUTER_FREE_MODELS).map(toOrModel).filter(Boolean);
+    candidates = candidates.concat(orCustom).concat(OPENROUTER_FREE_FALLBACKS);
+  }
+
+  if (hasGM) {
+    candidates = candidates.concat(GEMINI_FREE_FALLBACKS);
+  }
+
+  return uniqueModels(candidates);
 }
 
 function isModelNotSupported(status, errText) {
@@ -122,6 +147,11 @@ function isModelNotSupported(status, errText) {
   var txt = String(errText || '');
   return txt.indexOf('model_not_supported') !== -1
     || txt.indexOf('not supported by any provider') !== -1;
+}
+
+function isRetriableGM(err) {
+  var status = getProviderStatus(err);
+  return status === 429 || status === 500 || status === 502 || status === 503;
 }
 
 function isOpenRouterModel(model) {
@@ -168,6 +198,30 @@ async function callHFWithRetry(messages, token, model, opts, maxAttempts, env) {
 
 async function callHF(messages, token, model, opts, env) {
   opts = opts || {};
+  if (isGeminiModel(model)) {
+    if (!env || !env.GEMINI_API_KEY) throw new Error('GM 500: Gemini is not configured.');
+    var gmModel = stripGeminiPrefix(model);
+    var gmRes = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + env.GEMINI_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: gmModel,
+        messages: messages,
+        max_tokens: opts.max_tokens || 600,
+        temperature: opts.temperature || 0.72
+      })
+    });
+    if (!gmRes.ok) {
+      var gmErr = await gmRes.text();
+      throw new Error('GM ' + gmRes.status + ': ' + gmErr.slice(0, 300));
+    }
+    var gmData = await gmRes.json();
+    if (!gmData.choices || !gmData.choices[0]) throw new Error('Unexpected Gemini response');
+    return gmData.choices[0].message.content;
+  }
   if (isOpenRouterModel(model)) {
     if (!env || !env.OPENROUTER_API_KEY) throw new Error('OR 500: OpenRouter is not configured.');
     var orModel = stripOpenRouterPrefix(model);
@@ -195,6 +249,8 @@ async function callHF(messages, token, model, opts, env) {
     if (!orData.choices || !orData.choices[0]) throw new Error('Unexpected OpenRouter response');
     return orData.choices[0].message.content;
   }
+  // HF Inference — skip gracefully if no server token is configured
+  if (!token) throw new Error('HF 400: model_not_supported');
   var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -227,14 +283,14 @@ function isHF401(err) {
 
 function getProviderStatus(err) {
   if (!err || typeof err.message !== 'string') return null;
-  var m = err.message.match(/^(HF|OR) (\d{3}):/);
+  var m = err.message.match(/^(HF|OR|GM) (\d{3}):/);
   return m ? Number(m[2]) : null;
 }
 
 function isModelNotSupportedProvider(err) {
   if (!err || typeof err.message !== 'string') return false;
   if (err.message.indexOf('HF 400: model_not_supported') === 0) return true;
-  if (!/^OR (400|404):/.test(err.message)) return false;
+  if (!/^(OR|GM) (400|404):/.test(err.message)) return false;
   var msg = err.message.toLowerCase();
   return msg.indexOf('model') !== -1 || msg.indexOf('no endpoints found') !== -1;
 }
@@ -245,7 +301,7 @@ function getHFStatus(err) {
 
 function extractHFErrorText(err) {
   if (!err || typeof err.message !== 'string') return '';
-  var m = err.message.match(/^(HF|OR) \d{3}:\s*(.*)$/);
+  var m = err.message.match(/^(HF|OR|GM) \d{3}:\s*(.*)$/);
   return (m && m[2]) ? m[2] : err.message;
 }
 
@@ -344,34 +400,36 @@ function jres(data, status) {
 
 async function onLogin(req, env) {
   var p = new URLSearchParams({
-    client_id: env.HF_CLIENT_ID, redirect_uri: env.REDIRECT_URI,
-    response_type: 'code', scope: 'openid profile inference-api',
+    client_id: env.GOOGLE_CLIENT_ID,
+    redirect_uri: env.REDIRECT_URI,
+    response_type: 'code',
+    scope: 'openid email profile',
+    access_type: 'offline',
     state: crypto.randomUUID()
   });
-  return Response.redirect('https://huggingface.co/oauth/authorize?' + p.toString(), 302);
+  return Response.redirect('https://accounts.google.com/o/oauth2/v2/auth?' + p.toString(), 302);
 }
 
 async function onCallback(req, env) {
   var code = new URL(req.url).searchParams.get('code');
   if (!code) return Response.redirect(env.APP_URL + '?err=nocode', 302);
-  var tr = await fetch('https://huggingface.co/oauth/token', {
+  var tr = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       grant_type: 'authorization_code', code: code,
-      redirect_uri: env.REDIRECT_URI, client_id: env.HF_CLIENT_ID, client_secret: env.HF_CLIENT_SECRET
+      redirect_uri: env.REDIRECT_URI, client_id: env.GOOGLE_CLIENT_ID, client_secret: env.GOOGLE_CLIENT_SECRET
     })
   });
   if (!tr.ok) return Response.redirect(env.APP_URL + '?err=token', 302);
   var td = await tr.json();
   if (!td.access_token) return Response.redirect(env.APP_URL + '?err=notoken', 302);
-  var ui = await (await fetch('https://huggingface.co/oauth/userinfo', {
+  var ui = await (await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: { 'Authorization': 'Bearer ' + td.access_token }
   })).json();
   var sid = await mkSid();
   await env.SESSIONS.put(sid, JSON.stringify({
-    hf_token: td.access_token,
-    user: { id: ui.sub, name: ui.name || ui.preferred_username, username: ui.preferred_username },
+    user: { id: ui.sub, name: ui.name || ui.email, username: ui.email },
     created_at: Date.now(), expires_at: Date.now() + 86400000
   }), { expirationTtl: 86400 });
   return new Response(null, {
@@ -496,7 +554,7 @@ async function onChat(req, env) {
         ctxPurpose:      body.ctxPurpose,
         ctxSource:       body.ctxSource
       },
-      s.hf_token,
+      env.HF_TOKEN || '',
       modelCandidates,
       env
     );
@@ -525,40 +583,23 @@ async function onImage(req, env) {
   if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
   var s = await getSession(req, env);
   if (!s) return jres({ error: 'Unauthorized' }, 401);
+  if (!env.HF_TOKEN) return jres({ error: 'Image generation is not available on this deployment.' }, 503);
   var body;
   try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
   if (!body.prompt) return jres({ error: 'Prompt required' }, 400);
   try {
     var res = await fetch('https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + s.hf_token, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': 'Bearer ' + env.HF_TOKEN, 'Content-Type': 'application/json' },
       body: JSON.stringify({ inputs: body.prompt, parameters: { num_inference_steps: 4 } })
     });
     if (!res.ok) {
       var errText = await res.text();
-      if (res.status === 401) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-          status: 401,
-          headers: {
-            'Content-Type': 'application/json',
-            'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
-          }
-        });
-      }
       return jres({ error: 'Image generation failed: ' + errText.slice(0, 200) }, 502);
     }
     var imgBuffer = await res.arrayBuffer();
     return new Response(imgBuffer, { headers: { 'Content-Type': res.headers.get('content-type') || 'image/jpeg' } });
   } catch (err) {
-    if (err && typeof err.message === 'string' && err.message.startsWith('HF 401')) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: {
-          'Content-Type': 'application/json',
-          'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
-        }
-      });
-    }
     var hfMapped = mapHFErrorToClient(err);
     if (hfMapped) return jres({ error: hfMapped.error }, hfMapped.status);
     return jres({ error: err.message }, 500);
