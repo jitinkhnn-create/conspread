@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "post-lifecycle.schema.json",
+  "title": "state/post-lifecycle.json",
+  "description": "Current state of every post through the pipeline. Keyed by post_id. history is append-only.",
+  "type": "object",
+  "required": ["schema_version", "posts"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "posts": {
+      "type": "object",
+      "propertyNames": { "pattern": "^post_[0-9]{8}_[0-9]{2}$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status", "atom_id", "created_at", "updated_at", "history"],
+        "additionalProperties": false,
+        "properties": {
+          "status": { "enum": ["drafting", "qa_escalated", "pending_approval", "approved", "scheduled", "published", "rejected", "failed"] },
+          "atom_id": { "type": "string" },
+          "template_id": { "type": ["string", "null"] },
+          "format": { "enum": ["carousel", "single_post", null] },
+          "audience_track": { "enum": ["child_teen", "parent_teacher", null] },
+          "hook_family": { "type": ["string", "null"] },
+          "qa_attempts": { "type": "integer", "minimum": 0 },
+          "final_qa_verdict": { "enum": ["pass", "revise", "fail", null] },
+          "created_at": { "type": "string" },
+          "updated_at": { "type": "string" },
+          "provider": {
+            "type": "object",
+            "description": "Filled by Routine 02 via the publishing adapter.",
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "provider_post_id": { "type": ["string", "null"] },
+              "scheduled_for": { "type": ["string", "null"] },
+              "provider_status": { "type": ["string", "null"] }
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["status", "at"],
+              "additionalProperties": false,
+              "properties": {
+                "status": { "type": "string" },
+                "at": { "type": "string" },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

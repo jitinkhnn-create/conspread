@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "design-memory.schema.json",
+  "title": "state/design-memory.json",
+  "description": "Template rotation and recent visual choices. The art director must not pick a template listed in the last template_cooldown_posts entries of recent_template_ids.",
+  "type": "object",
+  "required": ["schema_version", "recent_template_ids", "templates"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "recent_template_ids": {
+      "type": "array",
+      "description": "Most recent LAST. One entry per post that reached pending_approval or later. Rejected posts still count (the template was shown).",
+      "items": { "type": "string" }
+    },
+    "recent_slot_choices": {
+      "type": "array",
+      "description": "Parallel to recent_template_ids: the slot_choices used, so accent and emphasis rotate too.",
+      "items": { "type": "object" }
+    },
+    "templates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["last_used_date", "use_count"],
+        "additionalProperties": false,
+        "properties": {
+          "last_used_date": { "type": ["string", "null"] },
+          "use_count": { "type": "integer", "minimum": 0 },
+          "last_post_id": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

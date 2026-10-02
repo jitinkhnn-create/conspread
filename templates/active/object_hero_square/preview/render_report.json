@@ -1,0 +1,73 @@
+{
+  "post_id": "sample",
+  "template_id": "object_hero_square",
+  "canvas": [
+    1080,
+    1080
+  ],
+  "slots": {
+    "background": "textured",
+    "accent_color": "strength",
+    "emphasis_style": "underline",
+    "imagery_type": "illustration"
+  },
+  "status": "ok",
+  "slides": [
+    {
+      "n": 1,
+      "file": "slide_01.png",
+      "layout": "object_hero",
+      "sha256": "ae06fb4ff870b8ed49e051698c84ff9fd4ac64f7f45ac18d60bc89583d341dd9",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            626,
+            190,
+            967,
+            558
+          ],
+          "size": 58
+        },
+        {
+          "role": "attribution",
+          "box": [
+            626,
+            584,
+            913,
+            626
+          ],
+          "size": 32
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#211E1D",
+          "bg": "#25995C",
+          "size": 58,
+          "ratio": 4.57
+        },
+        {
+          "role": "attribution",
+          "fg": "#211E1D",
+          "bg": "#25995C",
+          "size": 32,
+          "ratio": 4.57
+        },
+        {
+          "role": "brand_mark",
+          "fg": "#211E1D",
+          "bg": "#25995C",
+          "size": 40,
+          "ratio": 4.57
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    }
+  ]
+}

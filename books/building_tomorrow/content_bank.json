@@ -1,0 +1,1976 @@
+{
+  "book": "building_tomorrow",
+  "schema_version": 1,
+  "atoms": [
+    {
+      "atom_id": "bt_ch04_invisible_choices_build_character",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "concept",
+      "core_message": "The choices nobody sees are quietly building who we become.",
+      "content": {
+        "lines": [
+          "No one sees every choice we make.",
+          "Yet these invisible choices quietly build our character.",
+          "They shape the kind of friend we become. The kind of citizen we become. The kind of human being we become."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "opening, p.59"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_mind_maps_heart_compass",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "framework",
+      "core_message": "Your mind finds the fastest route on other people's roads; your heart points to what matters to you.",
+      "content": {
+        "items": [
+          {
+            "part": "Your mind",
+            "metaphor": "Your mind is like Google Maps — it looks for the fastest, smartest route based on other people’s roads."
+          },
+          {
+            "part": "Your heart",
+            "metaphor": "Your heart is like a compass — it quietly points you toward what truly matters to you, even when no road is visible."
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.62"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_head_vs_heart_decisions",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "framework",
+      "core_message": "A decision from the head and a decision from the heart are different in five ways.",
+      "content": {
+        "head_label": "Decision From Head",
+        "heart_label": "Decision From Heart",
+        "pairs": [
+          {
+            "head": "What’s smart",
+            "heart": "What’s kind"
+          },
+          {
+            "head": "What’s popular",
+            "heart": "What’s true"
+          },
+          {
+            "head": "What others want",
+            "heart": "What do you know is inside"
+          },
+          {
+            "head": "Fast or fearful",
+            "heart": "Calm and clear"
+          },
+          {
+            "head": "Based on rules",
+            "heart": "Based on values"
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.65"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_heart_voice_doesnt_shout",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "concept",
+      "core_message": "Your heart's voice is quiet, and you can feel it in your body.",
+      "content": {
+        "lines": [
+          "It doesn’t shout.",
+          "It doesn’t always give answers in words.",
+          "But you can feel it.",
+          "It might feel like a gentle tug in your chest.",
+          "Or like a tight knot when something feels wrong.",
+          "Or a peaceful warmth when something feels right."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "pp.61-62"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_heart_voice_not_emotion",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "reframe",
+      "core_message": "Your heart voice is not the same as a feeling in the moment; it is calm, kind and steady.",
+      "content": {
+        "text": "Your heart voice is not about doing what you feel in the moment (like snapping or crying). It’s deeper than emotion — it’s calm, kind, steady. It doesn’t need to win. It just wants to be true."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.62"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_mirror_time_hear_your_heart",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "exercise",
+      "core_message": "A set of quiet questions to help you notice what your heart wants.",
+      "content": {
+        "title": "Mirror Time: Questions to Hear Your Heart",
+        "questions": [
+          "Can you remember a time when your heart wanted one thing, but your mind or your friends told you to do something else?",
+          "What did you choose in the end?",
+          "How did it feel in your body?",
+          "What does your inner voice feel like?",
+          "Can you name your heart’s voice?"
+        ],
+        "naming_prompt": "Give it a fun or special name — like Captain Courage, Whisper Friend, Kind Light, or Wise Me.",
+        "sentence_stem": "When I feel confused, I can listen to my [heart name]. It tells me…"
+      },
+      "audience": [
+        "children",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "pp.62-63"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_tiffin_story_choice",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "story",
+      "core_message": "Siya found the wrong tiffin in her bag, and had to decide whether to return it to the quiet girl or walk away.",
+      "content": {
+        "lines": [
+          "It was just after lunch when Siya opened her schoolbag and saw it — a stainless-steel tiffin, neatly packed, but not hers.",
+          "No one would know if I just left it there, Siya thought.",
+          "But something small inside her, like a flicker, didn’t sit right.",
+          "Their eyes met, just for a second. And then Siya looked away."
+        ],
+        "closing_question": "What would you do?"
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "The Tiffin Mix-Up, pp.59-61"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_heart_moments_daily_life",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "framework",
+      "core_message": "Heart moments show up in ordinary situations: in friendships, at home, online, in class, and when no one is watching.",
+      "content": {
+        "items": [
+          {
+            "setting": "Friendships",
+            "situation": "You’re in a group chat, and someone sends a mean joke about another kid.",
+            "mind_says": "Just laugh. Don’t make it a big deal.",
+            "heart_says": "That’s not fair. I wouldn’t want this done to me.",
+            "heart_moment": "Will you join in or speak up?"
+          },
+          {
+            "setting": "At Home",
+            "situation": "Your younger sibling accidentally breaks your favorite pen.",
+            "mind_says": "Yell! That was special!",
+            "heart_says": "She didn’t mean to. Remember when you broke Dad’s glasses once?",
+            "heart_moment": "Can you stay kind, even when angry?"
+          },
+          {
+            "setting": "On Social Media or Group Apps",
+            "situation": "You want to post something that’ll get likes — but deep down, it’s not really you.",
+            "heart_moment": "Is this true to who I am?"
+          },
+          {
+            "setting": "In Class",
+            "situation": "You know the answer, but you’re afraid to raise your hand.",
+            "heart_moment": "Will you be brave and speak, or stay silent and safe?"
+          },
+          {
+            "setting": "When No One’s Watching",
+            "situation": "You find money on the floor.",
+            "mind_says": "Keep it.",
+            "heart_says": "Someone probably needs this.",
+            "heart_moment": "What will you do when no one will ever know?"
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "pp.63-64"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "queued",
+        "post_id": "post_20260921_01"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_when_no_ones_watching",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "question",
+      "core_message": "What do you do when no one will ever know?",
+      "content": {
+        "lines": [
+          "You find money on the floor.",
+          "There’s no one around. No cameras."
+        ],
+        "mind_says": "Keep it.",
+        "heart_says": "Someone probably needs this.",
+        "question": "What will you do when no one will ever know?"
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "When No One’s Watching, p.64"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_heart_decisions_not_perfect",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "takeaway",
+      "core_message": "Choosing from the heart isn't about being perfect; it's about pausing, listening and choosing what feels most honest.",
+      "content": {
+        "lines": [
+          "Making heart-based decisions doesn’t mean being perfect.",
+          "It means learning to pause, listen, and choose what feels most honest inside.",
+          "The more you practice, the stronger it grows."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.65"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_quote_quiet_truth",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "quote_verbatim",
+      "core_message": "There is a quiet truth inside you, and all you have to do is listen.",
+      "content": {
+        "quote": "There will always be noise around you — rules, advice, pressure. But somewhere inside you, there is a quiet truth. Your heart already knows. All you have to do… is listen."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.65"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_relational_intelligence_defined",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "concept",
+      "core_message": "Relational intelligence is the superpower of understanding people.",
+      "content": {
+        "lines": [
+          "It’s called relational intelligence — and it’s the superpower of understanding people.",
+          "Relational intelligence means noticing how others feel, how your words affect them, and how to keep relationships healthy — even when things get tricky."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.67"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_relational_intelligence_is_about",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "framework",
+      "core_message": "Relational intelligence means listening deeply, knowing your feelings, understanding differences and balancing Me and We.",
+      "content": {
+        "items": [
+          "Listening deeply — not just to words, but to tone, face, and silence.",
+          "Knowing your feelings so you don’t dump them on others.",
+          "Understanding differences — that not everyone thinks or feels like you.",
+          "Balancing “Me” and “We” — respecting others and yourself."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.67"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_brain_calculator_mirror_bridge",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "reframe",
+      "core_message": "Your brain is a calculator; your relational intelligence is a mirror and a bridge.",
+      "content": {
+        "lines": [
+          "Your brain is like a calculator — it solves numbers.",
+          "Your relational intelligence is like a mirror and a bridge.",
+          "It reflects what’s inside you, and it connects you to others."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.68"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_birthday_seat_choice",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "story",
+      "core_message": "On his birthday, Aarav has to decide whether to go along to stay in the group or say something and risk rejection.",
+      "content": {
+        "lines": [
+          "It was Aarav’s birthday.",
+          "Dev and Samar were already sitting in the birthday seat.",
+          "Go along with Dev to stay in the group — even if it felt unfair.",
+          "Or say something, even if it risks rejection."
+        ],
+        "closing_question": "What do you think Aarav should do?"
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "The Birthday Seat, pp.65-67"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_relational_moments_real_life",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "framework",
+      "core_message": "Relational intelligence shows up in class, in group chats, at lunch, at home and when you mess up.",
+      "content": {
+        "items": [
+          {
+            "setting": "In-Class Discussions",
+            "situation": "A friend gives the wrong answer. The class giggles.",
+            "relational_moment": "Being smart without making others feel small."
+          },
+          {
+            "setting": "On WhatsApp or Group Chats",
+            "situation": "Someone’s left unread.",
+            "relational_moment": "Do you stay silent? Or text them later and say, “Hey, you, okay?”"
+          },
+          {
+            "setting": "During Lunch Break",
+            "situation": "A quieter classmate walks by and seems to want to join in.",
+            "relational_moment": "Do you notice? Do you scoot over and make space?"
+          },
+          {
+            "setting": "In Family Arguments",
+            "situation": "Your sibling starts yelling. Your parent is tired. You feel stuck in between.",
+            "relational_moment": "Can you stay calm, speak clearly, or even be the one who listens first?"
+          },
+          {
+            "setting": "When You Mess Up",
+            "situation": "You interrupt a friend. Forget their birthday. Say something without thinking.",
+            "relational_moment": "Can you own it and say, “I’m sorry— I didn’t mean to hurt you”?"
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "pp.69-70"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_why_relational_intelligence_matters",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "takeaway",
+      "core_message": "It makes you someone others trust, respect and feel safe with.",
+      "content": {
+        "lines": [
+          "Aware of how you impact others",
+          "Willing to repair when needed",
+          "Brave enough to show care and set boundaries",
+          "Relational intelligence is the kind of intelligence that makes you someone others trust, respect, and feel safe with."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.71"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_mirror_time_we_power",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "question",
+      "core_message": "Questions to notice how you respond when someone ignores, interrupts or leaves someone out.",
+      "content": {
+        "title": "Mirror Time: Questions to Build Your “We” Power",
+        "questions": [
+          "How do you usually respond when someone interrupts you, takes your seat, or ignores you?",
+          "Do you speak up, laugh it off, stay silent, or walk away?",
+          "What kind of friend are you?",
+          "The listener? The leader? The peacemaker? The honest one?",
+          "Who do you feel truly seen by?"
+        ]
+      },
+      "audience": [
+        "children",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "pp.68-69"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_broken_tap_conscious_citizen",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "story",
+      "core_message": "Meher turned off a running tap and made a citizen's choice.",
+      "content": {
+        "lines": [
+          "She didn’t give a speech. She didn’t go to a protest.",
+          "She turned off the tap — and turned on her awareness.",
+          "For the first time, she wasn’t just brushing her teeth. She was making a choice. A quiet one. But a powerful one. A citizen’s choice."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "The Broken Tap, pp.71-72"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_citizenship_flips_thinking",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "reframe",
+      "core_message": "Conscious citizenship flips taking into caring, me into we, and using the Earth into being part of it.",
+      "content": {
+        "items": [
+          "From taking → to caring",
+          "From me only → to we all",
+          "From using the Earth → to being part of it"
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.73"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_earth_is_not_a_thing",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "quote_verbatim",
+      "core_message": "The Earth isn't just something you live on; it's something you live with.",
+      "content": {
+        "quote": "The Earth isn’t a thing you live on — it’s something you live with."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "p.73"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch04_care_enough_to_act",
+      "chapter": 4,
+      "chapter_title": "The Invisible Choices",
+      "type": "quote_verbatim",
+      "core_message": "The world needs people who care enough to act, not perfect people.",
+      "content": {
+        "quote": "The Earth doesn’t need more people who know stuff. It needs more people who care enough to act. You don’t have to be perfect. You have to show up."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch04.md",
+        "locator": "The Real Truth?, p.76"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_invisible_team_behind_you",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "concept",
+      "core_message": "Behind every person you admire stands an invisible team.",
+      "content": {
+        "lines": [
+          "Imagine a sports team preparing for an important match.",
+          "Behind every person you admire stands an invisible team that has helped shape their journey.",
+          "Understanding this invisible team helps us appreciate how connected our lives really are."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "opening, p.99"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_people_who_are_resources",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "The people around us play different roles in helping us grow, even the ones who criticise.",
+      "content": {
+        "items": [
+          {
+            "who": "Someone who listens to you",
+            "role": "They help you express yourself and let you be as you want to be."
+          },
+          {
+            "who": "Those who criticize you",
+            "role": "They take you to see the other way possible; they are sent to you to see a new perspective which you would not otherwise know or wish to see."
+          },
+          {
+            "who": "Those who give you a chance",
+            "role": "They believe in your ability and trust you to do what you are capable of. They give you a ground to play and showcase your potential."
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "pp.100-101"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_quick_judgments_lens",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "concept",
+      "core_message": "We often judge people through a lens of our own ideas and experiences before we know them.",
+      "content": {
+        "lines": [
+          "Sometimes we make quick judgments about people based on how they look, what they wear, or what we’ve heard about them.",
+          "Sometimes we see people through a lens of our own ideas and experiences."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "pp.99-100"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_parent_script_new_student",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "parent_tip",
+      "core_message": "A short conversation a parent can have to help a child pause before judging someone who is quiet.",
+      "content": {
+        "parent_prompt": "Imagine you’re meeting a new student in your class. What if you decided they weren’t friendly just because they were quiet on the first day? How might that stop you from making a new friend?",
+        "parent_follow_up": "So next time, let’s try to learn more about people before deciding what they’re like. Everyone has a story, just like you."
+      },
+      "audience": [
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "pp.99-100"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_power_of_self_talk",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "concept",
+      "core_message": "Positive self-talk means speaking to yourself with honesty, kindness and encouragement, not pretending problems don't exist.",
+      "content": {
+        "lines": [
+          "Have you ever noticed the voice inside your head when something goes wrong?",
+          "Sometimes it encourages us, and sometimes it criticizes us.",
+          "Positive self-talk does not mean pretending that problems do not exist. It means speaking to ourselves with honesty, kindness, and encouragement.",
+          "The way we talk to ourselves often becomes the foundation of how we face the world."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "The Power of Self-Talks, p.103"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_self_talk_when_facing_failure",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "Five things you can say to yourself after a mistake.",
+      "content": {
+        "situation": "When Facing Failure or Mistakes",
+        "sentences": [
+          "Everyone makes mistakes, and that's how we learn.",
+          "It's okay not to be perfect.",
+          "I can try again and do better next time.",
+          "Failure is a part of success.",
+          "I am proud of myself for trying."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "p.104"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_self_talk_peer_pressure",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "Five things you can say to yourself when peer pressure or negative comments hit.",
+      "content": {
+        "situation": "Dealing with Peer Pressure or Negative Comments",
+        "sentences": [
+          "I am confident in my own choices.",
+          "Other people's opinions do not define me.",
+          "I can stand up for myself in a kind way.",
+          "I know what is right for me.",
+          "I am valuable just the way I am."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "p.104"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_self_talk_feeling_overwhelmed",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "Five things you can say to yourself when you feel overwhelmed or stressed.",
+      "content": {
+        "situation": "Feeling Overwhelmed or Stressed",
+        "sentences": [
+          "I can take one step at a time.",
+          "It's okay to ask for help when I need it.",
+          "I can handle this one moment at a time.",
+          "I am doing my best, and that's enough.",
+          "I can find ways to relax and feel better."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "p.104"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_self_talk_managing_anger",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "Five things you can say to yourself when anger or frustration builds.",
+      "content": {
+        "situation": "Managing Anger or Frustration",
+        "sentences": [
+          "I can calm myself with deep breaths.",
+          "It's okay to feel angry, but I can handle it.",
+          "I can express my feelings in healthy ways.",
+          "I am in control of my reactions.",
+          "I can choose to respond with kindness."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "p.105"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_gratitude_seeing_what_we_have",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "concept",
+      "core_message": "We notice what's missing by default; gratitude shifts attention to what supports us.",
+      "content": {
+        "lines": [
+          "We naturally notice what is missing, what is difficult, and what still needs improvement.",
+          "Gratitude helps us shift our attention toward the people, opportunities, experiences, and resources that support us every day."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "pp.105-106"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_ways_to_express_gratitude",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "Five simple ways to express gratitude.",
+      "content": {
+        "items": [
+          {
+            "name": "Say Thank You",
+            "detail": "Verbally express thanks whenever someone does something kind or helpful."
+          },
+          {
+            "name": "Write a Note",
+            "detail": "Create thank-you notes or cards for teachers, friends, or family members."
+          },
+          {
+            "name": "Show Appreciation Through Actions",
+            "detail": "Do something nice in return, such as helping with chores or sharing a toy."
+          },
+          {
+            "name": "Keep a Gratitude Journal",
+            "detail": "Write down things you are thankful for each day."
+          },
+          {
+            "name": "Publicly Acknowledge",
+            "detail": "Share gratitude in front of others, such as during family dinners or class discussions."
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "How to Express Gratitude, p.106"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_gratitude_start_small",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "takeaway",
+      "core_message": "Gratitude doesn't need to be grand: three small things a day is enough to start.",
+      "content": {
+        "lines": [
+          "Begin by writing down three things you're grateful for each day.",
+          "Gratitude doesn’t need to be grand. Simple, sincere thanks go a long way."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "pp.107, 109"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_people_cannot_read_minds",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "concept",
+      "core_message": "People can't read our minds, so unspoken feelings turn into misunderstandings.",
+      "content": {
+        "lines": [
+          "No matter how much people care about us, they cannot read our minds.",
+          "Many misunderstandings arise when thoughts and feelings go unspoken.",
+          "Like any skill, communication improves with practice."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "Communication: Building Bridges With Others, p.111"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_they_wont_understand_me",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "reframe",
+      "core_message": "Whether 'they won't understand me' is true depends on what you do in the conversation.",
+      "content": {
+        "belief": "They won’t understand me:",
+        "reframe": "Whether this is true or false would depend on what you do in the conversation."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "p.112"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_communication_skills",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "framework",
+      "core_message": "Six things it takes to communicate what you feel.",
+      "content": {
+        "items": [
+          {
+            "name": "Be Honest",
+            "detail": "Clearly express your feelings without exaggeration."
+          },
+          {
+            "name": "Stay Calm",
+            "detail": "Take deep breaths and try to stay calm when explaining how you feel."
+          },
+          {
+            "name": "Be Specific",
+            "detail": "Explain exactly what is bothering you and why."
+          },
+          {
+            "name": "Use I Statements",
+            "detail": "Focus on your own feelings rather than blaming others (e.g., I feel... instead of You made me feel...)."
+          },
+          {
+            "name": "Listen",
+            "detail": "Be open to the other person's perspective and listen to their response."
+          },
+          {
+            "name": "Ask for What You Need",
+            "detail": "Clearly state what you need or how others can help you."
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "What does it really take to do communication?, pp.112-113"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_conversation_overwhelmed_homework",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "parent_tip",
+      "core_message": "A model conversation for when a child feels overwhelmed by homework.",
+      "content": {
+        "situation": "Child is feeling overwhelmed with homework.",
+        "child_opens": "Mom, I feel really overwhelmed with my homework today. It's so much, and I don't know where to start.",
+        "parent_responds": "I understand; it can be tough sometimes. Can you show me what you have to do? Let's break it down into smaller tasks together.",
+        "parent_next_step": "Let's tackle one subject at a time. How about we start with math, spend 30 minutes on it, and then take a short break?",
+        "child_closes": "That sounds better. I think I can manage that."
+      },
+      "audience": [
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "Conversation 1, p.113"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_conversation_feeling_left_out",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "exercise",
+      "core_message": "How to tell a sibling you feel left out, and what a good reply sounds like.",
+      "content": {
+        "situation": "Child feels left out during playtime.",
+        "child_opens": "Hey, can I talk to you for a minute? I feel like I'm being left out when you play with your friends.",
+        "sibling_responds": "I'm sorry, I didn't realize you felt that way. Why don't you join us? What do you want to play?",
+        "child_asks": "I'd like to play tag with you all. Can we do that?",
+        "sibling_closes": "Sure, I'll let everyone know. Thanks for telling me how you feel."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "Conversation 3, p.114"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch07_conversation_sad_no_reason",
+      "chapter": 7,
+      "chapter_title": "Support System In Life",
+      "type": "parent_tip",
+      "core_message": "What a parent can say when a child is sad and doesn't know why.",
+      "content": {
+        "situation": "Child feels sad and doesn't know why.",
+        "child_opens": "Mom, I feel really sad today, but I don't know why.",
+        "parent_responds": "It's okay to feel sad sometimes, even if you don't know why. Do you want to talk about anything that might be bothering you, or do you need a hug?",
+        "parent_closes": "Remember, it's okay to have days like this. If you want to talk more later, I'm here for you."
+      },
+      "audience": [
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch07.md",
+        "locator": "Conversation 6, p.115"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_hero_is_the_choices",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "concept",
+      "core_message": "What makes a hero is the choices they make, not their powers.",
+      "content": {
+        "lines": [
+          "The most important thing about a hero is not their powers—it is the choices they make.",
+          "A hero is not someone who never faces problems; a hero is someone who continues moving forward even when life becomes difficult.",
+          "heroes are not born; they are built, one choice at a time, one challenge at a time, and one lesson at a time."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.117"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_no_cape_needed",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "quote_verbatim",
+      "core_message": "You don't need a cape to be a hero; every day offers a chance.",
+      "content": {
+        "quote": "You do not need a cape to become a hero. Every day gives you opportunities to act like one."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.117"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_hero_choices_over",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "framework",
+      "core_message": "Real heroes choose honesty over cheating, kindness over cruelty, learning over excuses and courage over fear.",
+      "content": {
+        "lead": "Every time you choose honesty over cheating, kindness over cruelty, learning over excuses, or courage over fear, you are practicing what real heroes do.",
+        "pairs": [
+          {
+            "choose": "honesty",
+            "over": "cheating"
+          },
+          {
+            "choose": "kindness",
+            "over": "cruelty"
+          },
+          {
+            "choose": "learning",
+            "over": "excuses"
+          },
+          {
+            "choose": "courage",
+            "over": "fear"
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.117"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_brave_little_seed",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "story",
+      "core_message": "A little seed was told it was too small, believed in itself, and bloomed.",
+      "content": {
+        "lines": [
+          "Every day, it heard the tall trees whisper, \"You are too small to grow like us.\" But the little seed believed in itself.",
+          "With each passing day, it pushed through the soil, soaking in sunlight and rain."
+        ],
+        "lesson": "Believe in yourself, even when others doubt you. Self-confidence can help you achieve great things."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "The Brave Little Seed, p.118"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_quote_confidence_defined",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "quote_verbatim",
+      "core_message": "Confidence is believing you can keep going even when things go wrong.",
+      "content": {
+        "quote": "Confidence is not believing that nothing will go wrong. Confidence is believing that you can keep going even when things do."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Story 2B, p.123"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_valley_of_voices",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "reframe",
+      "core_message": "Fear and doubt may always exist, but they don't have to control your choices.",
+      "content": {
+        "lines": [
+          "\"You are too young.\"",
+          "\"You are not good enough.\"",
+          "\"You will never make it.\"",
+          "They did not disappear immediately, but they lost their power over him.",
+          "Fear and doubt may always exist, but they do not have to control our choices."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Story 2B, pp.123-124"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_not_every_thought_deserves_belief",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "reframe",
+      "core_message": "Not every thought deserves to be believed; growth can begin by rethinking what we assume is true.",
+      "content": {
+        "lines": [
+          "not every thought deserves to be believed.",
+          "Sometimes growth begins when we are willing to rethink what we assume is true."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Story 2B, p.124"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_you_built_them",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "quote_verbatim",
+      "core_message": "The tools you found were built by you; the compass only reminded you to trust them.",
+      "content": {
+        "quote": "You did not find them. You built them.",
+        "follow_up": "The compass only reminded you to trust the tools already inside you."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Story 2B, p.125"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_difference_is_the_tools",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "reframe",
+      "core_message": "Everyone faces challenges; the difference is in the tools we use.",
+      "content": {
+        "lines": [
+          "The difference is not in the challenges themselves. The difference is in the tools we use to face them.",
+          "The journey was never about reaching the end of the forest.",
+          "It was about becoming the person capable of walking through it."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Story 2B, pp.125-126"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_tool_kit_inner_tools",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "framework",
+      "core_message": "Four inner tools in your Superhero Tool Kit: awareness, observation, self-reflection and critical thinking.",
+      "content": {
+        "title": "Your Superhero Tool Kit",
+        "items": [
+          {
+            "tool": "Awareness",
+            "meaning": "helps you notice what is happening within you and around you."
+          },
+          {
+            "tool": "Observation",
+            "meaning": "teaches you to pay attention before jumping to conclusions."
+          },
+          {
+            "tool": "Self-Reflection",
+            "meaning": "helps you learn from your experiences and understand yourself better."
+          },
+          {
+            "tool": "Critical Thinking",
+            "meaning": "helps you question information, examine evidence, and make thoughtful decisions."
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Your Superhero Tool Kit, p.126"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_tool_kit_action_tools",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "framework",
+      "core_message": "Five tools for acting on what you know: values, communication, gratitude, courage and patience.",
+      "content": {
+        "title": "Your Superhero Tool Kit",
+        "items": [
+          {
+            "tool": "Values",
+            "meaning": "act as your compass, guiding you toward what is right and meaningful."
+          },
+          {
+            "tool": "Communication",
+            "meaning": "allows you to express your thoughts, feelings, and needs while understanding others."
+          },
+          {
+            "tool": "Gratitude",
+            "meaning": "reminds you to appreciate the people, opportunities, and experiences that support your journey."
+          },
+          {
+            "tool": "Courage",
+            "meaning": "helps you take action even when you feel uncertain or afraid."
+          },
+          {
+            "tool": "Patience",
+            "meaning": "reminds you that meaningful growth takes time and that great things are often built one small step at a time."
+          }
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "Your Superhero Tool Kit, pp.126-127"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_tools_grow_with_use",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "concept",
+      "core_message": "The tools grow stronger only when you use them, like muscles.",
+      "content": {
+        "lines": [
+          "These tools are not meant to sit on a shelf. They become stronger every time you use them.",
+          "Just as muscles grow through exercise, these qualities grow through practice.",
+          "The wisdom lies in knowing which tool to use and when."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.127"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_you_change_your_life",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "quote_verbatim",
+      "core_message": "The book is only tools; you are the one who changes your life.",
+      "content": {
+        "quote": "This book was never meant to change your life. You are the one who changes your life.",
+        "follow_up": "Like any tool, they become useful only when you choose to use them."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "A Letter To The Hero Reading This Book, p.128"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_ups_and_downs_are_normal",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "takeaway",
+      "core_message": "Confidence, doubt, success and mistakes all come with life, and that is normal.",
+      "content": {
+        "lines": [
+          "There will be days when you feel confident.",
+          "There will be days when you doubt yourself.",
+          "There will be successes.",
+          "There will be mistakes.",
+          "That is normal.",
+          "That is life."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.128"
+      },
+      "sensitivity": "emotional",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_growth_not_perfection",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "takeaway",
+      "core_message": "Growth is about becoming a little wiser, kinder and stronger than yesterday.",
+      "content": {
+        "lines": [
+          "growth is not about becoming perfect.",
+          "Growth is about becoming a little wiser, a little kinder, and a little stronger than you were yesterday."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.128"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_keep_being_you",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "takeaway",
+      "core_message": "Keep asking, learning, helping, thinking for yourself, being curious, and being you.",
+      "content": {
+        "lines": [
+          "Keep asking questions.",
+          "Keep learning.",
+          "Keep helping others.",
+          "Keep thinking for yourself.",
+          "Keep being curious.",
+          "Most importantly, keep being you."
+        ]
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "carousel",
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.128"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "unused"
+      }
+    },
+    {
+      "atom_id": "bt_ch08_world_needs_best_version_of_you",
+      "chapter": 8,
+      "chapter_title": "Hero vs Superhero",
+      "type": "quote_verbatim",
+      "core_message": "The world doesn't need another copy of someone else; it needs the best version of you.",
+      "content": {
+        "quote": "The world does not need another copy of someone else. The world needs the best version of you."
+      },
+      "audience": [
+        "children",
+        "parents",
+        "teachers"
+      ],
+      "suitable_formats": [
+        "single_post"
+      ],
+      "source_grounding": "workbook_verbatim",
+      "source_ref": {
+        "file": "chapters/ch08.md",
+        "locator": "p.128"
+      },
+      "sensitivity": "none",
+      "state": {
+        "status": "queued",
+        "post_id": "post_20260921_02"
+      }
+    }
+  ]
+}

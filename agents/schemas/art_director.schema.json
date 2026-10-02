@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "art_director.schema.json",
+  "title": "Art director stage output",
+  "type": "object",
+  "required": ["stage", "post_id", "revision", "template_id", "slot_choices", "per_slide_layout_spec"],
+  "additionalProperties": false,
+  "properties": {
+    "stage": { "const": "art_director" },
+    "post_id": { "type": "string", "pattern": "^post_[0-9]{8}_[0-9]{2}$" },
+    "revision": { "type": "integer", "minimum": 0 },
+    "template_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "slot_choices": {
+      "type": "object",
+      "required": ["background", "accent_color", "emphasis_style", "imagery_type"],
+      "additionalProperties": false,
+      "properties": {
+        "background": { "enum": ["flat", "textured", "illustrated"] },
+        "accent_color": {
+          "type": "string",
+          "description": "An accent variant id defined in brand/design_system.json (palette.accent_variants[].id). Never a raw hex."
+        },
+        "emphasis_style": { "enum": ["underline", "highlight", "circle"] },
+        "imagery_type": { "enum": ["photo", "illustration", "abstract"] }
+      }
+    },
+    "per_slide_layout_spec": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["slide", "layout"],
+        "additionalProperties": false,
+        "properties": {
+          "slide": { "type": "integer", "minimum": 1 },
+          "layout": {
+            "type": "string",
+            "description": "A layout id exposed by the chosen template's metadata.json (layouts[].id)."
+          },
+          "emphasis_text": {
+            "type": "string",
+            "description": "Substring of that slide's copy to emphasize with slot_choices.emphasis_style."
+          },
+          "design_bank_asset_id": {
+            "type": ["string", "null"],
+            "description": "An approved asset id from assets/design-bank/manifest.json, or null."
+          },
+          "image_prompt": {
+            "type": ["string", "null"],
+            "description": "Only for a background / illustration to be generated. Never text-bearing."
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "template_rationale": { "type": "string", "description": "Why this template, why these slot choices. Feeds rationale.md." },
+    "rotation_check": {
+      "type": "object",
+      "description": "Filled by the art director from state/design-memory.json to show the cooldown rule was honoured.",
+      "additionalProperties": false,
+      "properties": {
+        "recent_template_ids": { "type": "array", "items": { "type": "string" } },
+        "cooldown_posts": { "type": "integer" },
+        "satisfied": { "type": "boolean" }
+      }
+    }
+  }
+}

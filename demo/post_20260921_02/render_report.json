@@ -1,0 +1,100 @@
+{
+  "post_id": "post_20260921_02",
+  "template_id": "quote_glyph",
+  "canvas": [
+    1080,
+    1350
+  ],
+  "slots": {
+    "background": "textured",
+    "accent_color": "navy",
+    "emphasis_style": "underline",
+    "imagery_type": "illustration"
+  },
+  "status": "ok",
+  "slides": [
+    {
+      "n": 1,
+      "file": "slide_01.png",
+      "layout": "quote_card",
+      "sha256": "c8e1781b07ccc227015654832c9413848e706c7a5eed7ab1dc3056a072c03cd7",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            96,
+            330,
+            639,
+            882
+          ],
+          "size": 68
+        },
+        {
+          "role": "attribution",
+          "box": [
+            96,
+            960,
+            604,
+            997
+          ],
+          "size": 30
+        },
+        {
+          "role": "subline",
+          "box": [
+            96,
+            1005,
+            479,
+            1042
+          ],
+          "size": 28
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1209,
+            228,
+            1321
+          ],
+          "size": 112
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 68,
+          "ratio": 12.94
+        },
+        {
+          "role": "attribution",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 30,
+          "ratio": 12.94
+        },
+        {
+          "role": "subline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 28,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#FFFFFF",
+          "bg": "#1E2559",
+          "size": 22,
+          "ratio": 14.34
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    }
+  ]
+}

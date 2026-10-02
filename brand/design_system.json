@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "status": "conspread_brand",
+  "_comment": "Visual identity is CONSpread (the account). Palette derived from the CONSpread logo (assets/brand/). 'Building Tomorrow' is the content source, credited in text, not as a mark. Consumers read tokens by id, never raw hex.",
+  "canvas": {
+    "carousel": {
+      "width": 1080,
+      "height": 1350
+    },
+    "single_post": {
+      "width": 1080,
+      "height": 1080
+    }
+  },
+  "layout": {
+    "safe_margin_px": 96,
+    "grid_columns": 12,
+    "min_text_contrast_ratio": 4.5,
+    "thumbnail_min_headline_px": 84
+  },
+  "palette": {
+    "neutrals": {
+      "ink": "#1E2559",
+      "paper": "#F5F3EF",
+      "mist": "#E7E6EF",
+      "white": "#FFFFFF"
+    },
+    "primary": {
+      "id": "navy",
+      "hex": "#1E2559",
+      "note": "CONSpread navy. Default dark for headlines, body and structure.",
+      "soil": "#141A3E"
+    },
+    "accent_variants": [
+      {
+        "id": "crimson",
+        "hex": "#D2094F",
+        "tint": "#EEC4CF",
+        "on_dark": "#EB90B0",
+        "contrast_ink_on_tint": 9.2,
+        "contrast_accent_on_paper": 4.9,
+        "source": "CONSpread logo: Logo wordmark 'CONS' / left wing"
+      },
+      {
+        "id": "plum",
+        "hex": "#8A1A66",
+        "tint": "#E0C8D4",
+        "on_dark": "#CA98BA",
+        "contrast_ink_on_tint": 9.1,
+        "contrast_accent_on_paper": 7.8,
+        "source": "CONSpread logo: Gradient midpoint where the wings meet"
+      },
+      {
+        "id": "navy",
+        "hex": "#1E2559",
+        "tint": "#CACAD1",
+        "on_dark": "#9A9DB4",
+        "contrast_ink_on_tint": 8.8,
+        "contrast_accent_on_paper": 12.9,
+        "source": "CONSpread logo: Logo wordmark 'pread' / right wing"
+      }
+    ],
+    "rules": [
+      "One accent per post; rotate crimson / plum / navy across posts (state/design-memory.json).",
+      "Ground is paper (soft off-white) or navy. Text is navy on light, white on navy or crimson.",
+      "Accent = emphasis marks, small shapes, the number badge. Highlight bands use the accent 'tint' with navy text (contrast >= 7).",
+      "Never set body text in crimson or plum on paper (contrast below 4.5). Crimson is for large display or on navy only."
+    ]
+  },
+  "typography": {
+    "status": "installed",
+    "_comment": "Script (Alex Brush) confirmed from the cover PDF; Anton and Manrope are the closest OFL matches to the outlined cover artwork and the references.",
+    "script": {
+      "family": "Alex Brush",
+      "source": "confirmed from cover PDF",
+      "use": "single accent phrase per post, e.g. an italic-feel kicker. Never body text.",
+      "file": "assets/fonts/AlexBrush-Regular.ttf"
+    },
+    "headline": {
+      "family": "Anton",
+      "source": "proposed (closest OFL match to the condensed heavy grotesque in the cover and in the carousel references)",
+      "case": "sentence or title case, tight leading",
+      "weight": "regular (single heavy weight)",
+      "file": "assets/fonts/Anton-Regular.ttf",
+      "fallback_files": [
+        "C:/Windows/Fonts/impact.ttf",
+        "C:/Windows/Fonts/arialnb.ttf",
+        "C:/Windows/Fonts/arialbd.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+      ]
+    },
+    "body": {
+      "family": "Manrope",
+      "source": "proposed (clean geometric sans, readable at phone size)",
+      "weights": [
+        "300 (statement)",
+        "500 (body)",
+        "700",
+        "800"
+      ],
+      "file": "assets/fonts/Manrope[wght].ttf",
+      "fallback_files": [
+        "C:/Windows/Fonts/segoeui.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+      ]
+    },
+    "wordmark": {
+      "family": "extended black display (cover 'TOMORROW')",
+      "use": "only for the cover artwork itself; never re-typeset it. Use the cover image or a locked-up logo file instead."
+    },
+    "scale_px": {
+      "headline_min": 84,
+      "headline_max": 140,
+      "body_min": 40,
+      "body_max": 56,
+      "caption_min": 28
+    },
+    "line_height": {
+      "headline": 1.02,
+      "body": 1.3
+    },
+    "rules": [
+      "Fonts must be redistributable (OFL) and committed under assets/fonts/ so every machine renders identically.",
+      "Never fake bold or italic.",
+      "Do not re-typeset the BUILDING TOMORROW title; use the cover art."
+    ]
+  },
+  "slots": {
+    "_comment": "Every template exposes these slots. Same skeleton, different clothes each render.",
+    "background": [
+      "flat",
+      "textured",
+      "illustrated"
+    ],
+    "accent_color": "palette.accent_variants[].id",
+    "emphasis_style": [
+      "underline",
+      "highlight",
+      "circle"
+    ],
+    "imagery_type": [
+      "photo",
+      "illustration",
+      "abstract"
+    ]
+  },
+  "logo": {
+    "status": "installed",
+    "primary": "assets/brand/conspread_logo.png",
+    "white": "assets/brand/conspread_logo_white.png",
+    "emblem": "assets/brand/conspread_emblem.png",
+    "emblem_white": "assets/brand/conspread_emblem_white.png",
+    "clear_space_ratio": 0.4,
+    "min_height_px": 64,
+    "rules": [
+      "Full colour on light grounds; white version on navy/crimson. Never recolour the gradient, never stretch, never add effects.",
+      "Clear space on all sides >= 0.4x the logo height. One logo per slide."
+    ]
+  },
+  "rotation": {
+    "template_cooldown_posts": 5,
+    "accent_cooldown_posts": 2,
+    "emphasis_cooldown_posts": 1
+  },
+  "imagery_motifs": {
+    "from_logo": [
+      "outspread wings (connection, lift)",
+      "handshake where the wings meet",
+      "crimson-to-navy gradient"
+    ],
+    "guidance": "Do NOT blow the logo up as decoration. If a surface needs a graphic, use a single wing silhouette as a low-opacity (<=6%) navy watermark, or a thin crimson->navy gradient rule. Keep it restrained."
+  },
+  "brand": {
+    "_comment": "On-image identity = the CONSpread logo image (assets/brand/). mark_text is a text fallback only. book_credit names the content source.",
+    "mark_text": "CONSpread",
+    "book_credit": "From the workbook Building Tomorrow",
+    "footer_text": "From the workbook · Building Tomorrow"
+  }
+}

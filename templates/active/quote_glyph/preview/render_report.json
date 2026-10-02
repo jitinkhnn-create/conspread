@@ -1,0 +1,107 @@
+{
+  "post_id": "sample",
+  "template_id": "quote_glyph",
+  "canvas": [
+    1080,
+    1350
+  ],
+  "slots": {
+    "background": "textured",
+    "accent_color": "sunrise",
+    "emphasis_style": "highlight",
+    "imagery_type": "illustration"
+  },
+  "status": "ok",
+  "slides": [
+    {
+      "n": 1,
+      "file": "slide_01.png",
+      "layout": "quote_card",
+      "sha256": "40485ff7fc987fba16b93678a42c45f324f9f0b363f69b32fb89b9be759d19b2",
+      "boxes": [
+        {
+          "role": "kicker",
+          "box": [
+            96,
+            304,
+            382,
+            330
+          ],
+          "size": 26
+        },
+        {
+          "role": "headline",
+          "box": [
+            96,
+            376,
+            599,
+            863
+          ],
+          "size": 84
+        },
+        {
+          "role": "attribution",
+          "box": [
+            96,
+            941,
+            427,
+            978
+          ],
+          "size": 30
+        },
+        {
+          "role": "subline",
+          "box": [
+            96,
+            986,
+            562,
+            1023
+          ],
+          "size": 28
+        }
+      ],
+      "pairs": [
+        {
+          "role": "kicker",
+          "fg": "#5A3D2F",
+          "bg": "#F6F4DE",
+          "size": 26,
+          "ratio": 8.82
+        },
+        {
+          "role": "headline",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 84,
+          "ratio": 14.91
+        },
+        {
+          "role": "attribution",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 30,
+          "ratio": 14.91
+        },
+        {
+          "role": "subline",
+          "fg": "#5A3D2F",
+          "bg": "#F6F4DE",
+          "size": 28,
+          "ratio": 8.82
+        },
+        {
+          "role": "brand_mark",
+          "fg": "#F6F4DE",
+          "bg": "#5A3D2F",
+          "size": 46,
+          "ratio": 8.82
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    }
+  ]
+}

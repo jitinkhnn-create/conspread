@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "posts": {
+    "post_20260921_01": {
+      "status": "pending_approval",
+      "atom_id": "bt_ch04_heart_moments_daily_life",
+      "template_id": "numbered_notes",
+      "format": "carousel",
+      "audience_track": "child_teen",
+      "hook_family": "direct_address",
+      "qa_attempts": 2,
+      "final_qa_verdict": "pass",
+      "created_at": "2026-09-21T12:31:47Z",
+      "updated_at": "2026-09-21T12:36:46Z",
+      "history": [
+        {
+          "status": "drafting",
+          "at": "2026-09-21T12:31:47Z",
+          "note": "atom queued"
+        },
+        {
+          "status": "pending_approval",
+          "at": "2026-09-21T12:36:46Z",
+          "note": "candidate ready"
+        }
+      ]
+    },
+    "post_20260921_02": {
+      "status": "pending_approval",
+      "atom_id": "bt_ch08_world_needs_best_version_of_you",
+      "template_id": "quote_glyph",
+      "format": "single_post",
+      "audience_track": "child_teen",
+      "hook_family": "direct_address",
+      "qa_attempts": 1,
+      "final_qa_verdict": "pass",
+      "created_at": "2026-09-21T12:37:45Z",
+      "updated_at": "2026-09-21T12:39:10Z",
+      "history": [
+        {
+          "status": "drafting",
+          "at": "2026-09-21T12:37:45Z",
+          "note": "atom queued"
+        },
+        {
+          "status": "pending_approval",
+          "at": "2026-09-21T12:39:10Z",
+          "note": "candidate ready"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "template_proposer.schema.json",
+  "title": "Template proposer stage output",
+  "type": "object",
+  "required": ["stage", "reference_file", "classification", "structural_analysis"],
+  "additionalProperties": false,
+  "properties": {
+    "stage": { "const": "template_proposer" },
+    "reference_file": { "type": "string", "description": "Path of the designer reference under assets/benchmark/." },
+    "classification": {
+      "enum": ["new_canonical", "variation_of_existing", "duplicate_of_existing"],
+      "description": "new_canonical = structurally distinct from every active template. Two structurally distinct references are NEVER merged into one canonical template."
+    },
+    "matched_template_id": { "type": ["string", "null"], "description": "Set when classification is not new_canonical." },
+    "classification_reason": { "type": "string" },
+    "structural_analysis": {
+      "type": "object",
+      "required": ["format", "regions", "typography", "colour_use"],
+      "additionalProperties": false,
+      "properties": {
+        "format": { "enum": ["carousel", "single_post", "both"] },
+        "canvas": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+        "regions": {
+          "type": "array",
+          "description": "Named layout regions with position and role, in canvas fractions (0-1).",
+          "items": {
+            "type": "object",
+            "required": ["name", "role", "box"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "role": { "type": "string" },
+              "box": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4, "description": "[x, y, w, h] as fractions of the canvas." }
+            }
+          }
+        },
+        "typography": { "type": "object", "description": "Weights, relative sizes, case, alignment per role. No font files." },
+        "colour_use": { "type": "object", "description": "How colour is used structurally (ground, text, accent). Expressed as roles mapped to design_system tokens, not raw hex." },
+        "distinguishing_features": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "proposed_template": {
+      "type": ["object", "null"],
+      "description": "The metadata.json body for templates/proposed/{id}/. Null when the reference is a duplicate.",
+      "required": ["id", "family", "formats", "renderer", "layouts", "slots"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "family": { "type": "string" },
+        "formats": { "type": "array", "items": { "enum": ["carousel", "single_post"] }, "minItems": 1 },
+        "renderer": { "enum": ["pillow", "playwright", "spec_only"] },
+        "layouts": { "type": "array", "items": { "type": "object", "required": ["id"], "properties": { "id": { "type": "string" } } }, "minItems": 1 },
+        "slots": { "type": "object" }
+      }
+    },
+    "validation_plan": {
+      "type": "array",
+      "description": "Building Tomorrow content used to render validation examples (atom ids).",
+      "items": { "type": "string" }
+    },
+    "open_questions": { "type": "array", "items": { "type": "string" } }
+  }
+}

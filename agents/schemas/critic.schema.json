@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "critic.schema.json",
+  "title": "QA critic stage output",
+  "type": "object",
+  "required": ["stage", "post_id", "attempt", "verdict", "score", "issues"],
+  "additionalProperties": false,
+  "properties": {
+    "stage": { "const": "critic" },
+    "post_id": { "type": "string", "pattern": "^post_[0-9]{8}_[0-9]{2}$" },
+    "attempt": { "type": "integer", "minimum": 1, "description": "1-based QA cycle number for this post." },
+    "verdict": { "enum": ["pass", "revise", "fail"] },
+    "score": { "type": "number", "minimum": 0, "maximum": 100 },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["layer", "slide", "issue", "route_to", "action"],
+        "additionalProperties": false,
+        "properties": {
+          "layer": { "enum": ["content", "copy", "design", "brand", "tone", "structure"] },
+          "slide": { "type": ["integer", "null"], "description": "Slide number, or null for post-level issues such as the caption." },
+          "issue": { "type": "string", "minLength": 3 },
+          "route_to": { "enum": ["copywriter", "art_director", "renderer", "human"] },
+          "action": { "type": "string", "minLength": 3, "description": "Specific, actionable instruction for the routed stage." },
+          "severity": { "enum": ["blocker", "major", "minor"] }
+        }
+      }
+    },
+    "rubric": {
+      "type": "object",
+      "description": "Per-dimension scores (0-100) that roll up into score.",
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 100 }
+    },
+    "checked_deterministic": {
+      "type": "object",
+      "description": "Results of the non-LLM checks the critic was given, so the log shows what was already proven.",
+      "additionalProperties": false,
+      "properties": {
+        "visual_qa_passed": { "type": "boolean" },
+        "grounding_passed": { "type": "boolean" },
+        "dedup_passed": { "type": "boolean" }
+      }
+    },
+    "summary": { "type": "string", "description": "Two or three sentences. Feeds rationale.md and state/hero-qa-log.md." }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "verdict": { "const": "pass" } }, "required": ["verdict"] },
+      "then": {
+        "properties": {
+          "issues": { "items": { "properties": { "severity": { "enum": ["minor"] } } } }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "_comment": "Approved, reusable imagery only (photos, textures, illustrations). Composition and layout live in templates/, not here. Routine 04B proposes assets; a human approves them out-of-band and adds the entry.",
+  "assets": []
+}

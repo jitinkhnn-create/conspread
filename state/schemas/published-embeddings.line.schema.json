@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "published-embeddings.line.schema.json",
+  "title": "One line of state/published-embeddings.jsonl",
+  "description": "Hook and headline embeddings for a published post. Only the most recent dedup.compare_against_last_n lines are compared. Lines from a different embedding model than the configured one are ignored.",
+  "type": "object",
+  "required": ["post_id", "date", "model", "hook", "headline", "hook_embedding", "headline_embedding"],
+  "additionalProperties": false,
+  "properties": {
+    "post_id": { "type": "string" },
+    "date": { "type": "string" },
+    "model": { "type": "string" },
+    "hook": { "type": "string" },
+    "headline": { "type": "string" },
+    "hook_embedding": { "type": "array", "items": { "type": "number" }, "minItems": 1 },
+    "headline_embedding": { "type": "array", "items": { "type": "number" }, "minItems": 1 }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "id": "quote_glyph",
+  "family": "quote",
+  "status": "active",
+  "formats": [
+    "single_post"
+  ],
+  "canvas": [
+    1080,
+    1350
+  ],
+  "renderer": "pillow",
+  "renderer_entry": "render.py",
+  "reference_files": [
+    "assets/benchmark/single_post_references/single03_quote_card_portrait.jpg"
+  ],
+  "layouts": [
+    {
+      "id": "quote_card",
+      "roles": [
+        "hook",
+        "reframe",
+        "takeaway"
+      ],
+      "max_words": 30,
+      "uses": [
+        "kicker",
+        "headline",
+        "text"
+      ],
+      "notes": "headline = the statement or verbatim quote. text line 1 = attribution (e.g. 'Building Tomorrow, Section 4'), optional line 2 = sub-line. kicker = small label above the statement."
+    }
+  ],
+  "slots": {
+    "background": [
+      "flat",
+      "textured",
+      "illustrated"
+    ],
+    "accent_color": [
+      "sunrise",
+      "strength",
+      "identity",
+      "explorer",
+      "emotions"
+    ],
+    "emphasis_style": [
+      "highlight",
+      "underline",
+      "circle"
+    ],
+    "imagery_type": [
+      "illustration",
+      "abstract"
+    ]
+  },
+  "last_used_date": "2026-09-21",
+  "use_count": 1,
+  "notes": "Best for quote_verbatim, reframe and takeaway atoms. Statement left, oversized closing-quote glyph in the accent colour right, growth-ring texture behind, footer band with the book mark."
+}

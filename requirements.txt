@@ -1,0 +1,8 @@
+Pillow>=10
+jsonschema>=4
+# Phase 1 (dedup): local embeddings, no credentials
+fastembed>=0.3
+numpy>=1.26
+# Phase 1, only for templates that need browser rendering
+# playwright>=1.44
+requests>=2.31

@@ -1,0 +1,61 @@
+{
+  "_comment": "All paths are relative to the repo root. Secrets never live here - see .env.example.",
+  "book": "building_tomorrow",
+  "runtime": {
+    "backend": "claude_cli",
+    "claude_cli": {
+      "command": "claude",
+      "args": ["-p", "--output-format", "text"],
+      "model": null,
+      "max_turns": 60,
+      "timeout_seconds": 1800
+    }
+  },
+  "generation": {
+    "posts_per_week_target": 3,
+    "carousel_slide_range": [5, 8],
+    "single_post_size": [1080, 1080],
+    "carousel_size": [1080, 1350]
+  },
+  "dedup": {
+    "threshold": 0.85,
+    "compare_against_last_n": 50,
+    "max_rewrite_attempts": 3,
+    "embedding_backend": "fastembed",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "latency_canary_ms": 500,
+    "corpus_canary_posts": 200
+  },
+  "rotation": {
+    "template_cooldown_posts": 5,
+    "accent_palette_variants": 5
+  },
+  "qa": {
+    "max_revision_cycles": 3,
+    "pass_score": 80,
+    "escalate_after_failed_cycles": 3
+  },
+  "feedback": {
+    "recent_rejections_window": 20,
+    "crystallization_window_days": 14
+  },
+  "publishing": {
+    "provider": "postiz",
+    "platform": "instagram",
+    "postiz": {
+      "base_url_env": "POSTIZ_BASE_URL",
+      "api_key_env": "POSTIZ_API_KEY",
+      "integration_id_env": "POSTIZ_INSTAGRAM_INTEGRATION_ID",
+      "default_base_url": "https://api.postiz.com/public/v1",
+      "check_slot_before_create": true
+    },
+    "park_on_failure_dir": "content/approved"
+  },
+  "paths": {
+    "content_bank": "books/building_tomorrow/content_bank.json",
+    "chapters": "books/building_tomorrow/chapters",
+    "state": "state",
+    "templates_active": "templates/active",
+    "design_bank_manifest": "assets/design-bank/manifest.json"
+  }
+}

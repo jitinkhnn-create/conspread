@@ -1,0 +1,81 @@
+{
+  "id": "numbered_notes",
+  "family": "notes",
+  "status": "active",
+  "formats": [
+    "carousel"
+  ],
+  "canvas": [
+    1080,
+    1350
+  ],
+  "renderer": "pillow",
+  "renderer_entry": "render.py",
+  "reference_files": [
+    "assets/benchmark/carousel_references/set01_slide1_cover.jpg",
+    "assets/benchmark/carousel_references/set01_slide2_content.jpg",
+    "assets/benchmark/carousel_references/set01_slide3_content.jpg",
+    "assets/benchmark/carousel_references/set01_slide4_content.jpg"
+  ],
+  "layouts": [
+    {
+      "id": "cover_desk",
+      "roles": [
+        "hook"
+      ],
+      "max_words": 28,
+      "uses": [
+        "kicker",
+        "headline",
+        "text",
+        "note"
+      ],
+      "notes": "Desk-collage cover. headline = big statement. text = one sub-line. kicker = pill label. note = tape strip."
+    },
+    {
+      "id": "content_numbered",
+      "roles": [
+        "setup",
+        "body",
+        "framework_item",
+        "example",
+        "reframe",
+        "action",
+        "takeaway",
+        "cta"
+      ],
+      "max_words": 45,
+      "uses": [
+        "headline",
+        "text"
+      ],
+      "notes": "Numbered badge + heavy headline + body. In text: '→ ' starts a bullet, '> ' starts the closing pull-quote, a blank line is a paragraph break."
+    }
+  ],
+  "slots": {
+    "background": [
+      "flat",
+      "textured",
+      "illustrated"
+    ],
+    "accent_color": [
+      "sunrise",
+      "strength",
+      "identity",
+      "explorer",
+      "emotions"
+    ],
+    "emphasis_style": [
+      "highlight",
+      "underline",
+      "circle"
+    ],
+    "imagery_type": [
+      "illustration",
+      "abstract"
+    ]
+  },
+  "last_used_date": "2026-09-21",
+  "use_count": 1,
+  "notes": "Derived from ONE carousel reference (cover + content skeleton). Cover ground is the accent colour; content slides sit on paper. imagery_type 'photo' is unavailable until the Design Bank has approved photos."
+}

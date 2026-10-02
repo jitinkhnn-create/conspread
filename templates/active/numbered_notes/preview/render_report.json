@@ -1,0 +1,369 @@
+{
+  "post_id": "sample",
+  "template_id": "numbered_notes",
+  "canvas": [
+    1080,
+    1350
+  ],
+  "slots": {
+    "background": "textured",
+    "accent_color": "sunrise",
+    "emphasis_style": "highlight",
+    "imagery_type": "illustration"
+  },
+  "status": "ok",
+  "slides": [
+    {
+      "n": 1,
+      "file": "slide_01.png",
+      "layout": "cover_desk",
+      "sha256": "a79adee4602ae1875a1069550a29c45d1bef35416733c085daed8e2c90908a73",
+      "boxes": [
+        {
+          "role": "kicker",
+          "box": [
+            190,
+            280,
+            487,
+            340
+          ],
+          "size": 28
+        },
+        {
+          "role": "headline",
+          "box": [
+            191,
+            405,
+            889,
+            747
+          ],
+          "size": 112
+        },
+        {
+          "role": "subline",
+          "box": [
+            252,
+            781,
+            827,
+            878
+          ],
+          "size": 36
+        },
+        {
+          "role": "note",
+          "box": [
+            374,
+            1000,
+            706,
+            1098
+          ],
+          "size": 28
+        }
+      ],
+      "pairs": [
+        {
+          "role": "brand_mark",
+          "fg": "#211E1D",
+          "bg": "#F2B84B",
+          "size": 34,
+          "ratio": 9.25
+        },
+        {
+          "role": "kicker",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 28,
+          "ratio": 14.91
+        },
+        {
+          "role": "headline",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 112,
+          "ratio": 14.91
+        },
+        {
+          "role": "subline",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 36,
+          "ratio": 14.91
+        },
+        {
+          "role": "note",
+          "fg": "#211E1D",
+          "bg": "#D8CBA8",
+          "size": 28,
+          "ratio": 10.27
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 2,
+      "file": "slide_02.png",
+      "layout": "content_numbered",
+      "sha256": "e1e3d9ef1e0866810cce7b914e2183e6f1cfaee537577a212de09b8e1469d0e4",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            110,
+            300,
+            970,
+            532
+          ],
+          "size": 114
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            598,
+            830,
+            725
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            768,
+            798,
+            832
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            839,
+            703,
+            902
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            909,
+            654,
+            973
+          ],
+          "size": 48
+        },
+        {
+          "role": "pullquote",
+          "box": [
+            259,
+            1023,
+            881,
+            1150
+          ],
+          "size": 48
+        }
+      ],
+      "pairs": [
+        {
+          "role": "brand_mark",
+          "fg": "#5A3D2F",
+          "bg": "#F6F4DE",
+          "size": 30,
+          "ratio": 8.82
+        },
+        {
+          "role": "headline",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 114,
+          "ratio": 14.91
+        },
+        {
+          "role": "body",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "bullet",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "bullet",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "bullet",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "pullquote",
+          "fg": "#5A3D2F",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 8.82
+        },
+        {
+          "role": "footer",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 19,
+          "ratio": 14.91
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 3,
+      "file": "slide_03.png",
+      "layout": "content_numbered",
+      "sha256": "f870fae556fcc9e8abc47e9a257d4ca71b27164fdbaaa647d89a68fb44068587",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            110,
+            300,
+            970,
+            532
+          ],
+          "size": 114
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            598,
+            830,
+            725
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            768,
+            798,
+            832
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            839,
+            703,
+            902
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            909,
+            654,
+            973
+          ],
+          "size": 48
+        },
+        {
+          "role": "pullquote",
+          "box": [
+            259,
+            1023,
+            881,
+            1150
+          ],
+          "size": 48
+        }
+      ],
+      "pairs": [
+        {
+          "role": "brand_mark",
+          "fg": "#5A3D2F",
+          "bg": "#F6F4DE",
+          "size": 30,
+          "ratio": 8.82
+        },
+        {
+          "role": "headline",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 114,
+          "ratio": 14.91
+        },
+        {
+          "role": "body",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "bullet",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "bullet",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "bullet",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 14.91
+        },
+        {
+          "role": "pullquote",
+          "fg": "#5A3D2F",
+          "bg": "#F6F4DE",
+          "size": 48,
+          "ratio": 8.82
+        },
+        {
+          "role": "footer",
+          "fg": "#211E1D",
+          "bg": "#F6F4DE",
+          "size": 19,
+          "ratio": 14.91
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    }
+  ]
+}

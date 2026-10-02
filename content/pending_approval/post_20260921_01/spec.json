@@ -1,0 +1,962 @@
+{
+  "post_id": "post_20260921_01",
+  "finalized_at": "2026-09-21T12:36:46Z",
+  "strategist": {
+    "stage": "strategist",
+    "post_id": "post_20260921_01",
+    "atom_id": "bt_ch04_heart_moments_daily_life",
+    "angle": "You don't need a big, dramatic moment to hear your heart. It is already speaking in five ordinary situations: a mean group-chat joke, a broken pen, a post that isn't really you, a raised hand, and money on the floor when no one is watching.",
+    "audience_track": "child_teen",
+    "format": "carousel",
+    "slide_count": 7,
+    "cta_intent": "save",
+    "rationale": "First post in the pipeline, so there is no recent history to rotate against. This atom is the strongest carousel candidate in the bank for the child_teen track: five concrete situations a 11-15 year old recognises, each with a built-in contrast (what the mind says vs what the heart says) and a closing question, all verbatim from the workbook so grounding is safe. The atom is not sensitive. CTA is 'save' (a framework is something to come back to); discover_book is deliberately not used on the very first post, per MASTER-STRATEGY.",
+    "considered_alternatives": [
+      {
+        "atom_id": "bt_ch04_head_vs_heart_decisions",
+        "why_not": "A 5-row table of abstract contrasts; one row ('What do you know is inside') reads awkwardly out of context. The situation-based atom is more concrete."
+      },
+      {
+        "atom_id": "bt_ch08_world_needs_best_version_of_you",
+        "why_not": "Strong single quote, but better saved for a later post so the first one demonstrates the carousel template and the mind-vs-heart idea that the rest of Section 4 builds on."
+      }
+    ]
+  },
+  "copywriter": {
+    "stage": "copywriter",
+    "post_id": "post_20260921_01",
+    "atom_id": "bt_ch04_heart_moments_daily_life",
+    "revision": 0,
+    "hook": "Your heart is already talking.",
+    "headline": "Your heart speaks up in small, everyday moments.",
+    "hook_family": "direct_address",
+    "slides": [
+      {
+        "n": 1,
+        "role": "hook",
+        "kicker": "Ordinary moments",
+        "headline": "Your heart is already talking.",
+        "text": "Five everyday moments where you can hear it.",
+        "note": "Swipe to hear it",
+        "emphasis_text": "talking"
+      },
+      {
+        "n": 2,
+        "role": "example",
+        "headline": "Join in, or speak up?",
+        "text": "You’re in a group chat, and someone sends a mean joke about another kid.\n\n→ Mind: “Just laugh. Don’t make it a big deal.”\n→ Heart: “That’s not fair. I wouldn’t want this done to me.”",
+        "emphasis_text": "speak up"
+      },
+      {
+        "n": 3,
+        "role": "example",
+        "headline": "Can you stay kind, even when angry?",
+        "text": "Your younger sibling accidentally breaks your favorite pen.\n\n→ Mind: “Yell! That was special!”\n→ Heart: “She didn’t mean to. Remember when you broke Dad’s glasses once?”",
+        "emphasis_text": "kind"
+      },
+      {
+        "n": 4,
+        "role": "example",
+        "headline": "Is this true to who I am?",
+        "text": "You want to post something that’ll get likes — but deep down, it’s not really you.\n\nMaybe it’s showing off or copying someone else.",
+        "emphasis_text": "true"
+      },
+      {
+        "n": 5,
+        "role": "example",
+        "headline": "Be brave and speak, or stay silent and safe?",
+        "text": "You know the answer, but you’re afraid to raise your hand.\n\nYou’re worried someone might laugh if you're wrong.",
+        "emphasis_text": "brave"
+      },
+      {
+        "n": 6,
+        "role": "example",
+        "headline": "What will you do when no one will ever know?",
+        "text": "You find money on the floor. There’s no one around. No cameras.\n\n→ Mind: “Keep it.”\n→ Heart: “Someone probably needs this.”",
+        "emphasis_text": "no one"
+      },
+      {
+        "n": 7,
+        "role": "takeaway",
+        "headline": "You don’t need a big moment.",
+        "text": "Most of the time, your heart shows up in the small, everyday choices — the ones that happen in seconds, when no one is watching.",
+        "emphasis_text": "small"
+      }
+    ],
+    "caption": "Your heart doesn’t announce itself. It shows up in tiny moments: a mean joke in the group chat, a broken pen, a post that isn’t really you, a hand you almost keep down.\n\nThat quiet voice is calm, kind and steady, and it can say something different from whatever your mind says is the fastest, smartest move.\n\nWhich of these five moments sounds most like your week?\n\nSave this for the next time you’re not sure what to do.",
+    "hashtags": [
+      "#SocialEmotionalLearning",
+      "#SEL",
+      "#EmotionalIntelligence",
+      "#SelfAwareness",
+      "#InnerVoice",
+      "#KindnessMatters",
+      "#GrowingUp",
+      "#TeenLife"
+    ],
+    "alt_text": "A seven-slide carousel about five everyday situations, from a group chat joke to finding money on the floor, where your mind and your heart say different things.",
+    "verbatim_quotes": [
+      {
+        "text": "Just laugh. Don’t make it a big deal.",
+        "chapter": 4
+      },
+      {
+        "text": "That’s not fair. I wouldn’t want this done to me.",
+        "chapter": 4
+      },
+      {
+        "text": "Yell! That was special!",
+        "chapter": 4
+      },
+      {
+        "text": "She didn’t mean to. Remember when you broke Dad’s glasses once?",
+        "chapter": 4
+      },
+      {
+        "text": "Keep it.",
+        "chapter": 4
+      },
+      {
+        "text": "Someone probably needs this.",
+        "chapter": 4
+      }
+    ],
+    "chapter_references": [],
+    "dedup": {
+      "threshold": 0.85,
+      "max_similarity": 0.0,
+      "closest_post_id": null,
+      "attempts": 1,
+      "passed": true
+    },
+    "self_check": {
+      "value_first": true,
+      "no_invented_quotes": true,
+      "age_appropriate": true,
+      "notes": "All situations and quoted lines are copied from Section 4 (pp.63-64). Mind/Heart are labels; the source uses 'mind', 'brain' and 'heart' interchangeably for the head side. No book mention (cta_intent is save). Caption adds the idea that the heart voice is calm, kind and steady (p.62) without quoting."
+    }
+  },
+  "art_director": {
+    "stage": "art_director",
+    "post_id": "post_20260921_01",
+    "revision": 0,
+    "template_id": "numbered_notes",
+    "slot_choices": {
+      "background": "textured",
+      "accent_color": "sunrise",
+      "emphasis_style": "highlight",
+      "imagery_type": "illustration"
+    },
+    "per_slide_layout_spec": [
+      {
+        "slide": 1,
+        "layout": "cover_desk",
+        "emphasis_text": "talking",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      },
+      {
+        "slide": 2,
+        "layout": "content_numbered",
+        "emphasis_text": "speak up",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      },
+      {
+        "slide": 3,
+        "layout": "content_numbered",
+        "emphasis_text": "kind",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      },
+      {
+        "slide": 4,
+        "layout": "content_numbered",
+        "emphasis_text": "true",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      },
+      {
+        "slide": 5,
+        "layout": "content_numbered",
+        "emphasis_text": "brave",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      },
+      {
+        "slide": 6,
+        "layout": "content_numbered",
+        "emphasis_text": "no one",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      },
+      {
+        "slide": 7,
+        "layout": "content_numbered",
+        "emphasis_text": "small",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      }
+    ],
+    "template_rationale": "numbered_notes is the only active carousel template, and this is a 7-slide numbered framework with a hook cover, which is exactly the structure it was derived from. cover_desk carries the hook; content_numbered carries the five situations (numbered badges 01-05 double as the progress cue) and the closing takeaway. Slots: sunrise (warm gold from the cover's sun glow) for a friendly, high-contrast cover ground; textured for the dot-grid paper feel; illustration (the cover's seedling) to tie the post to the book without showing it; highlight because the reference's selection-box emphasis is this template's signature. LIBRARY NOTE: only 1 of 4 active templates supports carousels, so carousel posts cannot rotate templates until more carousel references are added.",
+    "rotation_check": {
+      "recent_template_ids": [],
+      "cooldown_posts": 5,
+      "satisfied": true
+    }
+  },
+  "critic": {
+    "stage": "critic",
+    "post_id": "post_20260921_01",
+    "attempt": 2,
+    "verdict": "pass",
+    "score": 86,
+    "issues": [
+      {
+        "layer": "design",
+        "slide": null,
+        "issue": "Body text size differs from slide to slide (about 36px on slide 2 up to 52px on slide 7) because each slide is fitted on its own. Content slides read as slightly inconsistent when swiped in sequence.",
+        "route_to": "renderer",
+        "action": "Optional polish: compute one shared body size for the whole carousel (the smallest size any slide needs) so the type stays constant across slides.",
+        "severity": "minor"
+      },
+      {
+        "layer": "design",
+        "slide": 7,
+        "issue": "The highlight on 'small,' includes the trailing comma, and the seedling appears twice on the closing slide (badge and corner).",
+        "route_to": "renderer",
+        "action": "Optional polish: exclude trailing punctuation from highlight boxes; consider dropping the corner seedling on slides that already use the seedling badge.",
+        "severity": "minor"
+      }
+    ],
+    "rubric": {
+      "hook_strength": 82,
+      "clarity": 90,
+      "grounding": 96,
+      "tone": 86,
+      "legibility": 88,
+      "hierarchy": 86,
+      "brand_fit": 88,
+      "originality": 72
+    },
+    "checked_deterministic": {
+      "visual_qa_passed": true,
+      "grounding_passed": true,
+      "dedup_passed": true
+    },
+    "summary": "Attempt 1's two issues are fixed: the numbering now runs 01-05 and the closing slide uses a seedling badge, and the body block sits well in the canvas. Every situation and every quoted line comes verbatim from Section 4 and is declared. Safe and warm for ages 11-15, no sales language, nothing sensitive. Two cosmetic renderer polish items remain and do not block approval."
+  },
+  "critic_history": [
+    {
+      "stage": "critic",
+      "post_id": "post_20260921_01",
+      "attempt": 1,
+      "verdict": "revise",
+      "score": 74,
+      "issues": [
+        {
+          "layer": "design",
+          "slide": 7,
+          "issue": "The closing takeaway slide carries the number badge '06', but the cover promises 'Five everyday moments' and the numbered examples end at 05. It reads as a sixth moment and contradicts the hook.",
+          "route_to": "renderer",
+          "action": "Number only slides whose role is an example/body/setup/framework item/reframe. For takeaway, action and cta slides show a non-numeric badge (the seedling in the same circle) so the count stays honest.",
+          "severity": "major"
+        },
+        {
+          "layer": "design",
+          "slide": null,
+          "issue": "On every content slide the body block hugs the headline and leaves roughly the bottom third of the canvas empty (worst on slides 4, 5 and 7). The slides feel top-heavy and the body text is smaller than it needs to be for a phone.",
+          "route_to": "renderer",
+          "action": "Raise the body size cap to 52px and vertically centre the body block in the free area below the headline (bias toward the top, about 40 percent of the slack, capped at 150px).",
+          "severity": "minor"
+        },
+        {
+          "layer": "copy",
+          "slide": 4,
+          "issue": "Slides 2, 3 and 6 use the Mind/Heart contrast; slide 4 has none, so the rhythm breaks once. This is faithful to the workbook (that moment has no mind/heart lines), so it is acceptable, not a defect.",
+          "route_to": "human",
+          "action": "No change needed. Noted so the human can decide whether the uneven rhythm bothers them.",
+          "severity": "minor"
+        }
+      ],
+      "rubric": {
+        "hook_strength": 82,
+        "clarity": 88,
+        "grounding": 96,
+        "tone": 86,
+        "legibility": 80,
+        "hierarchy": 72,
+        "brand_fit": 84,
+        "originality": 70
+      },
+      "checked_deterministic": {
+        "visual_qa_passed": true,
+        "grounding_passed": true,
+        "dedup_passed": true
+      },
+      "summary": "Grounded, warm and clearly aimed at 11-15 year olds; the cover hook is strong and the desk-collage cover is the best-looking slide. Two renderer fixes are needed: the closing slide is numbered '06' against a 'Five moments' promise, and the content slides leave the lower third empty. Neither needs new copy or a new template."
+    },
+    {
+      "stage": "critic",
+      "post_id": "post_20260921_01",
+      "attempt": 2,
+      "verdict": "pass",
+      "score": 86,
+      "issues": [
+        {
+          "layer": "design",
+          "slide": null,
+          "issue": "Body text size differs from slide to slide (about 36px on slide 2 up to 52px on slide 7) because each slide is fitted on its own. Content slides read as slightly inconsistent when swiped in sequence.",
+          "route_to": "renderer",
+          "action": "Optional polish: compute one shared body size for the whole carousel (the smallest size any slide needs) so the type stays constant across slides.",
+          "severity": "minor"
+        },
+        {
+          "layer": "design",
+          "slide": 7,
+          "issue": "The highlight on 'small,' includes the trailing comma, and the seedling appears twice on the closing slide (badge and corner).",
+          "route_to": "renderer",
+          "action": "Optional polish: exclude trailing punctuation from highlight boxes; consider dropping the corner seedling on slides that already use the seedling badge.",
+          "severity": "minor"
+        }
+      ],
+      "rubric": {
+        "hook_strength": 82,
+        "clarity": 90,
+        "grounding": 96,
+        "tone": 86,
+        "legibility": 88,
+        "hierarchy": 86,
+        "brand_fit": 88,
+        "originality": 72
+      },
+      "checked_deterministic": {
+        "visual_qa_passed": true,
+        "grounding_passed": true,
+        "dedup_passed": true
+      },
+      "summary": "Attempt 1's two issues are fixed: the numbering now runs 01-05 and the closing slide uses a seedling badge, and the body block sits well in the canvas. Every situation and every quoted line comes verbatim from Section 4 and is declared. Safe and warm for ages 11-15, no sales language, nothing sensitive. Two cosmetic renderer polish items remain and do not block approval."
+    }
+  ],
+  "render_report": {
+    "post_id": "post_20260921_01",
+    "template_id": "numbered_notes",
+    "canvas": [
+      1080,
+      1350
+    ],
+    "slots": {
+      "background": "textured",
+      "accent_color": "sunrise",
+      "emphasis_style": "highlight",
+      "imagery_type": "illustration"
+    },
+    "status": "ok",
+    "slides": [
+      {
+        "n": 1,
+        "file": "slide_01.png",
+        "layout": "cover_desk",
+        "sha256": "70ff5c3584a6923b7782da89b93a84b69326f976caa121c40fab7b6af6d4128c",
+        "boxes": [
+          {
+            "role": "kicker",
+            "box": [
+              190,
+              280,
+              497,
+              340
+            ],
+            "size": 28
+          },
+          {
+            "role": "headline",
+            "box": [
+              248,
+              405,
+              831,
+              833
+            ],
+            "size": 140
+          },
+          {
+            "role": "subline",
+            "box": [
+              251,
+              867,
+              828,
+              964
+            ],
+            "size": 36
+          },
+          {
+            "role": "note",
+            "box": [
+              386,
+              1000,
+              694,
+              1096
+            ],
+            "size": 28
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#211E1D",
+            "bg": "#F2B84B",
+            "size": 34,
+            "ratio": 9.25
+          },
+          {
+            "role": "kicker",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 28,
+            "ratio": 14.91
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 140,
+            "ratio": 14.91
+          },
+          {
+            "role": "subline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 36,
+            "ratio": 14.91
+          },
+          {
+            "role": "note",
+            "fg": "#211E1D",
+            "bg": "#D8CBA8",
+            "size": 28,
+            "ratio": 10.27
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      },
+      {
+        "n": 2,
+        "file": "slide_02.png",
+        "layout": "content_numbered",
+        "sha256": "51a336e66eb70199d97284c657f154706e2bd8c1324e19bf74e2552ee57f6365",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              265,
+              300,
+              815,
+              569
+            ],
+            "size": 132
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              673,
+              969,
+              795
+            ],
+            "size": 46
+          },
+          {
+            "role": "bullet",
+            "box": [
+              241,
+              836,
+              953,
+              958
+            ],
+            "size": 46
+          },
+          {
+            "role": "bullet",
+            "box": [
+              241,
+              964,
+              975,
+              1086
+            ],
+            "size": 46
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 8.82
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 132,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 46,
+            "ratio": 14.91
+          },
+          {
+            "role": "bullet",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 46,
+            "ratio": 14.91
+          },
+          {
+            "role": "bullet",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 46,
+            "ratio": 14.91
+          },
+          {
+            "role": "footer",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 19,
+            "ratio": 14.91
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      },
+      {
+        "n": 3,
+        "file": "slide_03.png",
+        "layout": "content_numbered",
+        "sha256": "696f30970ba9f92fe82450f5002d8afc281703f834c0b8abaf98d7a8c104d1ec",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              112,
+              300,
+              968,
+              536
+            ],
+            "size": 116
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              604,
+              976,
+              742
+            ],
+            "size": 52
+          },
+          {
+            "role": "bullet",
+            "box": [
+              251,
+              788,
+              779,
+              926
+            ],
+            "size": 52
+          },
+          {
+            "role": "bullet",
+            "box": [
+              251,
+              933,
+              937,
+              1139
+            ],
+            "size": 52
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 8.82
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 116,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "bullet",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "bullet",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "footer",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 19,
+            "ratio": 14.91
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      },
+      {
+        "n": 4,
+        "file": "slide_04.png",
+        "layout": "content_numbered",
+        "sha256": "b2dcad775fa85b6279f997d5706e64cf9fe1f565b13711e01590f0c1cf841de6",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              185,
+              300,
+              895,
+              569
+            ],
+            "size": 132
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              685,
+              964,
+              891
+            ],
+            "size": 52
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              938,
+              982,
+              1075
+            ],
+            "size": 52
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 8.82
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 132,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "footer",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 19,
+            "ratio": 14.91
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      },
+      {
+        "n": 5,
+        "file": "slide_05.png",
+        "layout": "content_numbered",
+        "sha256": "0c8cbd0d8ce783572ec77956c7bbccb2b55acaafd29542bfef248bd1a09d604a",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              117,
+              300,
+              963,
+              487
+            ],
+            "size": 92
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              664,
+              961,
+              801
+            ],
+            "size": 52
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              848,
+              913,
+              985
+            ],
+            "size": 52
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 8.82
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 92,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "footer",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 19,
+            "ratio": 14.91
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      },
+      {
+        "n": 6,
+        "file": "slide_06.png",
+        "layout": "content_numbered",
+        "sha256": "1fab3515a19bb3d06deaefc5497cc573a81a5da7ad2ce0fc2cfdd5c09fede246",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              110,
+              300,
+              969,
+              487
+            ],
+            "size": 92
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              602,
+              847,
+              808
+            ],
+            "size": 52
+          },
+          {
+            "role": "bullet",
+            "box": [
+              251,
+              855,
+              644,
+              924
+            ],
+            "size": 52
+          },
+          {
+            "role": "bullet",
+            "box": [
+              251,
+              932,
+              921,
+              1069
+            ],
+            "size": 52
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 8.82
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 92,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "bullet",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "bullet",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "footer",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 19,
+            "ratio": 14.91
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      },
+      {
+        "n": 7,
+        "file": "slide_07.png",
+        "layout": "content_numbered",
+        "sha256": "c71ab40d9b4db0fceff5e54434c3a2533f65b152a5d6ccfa5197f75c26f9fb07",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              149,
+              300,
+              931,
+              569
+            ],
+            "size": 132
+          },
+          {
+            "role": "body",
+            "box": [
+              168,
+              704,
+              948,
+              1047
+            ],
+            "size": 52
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 8.82
+          },
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 132,
+            "ratio": 14.91
+          },
+          {
+            "role": "body",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 52,
+            "ratio": 14.91
+          },
+          {
+            "role": "footer",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 19,
+            "ratio": 14.91
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      }
+    ]
+  }
+}

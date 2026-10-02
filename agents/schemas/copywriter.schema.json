@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "copywriter.schema.json",
+  "title": "Copywriter stage output",
+  "type": "object",
+  "required": ["stage", "post_id", "atom_id", "revision", "hook", "headline", "hook_family", "slides", "caption", "hashtags", "alt_text", "verbatim_quotes"],
+  "additionalProperties": false,
+  "properties": {
+    "stage": { "const": "copywriter" },
+    "post_id": { "type": "string", "pattern": "^post_[0-9]{8}_[0-9]{2}$" },
+    "atom_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 0, "description": "0 for first draft; +1 for every rewrite (dedup or QA routed)." },
+    "hook": { "type": "string", "minLength": 3, "description": "First line a reader sees: slide 1 text and first caption line." },
+    "headline": { "type": "string", "minLength": 3, "description": "The post's core statement. May equal the hook on a single_post." },
+    "hook_family": {
+      "enum": ["question", "myth_bust", "reframe", "scenario", "direct_address", "list_promise", "quote", "contrast", "invitation"],
+      "description": "Used by analytics to compare hook types. Pick the closest one."
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["n", "role", "text"],
+        "additionalProperties": false,
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "role": { "enum": ["hook", "setup", "body", "framework_item", "example", "reframe", "action", "takeaway", "cta"] },
+          "kicker": { "type": "string", "maxLength": 60, "description": "Optional short label above the headline (a few words)." },
+          "headline": { "type": "string", "description": "The large statement on the slide. Optional on body slides where only text is needed, but required on slide 1." },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Body copy. Line breaks with \\n. Mini-format understood by templates: a line starting '→ ' is a bullet, a line starting '> ' is a closing pull-quote, a blank line is a paragraph break. On a cover, text is the sub-line; on a quote card, line 1 is the attribution."
+          },
+          "note": { "type": "string", "maxLength": 60, "description": "Optional small extra line (a 'swipe' cue, a save prompt). Not every layout uses it." },
+          "emphasis_text": {
+            "type": "string",
+            "description": "Optional phrase the art director should emphasize. Must appear verbatim in headline (preferred) or text."
+          }
+        }
+      }
+    },
+    "caption": { "type": "string", "minLength": 20, "description": "Full Instagram caption without hashtags. Plain text, real line breaks, no HTML." },
+    "hashtags": {
+      "type": "array",
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^#[A-Za-z0-9_]+$" }
+    },
+    "alt_text": { "type": "string", "minLength": 10, "description": "Accessibility description of the post for the Instagram alt-text field." },
+    "verbatim_quotes": {
+      "type": "array",
+      "description": "Every string presented as a direct workbook quotation, in any slide or the caption. Deterministically checked against books/building_tomorrow/chapters/. Empty array if the post quotes nothing.",
+      "items": {
+        "type": "object",
+        "required": ["text", "chapter"],
+        "additionalProperties": false,
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "chapter": { "type": "integer", "minimum": 1, "maximum": 16 }
+        }
+      }
+    },
+    "chapter_references": {
+      "type": "array",
+      "description": "Every explicit chapter mention ('In Chapter 4...') so fake references can be checked.",
+      "items": { "type": "integer", "minimum": 1, "maximum": 16 }
+    },
+    "dedup": {
+      "type": "object",
+      "description": "Filled by tools/dedup_check.py, not by the model.",
+      "additionalProperties": false,
+      "properties": {
+        "threshold": { "type": "number" },
+        "max_similarity": { "type": "number" },
+        "closest_post_id": { "type": ["string", "null"] },
+        "attempts": { "type": "integer", "minimum": 1 },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "self_check": {
+      "type": "object",
+      "description": "The copywriter's own pre-flight against brand/voice.md.",
+      "additionalProperties": false,
+      "properties": {
+        "value_first": { "type": "boolean" },
+        "no_invented_quotes": { "type": "boolean" },
+        "age_appropriate": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

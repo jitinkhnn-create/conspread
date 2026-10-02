@@ -1,0 +1,28 @@
+{
+  "id": "photo_split",
+  "family": "split",
+  "status": "active",
+  "formats": ["single_post"],
+  "canvas": [1080, 1350],
+  "renderer": "pillow",
+  "renderer_entry": "render.py",
+  "reference_files": ["assets/benchmark/single_post_references/single01_product_shot_portrait.jpg"],
+  "layouts": [
+    {
+      "id": "split_statement",
+      "roles": ["hook", "reframe", "takeaway"],
+      "max_words": 22,
+      "uses": ["kicker", "headline", "text", "note"],
+      "notes": "headline = short statement in the right column. text line 1 = sub-line under an accent bar. kicker = small line top-right. note = small line above the bottom band. Subject at lower-left: the seedling illustration, or a Design Bank photo when one is approved."
+    }
+  ],
+  "slots": {
+    "background": ["flat", "textured", "illustrated"],
+    "accent_color": ["sunrise", "strength", "identity", "explorer", "emotions"],
+    "emphasis_style": ["highlight", "underline", "circle"],
+    "imagery_type": ["illustration", "abstract"]
+  },
+  "last_used_date": null,
+  "use_count": 0,
+  "notes": "Asymmetric text/subject split on graph-paper ground with a three-colour band at the bottom. 'photo' becomes available once the Design Bank has an approved cut-out photo; until then the subject is the seedling illustration."
+}

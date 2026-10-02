@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "media-ledger.schema.json",
+  "title": "state/media-ledger.json",
+  "description": "Ledger of posts handed to the publishing provider. A post_id already present here is never dispatched again, which makes dispatch idempotent. Only tools/media_ledger.py writes this file.",
+  "type": "object",
+  "required": ["schema_version", "entries"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["post_id", "atom_id", "media_sha256", "recorded_at", "state"],
+        "additionalProperties": false,
+        "properties": {
+          "post_id": { "type": "string" },
+          "atom_id": { "type": "string" },
+          "media_sha256": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "provider": { "type": "string" },
+          "provider_post_id": { "type": ["string", "null"] },
+          "scheduled_for": { "type": ["string", "null"] },
+          "recorded_at": { "type": "string" },
+          "state": { "enum": ["scheduled", "published", "failed_parked"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,652 @@
+{
+  "post_id": "post_20260921_01",
+  "template_id": "numbered_notes",
+  "canvas": [
+    1080,
+    1350
+  ],
+  "slots": {
+    "background": "textured",
+    "accent_color": "crimson",
+    "emphasis_style": "highlight",
+    "imagery_type": "illustration"
+  },
+  "status": "ok",
+  "slides": [
+    {
+      "n": 1,
+      "file": "slide_01.png",
+      "layout": "cover_desk",
+      "sha256": "b2ea67c3cf2eff452cd15f1a4a40c8cabebc3581016e1f3c13b5f9e8cb57d200",
+      "boxes": [
+        {
+          "role": "logo",
+          "box": [
+            501,
+            242,
+            578,
+            308
+          ],
+          "size": 66
+        },
+        {
+          "role": "kicker",
+          "box": [
+            378,
+            342,
+            701,
+            396
+          ],
+          "size": 26
+        },
+        {
+          "role": "headline",
+          "box": [
+            213,
+            448,
+            867,
+            843
+          ],
+          "size": 128
+        },
+        {
+          "role": "subline",
+          "box": [
+            251,
+            877,
+            828,
+            974
+          ],
+          "size": 36
+        },
+        {
+          "role": "note",
+          "box": [
+            397,
+            1016,
+            683,
+            1074
+          ],
+          "size": 26
+        }
+      ],
+      "pairs": [
+        {
+          "role": "kicker",
+          "fg": "#1E2559",
+          "bg": "#EEC4CF",
+          "size": 26,
+          "ratio": 9.17
+        },
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 128,
+          "ratio": 12.94
+        },
+        {
+          "role": "subline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 36,
+          "ratio": 12.94
+        },
+        {
+          "role": "note",
+          "fg": "#FFFFFF",
+          "bg": "#D2094F",
+          "size": 26,
+          "ratio": 5.4
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 2,
+      "file": "slide_02.png",
+      "layout": "content_numbered",
+      "sha256": "5c84aed9aba148ef5b24ca9d081368baa9163e94c4d1406deab6d9f1a3e7e409",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            265,
+            290,
+            815,
+            559
+          ],
+          "size": 132
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            623,
+            984,
+            813
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            856,
+            980,
+            983
+          ],
+          "size": 48
+        },
+        {
+          "role": "bullet",
+          "box": [
+            244,
+            990,
+            869,
+            1180
+          ],
+          "size": 48
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1251,
+            173,
+            1317
+          ],
+          "size": 66
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 132,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 48,
+          "ratio": 12.94
+        },
+        {
+          "role": "bullet",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 48,
+          "ratio": 12.94
+        },
+        {
+          "role": "bullet",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 48,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 22,
+          "ratio": 12.94
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 3,
+      "file": "slide_03.png",
+      "layout": "content_numbered",
+      "sha256": "61eb895af31d0d5c7cc5e4165769f42031f99e41acbf76d1fe671011f6da51ec",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            112,
+            290,
+            968,
+            526
+          ],
+          "size": 116
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            612,
+            976,
+            749
+          ],
+          "size": 52
+        },
+        {
+          "role": "bullet",
+          "box": [
+            251,
+            796,
+            779,
+            933
+          ],
+          "size": 52
+        },
+        {
+          "role": "bullet",
+          "box": [
+            251,
+            941,
+            937,
+            1147
+          ],
+          "size": 52
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1251,
+            173,
+            1317
+          ],
+          "size": 66
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 116,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "bullet",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "bullet",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 22,
+          "ratio": 12.94
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 4,
+      "file": "slide_04.png",
+      "layout": "content_numbered",
+      "sha256": "0e5239c3c5402058339c1407bbc4686b19f4e55e7e6147ff036fe78fd17b09b5",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            185,
+            290,
+            895,
+            559
+          ],
+          "size": 132
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            693,
+            964,
+            899
+          ],
+          "size": 52
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            945,
+            982,
+            1083
+          ],
+          "size": 52
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1251,
+            173,
+            1317
+          ],
+          "size": 66
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 132,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 22,
+          "ratio": 12.94
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 5,
+      "file": "slide_05.png",
+      "layout": "content_numbered",
+      "sha256": "2931b0c07e4eab0633a5627c96fded4666e489e22978d2237cc7c68bee6e48a3",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            117,
+            290,
+            963,
+            477
+          ],
+          "size": 92
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            671,
+            961,
+            808
+          ],
+          "size": 52
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            855,
+            913,
+            993
+          ],
+          "size": 52
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1251,
+            173,
+            1317
+          ],
+          "size": 66
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 92,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 22,
+          "ratio": 12.94
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 6,
+      "file": "slide_06.png",
+      "layout": "content_numbered",
+      "sha256": "745bd16c27b534c506419ada29628b100a6a18c2cda82421e80877bf376168f2",
+      "boxes": [
+        {
+          "role": "headline",
+          "box": [
+            110,
+            290,
+            969,
+            477
+          ],
+          "size": 92
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            610,
+            847,
+            816
+          ],
+          "size": 52
+        },
+        {
+          "role": "bullet",
+          "box": [
+            251,
+            863,
+            644,
+            931
+          ],
+          "size": 52
+        },
+        {
+          "role": "bullet",
+          "box": [
+            251,
+            939,
+            921,
+            1076
+          ],
+          "size": 52
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1251,
+            173,
+            1317
+          ],
+          "size": 66
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 92,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "bullet",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "bullet",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 22,
+          "ratio": 12.94
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    },
+    {
+      "n": 7,
+      "file": "slide_07.png",
+      "layout": "content_numbered",
+      "sha256": "26d5a4c5b13bc2138282bc34beda517694c36fce6473ebd222f0eab05ef53438",
+      "boxes": [
+        {
+          "role": "logo",
+          "box": [
+            478,
+            150,
+            602,
+            236
+          ],
+          "size": 86
+        },
+        {
+          "role": "headline",
+          "box": [
+            149,
+            290,
+            931,
+            559
+          ],
+          "size": 132
+        },
+        {
+          "role": "body",
+          "box": [
+            168,
+            711,
+            948,
+            1055
+          ],
+          "size": 52
+        },
+        {
+          "role": "logo",
+          "box": [
+            96,
+            1251,
+            173,
+            1317
+          ],
+          "size": 66
+        }
+      ],
+      "pairs": [
+        {
+          "role": "headline",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 132,
+          "ratio": 12.94
+        },
+        {
+          "role": "body",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 52,
+          "ratio": 12.94
+        },
+        {
+          "role": "book_credit",
+          "fg": "#1E2559",
+          "bg": "#F5F3EF",
+          "size": 22,
+          "ratio": 12.94
+        }
+      ],
+      "warnings": [],
+      "fonts": [
+        "Anton-Regular.ttf",
+        "Manrope[wght].ttf"
+      ]
+    }
+  ]
+}

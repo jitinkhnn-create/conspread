@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "_comment": "Index of design-bank imagery that is meant for use inside templates (backgrounds, textures, frames). Not the same as templates/ (layout definitions).",
+  "assets": []
+}

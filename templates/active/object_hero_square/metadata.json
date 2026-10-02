@@ -1,0 +1,28 @@
+{
+  "id": "object_hero_square",
+  "family": "object_hero",
+  "status": "active",
+  "formats": ["single_post"],
+  "canvas": [1080, 1080],
+  "renderer": "pillow",
+  "renderer_entry": "render.py",
+  "reference_files": ["assets/benchmark/single_post_references/single02_product_shot_square.jpg"],
+  "layouts": [
+    {
+      "id": "object_hero",
+      "roles": ["hook", "takeaway", "cta"],
+      "max_words": 16,
+      "uses": ["headline", "text", "note"],
+      "notes": "headline = short statement, set in upper case. text line 1 = attribution under the statement. note = footer line beside the book mark. The hero object is the book cover art, or a Design Bank asset if design_bank_asset_id is set."
+    }
+  ],
+  "slots": {
+    "background": ["flat", "textured", "illustrated"],
+    "accent_color": ["sunrise", "strength", "identity", "explorer", "emotions"],
+    "emphasis_style": ["underline", "highlight", "circle"],
+    "imagery_type": ["illustration", "abstract"]
+  },
+  "last_used_date": null,
+  "use_count": 0,
+  "notes": "The only square template. Book cover as hero object on an accent-coloured ground with an oversized light-weight statement. Intended for the occasional book-discovery post (cta_intent discover_book) or a bold one-line statement. Ground colour is the accent; if neither ink nor white reaches 4.5:1 on it, the accent tint is used instead."
+}

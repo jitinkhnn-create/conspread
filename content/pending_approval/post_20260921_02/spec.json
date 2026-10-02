@@ -1,0 +1,262 @@
+{
+  "post_id": "post_20260921_02",
+  "finalized_at": "2026-09-21T12:39:10Z",
+  "strategist": {
+    "stage": "strategist",
+    "post_id": "post_20260921_02",
+    "atom_id": "bt_ch08_world_needs_best_version_of_you",
+    "angle": "Comparison is exhausting. The workbook's closing line offers a different job: not to become a better copy of someone else, but the best version of yourself.",
+    "audience_track": "child_teen",
+    "format": "single_post",
+    "cta_intent": "share",
+    "rationale": "Post 1 was a numbered framework carousel from Section 4 on the child_teen track. To rotate, this post changes chapter (4 to 8), atom type (framework to quote_verbatim), format (carousel to single post) and template family. It is the strongest verbatim quote in the bank and the line the book's own back cover leans on. CTA 'share' fits a quote people send to a friend. discover_book is skipped again: this is the second post of the week.",
+    "considered_alternatives": [
+      {
+        "atom_id": "bt_ch04_quote_quiet_truth",
+        "why_not": "Also a strong quote, but it repeats Section 4's 'listen to your heart' idea from post 1."
+      },
+      {
+        "atom_id": "bt_ch08_you_change_your_life",
+        "why_not": "Better for a later post; it speaks to the whole book and works best after a reader has seen a few ideas."
+      }
+    ]
+  },
+  "copywriter": {
+    "stage": "copywriter",
+    "post_id": "post_20260921_02",
+    "atom_id": "bt_ch08_world_needs_best_version_of_you",
+    "revision": 1,
+    "hook": "Stop trying to be a better copy of someone else.",
+    "headline": "The world does not need another copy of someone else. The world needs the best version of you.",
+    "hook_family": "direct_address",
+    "slides": [
+      {
+        "n": 1,
+        "role": "hook",
+        "headline": "The world does not need another copy of someone else. The world needs the best version of you.",
+        "text": "Building Tomorrow, Section 8\nFrom the letter to the reader",
+        "emphasis_text": "best version of you"
+      }
+    ],
+    "caption": "Comparing yourself to everyone around you is exhausting. Here is a different job to aim for.\n\n“The world does not need another copy of someone else. The world needs the best version of you.”\n\nIt comes from the letter at the end of the workbook, right after the reminder that you will have days you feel confident and days you doubt yourself, and that both are normal.\n\nSend this to someone who needs to hear it today.",
+    "hashtags": [
+      "#SocialEmotionalLearning",
+      "#SelfAwareness",
+      "#BeYourself",
+      "#GrowthMindset",
+      "#TeenLife",
+      "#Confidence",
+      "#EmotionalIntelligence"
+    ],
+    "alt_text": "A quote card on a cream background with a large green closing-quote mark: The world does not need another copy of someone else. The world needs the best version of you.",
+    "verbatim_quotes": [
+      {
+        "text": "The world does not need another copy of someone else. The world needs the best version of you.",
+        "chapter": 8
+      }
+    ],
+    "chapter_references": [
+      8
+    ],
+    "dedup": {
+      "threshold": 0.85,
+      "max_similarity": 0.0,
+      "closest_post_id": null,
+      "attempts": 1,
+      "passed": true
+    },
+    "self_check": {
+      "value_first": true,
+      "no_invented_quotes": true,
+      "age_appropriate": true,
+      "notes": "The quote is verbatim from Section 8, p.128 (A Letter To The Hero Reading This Book). The caption's claim about days of confidence and doubt being normal is a paraphrase of p.128 ('There will be days when you feel confident... That is normal.'). The book is named only as the attribution of a verbatim quote, not as a pitch; cta_intent is share. Revision 1: removed the kicker after the renderer's word-limit guard (31 > 30 words); the verbatim quote is unchanged."
+    }
+  },
+  "art_director": {
+    "stage": "art_director",
+    "post_id": "post_20260921_02",
+    "revision": 0,
+    "template_id": "quote_glyph",
+    "slot_choices": {
+      "background": "textured",
+      "accent_color": "strength",
+      "emphasis_style": "underline",
+      "imagery_type": "illustration"
+    },
+    "per_slide_layout_spec": [
+      {
+        "slide": 1,
+        "layout": "quote_card",
+        "emphasis_text": "best version of you",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      }
+    ],
+    "template_rationale": "A verbatim quote is exactly what quote_glyph was derived from: statement left, oversized closing-quote glyph in the accent colour right, attribution below. Rotation: post 1 used numbered_notes (sunrise, highlight), so this post takes a different template, a different accent (strength, the deep leaf green, for contrast against the cream ground and to match the Strength leaf on the cover) and a different emphasis style (underline, not highlight). Textured background gives the growth-ring pattern; illustration puts the seedling rising from the soil band, which reads as 'the best version of you' growing. The cooldown of 5 is not enforceable yet: only 4 templates are active, so any template not used in the last post is allowed.",
+    "rotation_check": {
+      "recent_template_ids": [
+        "numbered_notes"
+      ],
+      "cooldown_posts": 5,
+      "satisfied": true
+    }
+  },
+  "critic": {
+    "stage": "critic",
+    "post_id": "post_20260921_02",
+    "attempt": 1,
+    "verdict": "pass",
+    "score": 88,
+    "issues": [
+      {
+        "layer": "design",
+        "slide": 1,
+        "issue": "The oversized quote glyph and the growth-ring texture sit in the top-right while the statement starts low on the left, leaving a fairly large empty area top-left. It reads as intentional white space, but the composition is bottom-heavy.",
+        "route_to": "art_director",
+        "action": "Optional: when the statement is short enough, start it higher so the text block and glyph share a centre line.",
+        "severity": "minor"
+      }
+    ],
+    "rubric": {
+      "hook_strength": 88,
+      "clarity": 94,
+      "grounding": 100,
+      "tone": 90,
+      "legibility": 92,
+      "hierarchy": 88,
+      "brand_fit": 90,
+      "originality": 72
+    },
+    "checked_deterministic": {
+      "visual_qa_passed": true,
+      "grounding_passed": true,
+      "dedup_passed": true
+    },
+    "summary": "A verbatim two-sentence quote from the workbook's closing letter, set large with the key phrase underlined, the growth-ring texture and seedling rising from the soil band tying it to the book's identity. The attribution is honest and reads as a source credit, not a pitch. The renderer's word-limit guard caught a 31-word draft and the copy was revised once before rendering. Only a cosmetic composition note remains."
+  },
+  "critic_history": [
+    {
+      "stage": "critic",
+      "post_id": "post_20260921_02",
+      "attempt": 1,
+      "verdict": "pass",
+      "score": 88,
+      "issues": [
+        {
+          "layer": "design",
+          "slide": 1,
+          "issue": "The oversized quote glyph and the growth-ring texture sit in the top-right while the statement starts low on the left, leaving a fairly large empty area top-left. It reads as intentional white space, but the composition is bottom-heavy.",
+          "route_to": "art_director",
+          "action": "Optional: when the statement is short enough, start it higher so the text block and glyph share a centre line.",
+          "severity": "minor"
+        }
+      ],
+      "rubric": {
+        "hook_strength": 88,
+        "clarity": 94,
+        "grounding": 100,
+        "tone": 90,
+        "legibility": 92,
+        "hierarchy": 88,
+        "brand_fit": 90,
+        "originality": 72
+      },
+      "checked_deterministic": {
+        "visual_qa_passed": true,
+        "grounding_passed": true,
+        "dedup_passed": true
+      },
+      "summary": "A verbatim two-sentence quote from the workbook's closing letter, set large with the key phrase underlined, the growth-ring texture and seedling rising from the soil band tying it to the book's identity. The attribution is honest and reads as a source credit, not a pitch. The renderer's word-limit guard caught a 31-word draft and the copy was revised once before rendering. Only a cosmetic composition note remains."
+    }
+  ],
+  "render_report": {
+    "post_id": "post_20260921_02",
+    "template_id": "quote_glyph",
+    "canvas": [
+      1080,
+      1350
+    ],
+    "slots": {
+      "background": "textured",
+      "accent_color": "strength",
+      "emphasis_style": "underline",
+      "imagery_type": "illustration"
+    },
+    "status": "ok",
+    "slides": [
+      {
+        "n": 1,
+        "file": "slide_01.png",
+        "layout": "quote_card",
+        "sha256": "4724e50ad88f48ba603bc21bb5556f9522baf03d115c0a6cfa278b22fdab2db3",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              96,
+              330,
+              639,
+              882
+            ],
+            "size": 68
+          },
+          {
+            "role": "attribution",
+            "box": [
+              96,
+              960,
+              604,
+              997
+            ],
+            "size": 30
+          },
+          {
+            "role": "subline",
+            "box": [
+              96,
+              1005,
+              479,
+              1042
+            ],
+            "size": 28
+          }
+        ],
+        "pairs": [
+          {
+            "role": "headline",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 68,
+            "ratio": 14.91
+          },
+          {
+            "role": "attribution",
+            "fg": "#211E1D",
+            "bg": "#F6F4DE",
+            "size": 30,
+            "ratio": 14.91
+          },
+          {
+            "role": "subline",
+            "fg": "#5A3D2F",
+            "bg": "#F6F4DE",
+            "size": 28,
+            "ratio": 8.82
+          },
+          {
+            "role": "brand_mark",
+            "fg": "#F6F4DE",
+            "bg": "#5A3D2F",
+            "size": 46,
+            "ratio": 8.82
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      }
+    ]
+  }
+}

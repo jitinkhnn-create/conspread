@@ -1,0 +1,25 @@
+# Secrets - never commit
+.env
+.claude/settings.local.json
+
+# OS / Python
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Scratch
+/tmp/
+*.log
+work/
+scratch/
+
+# Locks and partial writes from atomic state updates
+*.tmp
+*.lock
+
+# Local embedding model cache
+.cache/

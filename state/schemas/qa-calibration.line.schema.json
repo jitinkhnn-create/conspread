@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qa-calibration.line.schema.json",
+  "title": "One line of state/qa-calibration.jsonl",
+  "description": "Appended whenever the human approves what QA rejected, or rejects what QA approved.",
+  "type": "object",
+  "required": ["post_id", "date", "qa_verdict", "human_verdict", "mismatch_type"],
+  "additionalProperties": false,
+  "properties": {
+    "post_id": { "type": "string" },
+    "date": { "type": "string" },
+    "qa_verdict": { "enum": ["pass", "revise", "fail"] },
+    "human_verdict": { "enum": ["approve", "reject"] },
+    "mismatch_type": { "enum": ["over_rejection", "under_rejection"] },
+    "note": { "type": "string" }
+  }
+}
