@@ -8,7 +8,10 @@ Usage:
     python tools/dedup_check.py check --hook "..." --headline "..." [--threshold 0.85] [--json]
     python tools/dedup_check.py add --post-id ID --date 2026-09-24 --hook "..." --headline "..."
     python tools/dedup_check.py selftest
-Backends: fastembed (default, real) | hash (offline, lexical only; for tests and CI, never for production decisions).
+Backends: fastembed (default, real) | hash (offline, lexical only).
+If the fastembed model cannot be loaded (e.g. the network blocks huggingface.co) and config dedup.fallback_backend is "hash",
+the check falls back to the hash backend and says so in "warnings" / "backend_fallback". Rows written by one model are
+never compared with rows from the other.
 Exit codes: 0 = novel enough | 1 = too similar (rewrite requested) | 2 = error.
 """
 import argparse
@@ -17,6 +20,7 @@ import math
 import os
 import sys
 import time
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,10 +32,29 @@ os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
 _model = None
 
 
+FALLBACK = {"used": False, "reason": None}
+
+
 def embed(texts, backend):
     """-> (model_id, list[list[float]]), each vector L2-normalised."""
+    if backend == "fastembed" and CFG.get("fallback_backend") == "hash":
+        marker = Path(os.environ["FASTEMBED_CACHE_PATH"]) / "UNAVAILABLE"   # skip the ~40 s download retries for 6 h
+        if marker.exists() and time.time() - marker.stat().st_mtime < 6 * 3600:
+            FALLBACK.update(used=True, reason=marker.read_text(encoding="utf-8"))
+            return _embed(texts, "hash")
+        try:
+            return _embed(texts, "fastembed")
+        except Exception as e:  # model download blocked, etc.
+            FALLBACK.update(used=True, reason=f"{type(e).__name__}: {e}")
+            marker.parent.mkdir(parents=True, exist_ok=True)
+            marker.write_text(FALLBACK["reason"], encoding="utf-8")
+            return _embed(texts, "hash")
+    return _embed(texts, backend)
+
+
+def _embed(texts, backend):
     if backend == "hash":
-        return "hash-ngram-v1", [_hash_vec(t) for t in texts]
+        return "hash-ngram-v2", [_hash_vec(t) for t in texts]
     global _model
     from fastembed import TextEmbedding
     if _model is None:
@@ -47,7 +70,7 @@ def _hash_vec(text, dim=512):
     t = " " + " ".join(text.lower().split()) + " "
     v = [0.0] * dim
     for i in range(len(t) - 2):
-        v[hash(t[i:i + 3]) % dim] += 1.0
+        v[zlib.crc32(t[i:i + 3].encode("utf-8")) % dim] += 1.0   # stable across processes (built-in hash() is not)
     n = math.sqrt(sum(x * x for x in v)) or 1.0
     return [x / n for x in v]
 
@@ -83,7 +106,9 @@ def check(hook, headline, threshold, backend):
         warnings.append(f"dedup took {ms:.0f}ms (> {CFG['latency_canary_ms']}ms canary): revisit storage")
     if total >= CFG["corpus_canary_posts"]:
         warnings.append(f"{total} embeddings stored (>= {CFG['corpus_canary_posts']} canary): consider a real vector DB")
-    return {"passed": best["similarity"] < threshold, "threshold": threshold, "max_similarity": round(best["similarity"], 4),
+    if FALLBACK["used"]:
+        warnings.append(f"fastembed unavailable ({FALLBACK['reason'][:120]}); used lexical hash fallback")
+    return {"passed": best["similarity"] < threshold, "backend_fallback": FALLBACK["used"], "threshold": threshold, "max_similarity": round(best["similarity"], 4),
             "closest_post_id": best["post_id"], "closest_pair": best["pair"], "compared": len(rows), "model": model_id,
             "elapsed_ms": round(ms, 1), "warnings": warnings}
 

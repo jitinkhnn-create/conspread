@@ -13,6 +13,11 @@ Routine prompts call this instead of hand-editing JSON. Stdlib only.
   reject --post-id ID --layer L --issue-tag T --action-note N [--free-text X]
                                                pending_approval -> rejected, feedback-log entry, atom back to 'unused'
   reconcile                                    notice folders the human moved by hand and update state to match
+  dispatched --post-id ID --scheduled-for ISO [--note T]
+                                               after Postiz confirmed: approved/ -> published/, status 'scheduled',
+                                               atom 'published' (published_date = scheduled date)
+  mark --post-id ID --status published|failed [--note T]
+                                               Postiz sync result for a scheduled post
 
 Draft folder contract (content/drafts/<id>/): strategist.json, copywriter.json, art_director.json, critic.json (latest),
 critic.a<N>.json (each attempt), render/ (PNGs + render_report.json), optional history/.
@@ -261,6 +266,32 @@ def reconcile(_a):
         print("nothing to reconcile")
 
 
+def dispatched(a):
+    lf, bank = life(), jload(BANK)
+    p = lf["posts"][a.post_id]
+    src, dst = CONTENT / "approved" / a.post_id, CONTENT / "published" / a.post_id
+    if src.exists() and not dst.exists():
+        _move(a.post_id, "approved", "published")
+    if p["status"] in ("scheduled", "published"):
+        print(f"{a.post_id} already {p['status']}; nothing written")
+        return
+    at = atom_of(bank, p["atom_id"])
+    at["state"].update(status="published", post_id=a.post_id, published_date=a.scheduled_for[:10])
+    step(p, "scheduled", a.note or f"scheduled in Postiz for {a.scheduled_for}")
+    jsave(BANK, bank); jsave(ST / "post-lifecycle.json", lf)
+    print(f"{a.post_id} scheduled for {a.scheduled_for}")
+
+
+def mark(a):
+    lf = life(); p = lf["posts"][a.post_id]
+    if p["status"] == a.status:
+        print(f"{a.post_id} already {a.status}")
+        return
+    step(p, a.status, a.note)
+    jsave(ST / "post-lifecycle.json", lf)
+    print(f"{a.post_id} -> {a.status}")
+
+
 def main(argv=None):
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -278,6 +309,10 @@ def main(argv=None):
     s.add_argument("--issue-tag", required=True); s.add_argument("--action-note", required=True); s.add_argument("--free-text")
     s.set_defaults(fn=reject)
     s = sub.add_parser("reconcile"); s.set_defaults(fn=reconcile)
+    s = sub.add_parser("dispatched"); s.add_argument("--post-id", required=True); s.add_argument("--scheduled-for", required=True)
+    s.add_argument("--note"); s.set_defaults(fn=dispatched)
+    s = sub.add_parser("mark"); s.add_argument("--post-id", required=True)
+    s.add_argument("--status", required=True, choices=("published", "failed")); s.add_argument("--note"); s.set_defaults(fn=mark)
     a = ap.parse_args(argv)
     a.fn(a)
 

@@ -7,11 +7,15 @@ deterministic work is done by scripts in `tools/`.
 | Folder | Routine | Prompt written in |
 |---|---|---|
 | `routine_01_select_generate/` | Select atom → strategist → copywriter → art director → render → QA → `pending_approval/` | Phase 1 (dry runs), wired in Phase 2 |
-| `routine_02_dispatch_approved/` | `content/approved/` → Postiz adapter → ledger | Phase 2 |
+| `routine_02_dispatch_approved/` | `content/approved/` → Postiz connector → ledger | Phase 2 (done) |
 | `routine_03_weekly_strategy/` | Analytics + feedback → `MASTER-STRATEGY.md`, `visual-strategy.md` | Phase 2 |
 | `routine_04_design_refresh/` | New reference → template proposal; design-bank assets | Phase 2 |
 
-## How a routine runs
+## How a routine runs (cloud)
+
+The Claude scheduled task runs [`CLOUD_RUN.md`](CLOUD_RUN.md), which chains Routine 01 → auto-approve gate → Routine 02.
+
+## How a routine runs (local alternative)
 
 ```
 cron / Task Scheduler
@@ -28,6 +32,6 @@ cron / Task Scheduler
 3. **Stages stay distinct.** Each stage reads only its own rulebook in `agents/` plus the inputs listed there. It does not read the other rulebooks.
 4. **State writes go through the tools** (`media_ledger.py`, `story_queue.py`, `validate.py` for checks) or the documented atomic pattern in `state/README.md`.
 5. **Commit state right after a confirmed state change**, never batched to the end of a run (a MAS lesson).
-6. **Nothing publishes in Routine 01.** It ends by writing `content/pending_approval/{post_id}/`.
+6. **Nothing publishes in Routine 01.** It ends by writing `content/pending_approval/{post_id}/`. In auto mode, `CLOUD_RUN.md` approves it only if QA passed.
 7. **No absolute paths, no machine-specific env vars.** Everything is relative to the repo root; secrets come from `.env.example`-documented variables.
 8. **On error:** log to `state/post-lifecycle.json` history, leave the run's draft folder in place, and continue to a clean exit code.

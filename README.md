@@ -29,14 +29,36 @@ workbook: no invented quotes, no fake chapter references, no distortion of meani
 2. **The rulebooks learn, not the model.** No fine-tuning. Human rejections become structured feedback; a
    periodic crystallization pass proposes rulebook edits; a human merges them; the rulebook is permanently smarter.
 3. **State lives in git.** JSON/JSONL for machines, Markdown for humans. See [`state/README.md`](state/README.md).
-4. **Human-in-the-loop always.** Nothing publishes without a human moving it to `content/approved/`.
-5. **Publishing is isolated** behind an adapter (`tools/publishing_adapter/postiz.py`). Swap Postiz and only the adapter changes.
+4. **Approval mode is a setting** (`publishing.mode` in `config/pipeline.json`). It is currently **`auto`**: a post
+   that passes the QA critic is approved and scheduled with no human review. A post that does not pass QA is never
+   published; it waits in `content/pending_approval/` for a human. Approved posts go live at 18:00 IST, so there is a
+   window to delete one in Postiz after the 9:00 run.
+5. **Publishing is isolated** behind an adapter (`tools/publishing_adapter/postiz_mcp.py`, driven by the Postiz
+   claude.ai connector). Swap Postiz and only the adapter and Routine 02 change.
 
 ### Two clocks
 Local scheduler (cron / Task Scheduler) decides **when the pipeline runs**. Postiz decides **when an approved
 post goes live**. They do not coordinate; the pipeline hands over finished posts and moves on.
 
-## Runtime
+## Running in the cloud (current setup)
+
+A Claude **scheduled task** on claude.ai/code fires Mon/Wed/Fri at 08:59 IST. Each firing starts a fresh cloud
+session with the Postiz connector attached, and that session follows [`routines/CLOUD_RUN.md`](routines/CLOUD_RUN.md):
+
+```
+clone repo → Routine 01 (generate + QA) → auto-approve if QA passed → Routine 02 (JPEGs pushed to GitHub →
+Postiz uploads them from raw.githubusercontent.com → scheduled on Instagram + Facebook for 18:00 IST) → state committed to master
+```
+
+- Channels and integration ids: `config/pipeline.json` → `publishing.channels` (Instagram "Jitin K Khanna", Facebook page "Smile").
+- **The repo must stay public**: Postiz fetches the slide images from raw.githubusercontent.com URLs pinned to a commit.
+- **Dry run:** fire the task with a message containing `DRY RUN`. Everything runs, but Postiz gets drafts only and
+  all commits go to a `dry-run/<post_id>` branch.
+- **Dedup model:** the cloud network blocks huggingface.co by default, so `dedup_check.py` falls back to an offline
+  lexical check (`dedup.fallback_backend`). Add `huggingface.co` and `*.hf.co` to the environment's allowed domains
+  to use the real embedding model.
+
+## Runtime (local alternative)
 
 Routines are **prompts run by headless Claude Code** (`claude -p`), the same execution model as the sibling
 MAS social pipeline. Deterministic work (validation, dedup, rendering, ledgers, the Postiz adapter) is Python in
@@ -105,7 +127,7 @@ learning is immediate. Every 1 to 2 weeks, crystallization proposes durable rule
 |---|---|---|
 | **0** | Repo skeleton, schemas, brand + agent rulebooks, state files, README, validator | **done** |
 | **1** | Book extraction, content bank, benchmark analysis, 4-template library, renderers, visual QA, dedup, dry runs, rotation validation | **done** (2 live cycles; see below) |
-| **2** | Routines 01 to 04 wired for cron, Postiz adapter, `config/cron.example`, end-to-end with manual approval | |
+| **2** | Routines 01 + 02 wired as a Claude scheduled task, Postiz connector adapter, auto mode, dry run | **done** (routines 03, 04 not yet written) |
 | **3** | Real approval channel, analytics ingestion, crystallization diffs, template evolution, regression tests, optional GitHub Actions | deferred |
 
 ## Relationship to MAS
@@ -122,4 +144,4 @@ Helpers are copied and adapted, not imported.
 - [ ] **Which title is this book?** The manuscript says "Building Tomorrow" in its text, "Wisdom Ways" in its running header, and matches the *Meeting Myself* back cover. Decides the on-image name (`brand.mark_text` in `design_system.json`), the palette, and the attribution line
 - [ ] Instagram handle, display name, and the book's CTA target → `brand/guidelines.md`
 - [ ] Sensitive-topics policy for teen-facing content (`brand/voice.md`, marked `TO CONFIRM`)
-- [ ] Postiz API key, instance URL, and the Instagram integration id (Phase 2)
+- [x] Postiz channels: via the claude.ai Postiz connector (no API key needed)

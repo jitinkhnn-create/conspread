@@ -5,7 +5,11 @@
     "backend": "claude_cli",
     "claude_cli": {
       "command": "claude",
-      "args": ["-p", "--output-format", "text"],
+      "args": [
+        "-p",
+        "--output-format",
+        "text"
+      ],
       "model": null,
       "max_turns": 60,
       "timeout_seconds": 1800
@@ -13,9 +17,18 @@
   },
   "generation": {
     "posts_per_week_target": 3,
-    "carousel_slide_range": [5, 8],
-    "single_post_size": [1080, 1080],
-    "carousel_size": [1080, 1350]
+    "carousel_slide_range": [
+      5,
+      8
+    ],
+    "single_post_size": [
+      1080,
+      1080
+    ],
+    "carousel_size": [
+      1080,
+      1350
+    ]
   },
   "dedup": {
     "threshold": 0.85,
@@ -24,7 +37,8 @@
     "embedding_backend": "fastembed",
     "embedding_model": "BAAI/bge-small-en-v1.5",
     "latency_canary_ms": 500,
-    "corpus_canary_posts": 200
+    "corpus_canary_posts": 200,
+    "fallback_backend": "hash"
   },
   "rotation": {
     "template_cooldown_posts": 5,
@@ -40,15 +54,46 @@
     "crystallization_window_days": 14
   },
   "publishing": {
-    "provider": "postiz",
-    "platform": "instagram",
-    "postiz": {
-      "base_url_env": "POSTIZ_BASE_URL",
-      "api_key_env": "POSTIZ_API_KEY",
-      "integration_id_env": "POSTIZ_INSTAGRAM_INTEGRATION_ID",
-      "default_base_url": "https://api.postiz.com/public/v1",
-      "check_slot_before_create": true
-    },
+    "_comment": "Fully automatic mode: a post that passes QA is approved and scheduled with no human review. Posts that do not pass QA stay in content/pending_approval/ for a human. Publishing goes through the Postiz claude.ai connector (MCP), not the REST API, so no API key is needed.",
+    "provider": "postiz_mcp",
+    "mode": "auto",
+    "publish_time_local": "18:00",
+    "timezone": "Asia/Kolkata",
+    "min_lead_minutes": 90,
+    "media_base_url": "https://raw.githubusercontent.com/jitinkhnn-create/jitin-book-social-engine",
+    "image_format": "jpeg",
+    "jpeg_quality": 92,
+    "channels": [
+      {
+        "name": "instagram",
+        "label": "Instagram - Jitin K Khanna",
+        "platform": "instagram-standalone",
+        "integration_id": "cmupdnvbg06n3qw0ypddfy9ov",
+        "max_caption_chars": 2200,
+        "max_images": 10,
+        "settings": [
+          {
+            "key": "post_type",
+            "value": "post"
+          }
+        ]
+      },
+      {
+        "name": "facebook",
+        "label": "Facebook page - Smile",
+        "platform": "facebook",
+        "integration_id": "cmupdoyb306rhpe0yeky4krtn",
+        "max_caption_chars": 63206,
+        "max_images": 10,
+        "settings": [
+          {
+            "key": "post_type",
+            "value": "post"
+          }
+        ]
+      }
+    ],
+    "check_slot_before_create": true,
     "park_on_failure_dir": "content/approved"
   },
   "paths": {
