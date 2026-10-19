@@ -31,8 +31,9 @@ Rules:
    - `type`: `"schedule"` (or `"draft"` when `DRY_RUN`); `date`: the plan's `date_utc`
    - `postsAndComments`: `[{"content": <content_html>, "attachments": [<uploaded paths in slide order>]}]`
    - `settings`: the channel's `settings` from the plan
-   If `output.errors` comes back, fix what it names (never the caption text) and retry once. Note each channel's
-   returned post id (and `previewUrl`).
+   If `output.errors` comes back, fix what it names (never the caption text) and retry once. The result is
+   `output: [{postId, integration, previewUrl}, ...]`, one item per channel: map `integration` back to the channel
+   name and note its `postId` and `previewUrl`.
 7. **Record** (skip when `DRY_RUN`):
    `python tools/publishing_adapter/postiz_mcp.py record --post-id <POST_ID> --result instagram=<id> --result facebook=<id>`
    (only the channels that succeeded). Then

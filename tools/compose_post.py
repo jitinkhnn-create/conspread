@@ -7,7 +7,7 @@ Adapted from the MAS compose_post.py CLI shape (one script, explicit args, print
 Usage:
     python tools/compose_post.py --copy copywriter.json --spec art_director.json --out-dir content/drafts/<id>/render
     python tools/compose_post.py --sample --template numbered_notes --out-dir /tmp/preview \
-        [--accent sunrise --background textured --emphasis highlight --imagery illustration]
+        [--accent crimson --background textured --emphasis highlight --imagery illustration]
 
 Exit codes: 0 ok | 2 usage/config error | 3 content does not fit the layout (route to copywriter/art_director).
 Writes slide_01.png..., and render_report.json (text boxes, contrast pairs, fonts, warnings, sha256) for visual_qa.py.
@@ -98,7 +98,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--copy"); ap.add_argument("--spec"); ap.add_argument("--out-dir", required=True)
     ap.add_argument("--sample", action="store_true"); ap.add_argument("--template")
-    ap.add_argument("--accent", default="sunrise"); ap.add_argument("--background", default="textured")
+    ap.add_argument("--accent", default="crimson"); ap.add_argument("--background", default="textured")
     ap.add_argument("--emphasis", default="highlight"); ap.add_argument("--imagery", default="illustration")
     ap.add_argument("--slides", type=int, default=3, help="carousel sample length")
     a = ap.parse_args(argv)
