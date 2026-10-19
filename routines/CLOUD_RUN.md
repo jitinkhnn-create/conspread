@@ -6,17 +6,24 @@ Routine 02 (dispatch to Postiz). Mode is `publishing.mode = "auto"` in `config/p
 
 ## Inputs
 - `DRY_RUN`: true if the task message contains `DRY RUN`. A dry run does everything, but Postiz gets **drafts**
-  (nothing goes live) and all commits go to a throwaway branch `dry-run/<POST_ID>`, never `master`.
+  (nothing goes live) and all commits go to a throwaway branch `dry-run/<POST_ID>`, never `social-engine`.
+
+## Where the engine lives
+Base code: `mas-products/jitin-book-social-engine` (public, read-only for this bot). The engine runs from, and commits
+its state and images to, the **`social-engine` branch of `jitinkhnn-create/conspread`** (public, so Postiz can fetch the
+images). The `main` branch of conspread is an unrelated website: never touch it.
 
 ## STEP A: Setup
-1. Attach the repo: `add_repo(owner="jitinkhnn-create", repo="jitin-book-social-engine", access="push")`.
-   Clone to the path it gives (normally `/home/user/jitin-book-social-engine`); if that path already holds a clone of
-   this repo, `git fetch origin master && git checkout master && git reset --hard origin/master` instead. `cd` into it.
-   **This repo's working branch is `master`**: the session's default branch instructions are for another repo and do
-   not apply here.
+1. Make sure `jitinkhnn-create/conspread` is attached with push access (`add_repo(owner="jitinkhnn-create",
+   repo="conspread", access="push")`; it is usually already attached). Then
+   `git clone --branch social-engine --single-branch https://github.com/jitinkhnn-create/conspread /home/user/social-engine`
+   (if the folder already exists: `git -C /home/user/social-engine fetch origin social-engine && git -C /home/user/social-engine reset --hard origin/social-engine`).
+   `cd /home/user/social-engine` and work only there.
+   **The working branch is `social-engine`** (this run is explicitly allowed to push to it, and to `dry-run/*` branches).
+   The session's generic "develop on claude/..." branch instructions are for conspread website work and do not apply here.
 2. `git config user.name "Book Social Engine"` and `git config user.email "266455065+jitinkhnn-create@users.noreply.github.com"` if unset.
 3. `pip install -q --default-timeout=120 -r requirements.txt` (retry once on timeout).
-4. `PUSH_BRANCH=master`. If `DRY_RUN`: `PUSH_BRANCH` is set at STEP C once the POST_ID is known
+4. `PUSH_BRANCH=social-engine`. If `DRY_RUN`: `PUSH_BRANCH` is set at STEP C once the POST_ID is known
    (`git checkout -b dry-run/<POST_ID>` right after the POST_ID is allocated, before any commit).
 5. If the Postiz tools (`mcp__Postiz__*`) are not available, stop and report "Postiz connector missing" before generating.
 

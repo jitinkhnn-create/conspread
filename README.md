@@ -47,11 +47,14 @@ session with the Postiz connector attached, and that session follows [`routines/
 
 ```
 clone repo → Routine 01 (generate + QA) → auto-approve if QA passed → Routine 02 (JPEGs pushed to GitHub →
-Postiz uploads them from raw.githubusercontent.com → scheduled on Instagram + Facebook for 18:00 IST) → state committed to master
+Postiz uploads them from raw.githubusercontent.com → scheduled on Instagram + Facebook for 18:00 IST) → state committed to social-engine
 ```
 
+- **Where it runs from:** the `social-engine` branch of the public repo `jitinkhnn-create/conspread` (the bot has no push
+  access to `mas-products/jitin-book-social-engine`, which stays the upstream base). Unrelated to conspread's `main`.
+
 - Channels and integration ids: `config/pipeline.json` → `publishing.channels` (Instagram "Jitin K Khanna", Facebook page "Smile").
-- **The repo must stay public**: Postiz fetches the slide images from raw.githubusercontent.com URLs pinned to a commit.
+- **The repo must stay public** (`jitinkhnn-create/conspread`): Postiz fetches the slide images from raw.githubusercontent.com URLs pinned to a commit.
 - **Dry run:** fire the task with a message containing `DRY RUN`. Everything runs, but Postiz gets drafts only and
   all commits go to a `dry-run/<post_id>` branch.
 - **Dedup model:** the cloud network blocks huggingface.co by default, so `dedup_check.py` falls back to an offline

@@ -60,7 +60,7 @@
     "publish_time_local": "18:00",
     "timezone": "Asia/Kolkata",
     "min_lead_minutes": 90,
-    "media_base_url": "https://raw.githubusercontent.com/jitinkhnn-create/jitin-book-social-engine",
+    "media_base_url": "https://raw.githubusercontent.com/jitinkhnn-create/conspread",
     "image_format": "jpeg",
     "jpeg_quality": 92,
     "channels": [
@@ -102,5 +102,11 @@
     "state": "state",
     "templates_active": "templates/active",
     "design_bank_manifest": "assets/design-bank/manifest.json"
+  },
+  "repo": {
+    "_comment": "Where the engine runs from. Base code came from mas-products/jitin-book-social-engine (read-only for the bot).",
+    "remote": "https://github.com/jitinkhnn-create/conspread",
+    "branch": "social-engine",
+    "upstream": "https://github.com/mas-products/jitin-book-social-engine"
   }
 }
