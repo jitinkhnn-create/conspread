@@ -2,7 +2,8 @@
   "schema_version": 1,
   "recent_template_ids": [
     "numbered_notes",
-    "quote_glyph"
+    "quote_glyph",
+    "photo_split"
   ],
   "recent_slot_choices": [
     {
@@ -16,6 +17,12 @@
       "accent_color": "strength",
       "emphasis_style": "underline",
       "imagery_type": "illustration"
+    },
+    {
+      "background": "textured",
+      "accent_color": "crimson",
+      "emphasis_style": "highlight",
+      "imagery_type": "illustration"
     }
   ],
   "templates": {
@@ -28,6 +35,11 @@
       "last_used_date": "2026-09-21",
       "use_count": 1,
       "last_post_id": "post_20260921_02"
+    },
+    "photo_split": {
+      "last_used_date": "2026-10-21",
+      "use_count": 1,
+      "last_post_id": "post_20261021_01"
     }
   }
 }

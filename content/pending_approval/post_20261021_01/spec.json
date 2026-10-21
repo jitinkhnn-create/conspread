@@ -1,0 +1,253 @@
+{
+  "post_id": "post_20261021_01",
+  "finalized_at": "2026-10-21T09:57:19Z",
+  "strategist": {
+    "stage": "strategist",
+    "post_id": "post_20261021_01",
+    "atom_id": "bt_ch07_parent_script_new_student",
+    "angle": "Give parents one ready-to-use question for the moment their child writes off a quiet new classmate as 'unfriendly', using the workbook's own script.",
+    "audience_track": "parent_teacher",
+    "format": "single_post",
+    "cta_intent": "share",
+    "rationale": "Both earlier posts were child_teen, so track balance (about 40% parent_teacher) calls for a parent post now. This changes chapter (7 vs 4 and 8), atom type (parent_tip vs framework and quote) and track compared with the last posts. A parent_tip suits a share CTA: it is a script a parent can forward to a co-parent or teacher. The atom is short (one prompt, one follow-up), so a single post fits it without padding; a carousel would stretch two sentences across five slides. Sensitivity is none.",
+    "considered_alternatives": [
+      {
+        "atom_id": "bt_ch07_conversation_sad_no_reason",
+        "why_not": "Also a strong parent script, but marked emotional; better after the account has a few lighter parent posts and a human has seen how emotional topics land."
+      },
+      {
+        "atom_id": "bt_ch07_quick_judgments_lens",
+        "why_not": "Same idea as a concept for teens; the parent script turns it into something concrete to try, which suits this track better."
+      }
+    ]
+  },
+  "copywriter": {
+    "stage": "copywriter",
+    "post_id": "post_20261021_01",
+    "atom_id": "bt_ch07_parent_script_new_student",
+    "revision": 0,
+    "hook": "Before deciding the quiet new kid is unfriendly, ask this.",
+    "headline": "Before deciding the quiet new kid is unfriendly, ask this.",
+    "hook_family": "scenario",
+    "slides": [
+      {
+        "n": 1,
+        "role": "hook",
+        "headline": "Before deciding the quiet new kid is unfriendly, ask this.",
+        "text": "How might that stop you from making a new friend?",
+        "emphasis_text": "ask this"
+      }
+    ],
+    "caption": "Before deciding the quiet new kid is unfriendly, ask this.\n\nSometimes we make quick judgments about people before we know them. Someone is quiet on the first day, and a whole story gets built around it.\n\nA short conversation to try with your child or class:\n\n“Imagine you’re meeting a new student in your class. What if you decided they weren’t friendly just because they were quiet on the first day? How might that stop you from making a new friend?”\n\nThen, once they have thought about it:\n\n“So next time, let’s try to learn more about people before deciding what they’re like. Everyone has a story, just like you.”\n\nSend this to a parent or teacher who could use it this week.",
+    "hashtags": [
+      "#ParentingTips",
+      "#TeacherTips",
+      "#SocialEmotionalLearning",
+      "#SEL",
+      "#Empathy",
+      "#Friendship",
+      "#RaisingKindKids",
+      "#ParentingTweens"
+    ],
+    "alt_text": "A portrait card on cream graph paper with a green seedling illustration. Large text reads: Before deciding the quiet new kid is unfriendly, ask this. Below it: How might that stop you from making a new friend?",
+    "verbatim_quotes": [
+      {
+        "text": "Imagine you’re meeting a new student in your class. What if you decided they weren’t friendly just because they were quiet on the first day? How might that stop you from making a new friend?",
+        "chapter": 7
+      },
+      {
+        "text": "So next time, let’s try to learn more about people before deciding what they’re like. Everyone has a story, just like you.",
+        "chapter": 7
+      },
+      {
+        "text": "How might that stop you from making a new friend?",
+        "chapter": 7
+      }
+    ],
+    "chapter_references": [],
+    "self_check": {
+      "value_first": true,
+      "no_invented_quotes": true,
+      "age_appropriate": true,
+      "notes": "Parent register, no blame, a concrete script. Book not mentioned (cta_intent is share). Both quoted lines are verbatim from Section 7 pp.99-100; the slide sub-line is the workbook's own question."
+    },
+    "dedup": {
+      "threshold": 0.85,
+      "max_similarity": 0.0,
+      "closest_post_id": null,
+      "attempts": 1,
+      "passed": true
+    }
+  },
+  "art_director": {
+    "stage": "art_director",
+    "post_id": "post_20261021_01",
+    "revision": 0,
+    "template_id": "photo_split",
+    "slot_choices": {
+      "background": "textured",
+      "accent_color": "crimson",
+      "emphasis_style": "highlight",
+      "imagery_type": "illustration"
+    },
+    "per_slide_layout_spec": [
+      {
+        "slide": 1,
+        "layout": "split_statement",
+        "emphasis_text": "ask this",
+        "design_bank_asset_id": null,
+        "image_prompt": null
+      }
+    ],
+    "template_rationale": "A single parent script is one statement plus one question, which is exactly the split_statement layout: headline in the right column, the workbook question as the sub-line under the accent bar, about 20 words in total (limit 22). photo_split has never been used, and object_hero_square is reserved for book-discovery posts, so photo_split is the best fit. Only 4 templates are active (fewer than 6), so the 5-post cooldown cannot be fully honoured; numbered_notes and quote_glyph were used in the last two posts, and this picks one of the two least recently used. The library is too small for full rotation: a human should add templates. Slots: crimson accent (the last two posts used the old leaf ids, so no accent repeat), highlight emphasis (the last post used underline), textured ground and the seedling illustration, which fits 'learn more about people before deciding'. The highlight uses the crimson tint behind navy text, per the design-system contrast rule.",
+    "rotation_check": {
+      "recent_template_ids": [
+        "numbered_notes",
+        "quote_glyph"
+      ],
+      "cooldown_posts": 5,
+      "satisfied": true
+    }
+  },
+  "critic": {
+    "stage": "critic",
+    "post_id": "post_20261021_01",
+    "attempt": 1,
+    "verdict": "pass",
+    "score": 84,
+    "issues": [
+      {
+        "layer": "copy",
+        "slide": 1,
+        "issue": "Seen without the caption, a parent could read 'you' in the sub-line as themselves rather than as the question to put to their child.",
+        "route_to": "copywriter",
+        "action": "Optional for a future parent-script post: add a short kicker such as 'A question for your child' and trim the headline to stay within 22 words.",
+        "severity": "minor"
+      }
+    ],
+    "rubric": {
+      "hook_strength": 85,
+      "clarity": 78,
+      "grounding": 100,
+      "tone": 88,
+      "legibility": 92,
+      "hierarchy": 86,
+      "brand_fit": 85,
+      "originality": 80
+    },
+    "checked_deterministic": {
+      "visual_qa_passed": true,
+      "grounding_passed": true,
+      "dedup_passed": true
+    },
+    "summary": "A clean single parent-script card: a recognisable scenario as the hook, the workbook's own question as the sub-line, strong contrast and one clear emphasis on 'ask this'. The caption carries the full verbatim script from Section 7. One minor clarity note about who 'you' is on the slide alone; not blocking."
+  },
+  "critic_history": [
+    {
+      "stage": "critic",
+      "post_id": "post_20261021_01",
+      "attempt": 1,
+      "verdict": "pass",
+      "score": 84,
+      "issues": [
+        {
+          "layer": "copy",
+          "slide": 1,
+          "issue": "Seen without the caption, a parent could read 'you' in the sub-line as themselves rather than as the question to put to their child.",
+          "route_to": "copywriter",
+          "action": "Optional for a future parent-script post: add a short kicker such as 'A question for your child' and trim the headline to stay within 22 words.",
+          "severity": "minor"
+        }
+      ],
+      "rubric": {
+        "hook_strength": 85,
+        "clarity": 78,
+        "grounding": 100,
+        "tone": 88,
+        "legibility": 92,
+        "hierarchy": 86,
+        "brand_fit": 85,
+        "originality": 80
+      },
+      "checked_deterministic": {
+        "visual_qa_passed": true,
+        "grounding_passed": true,
+        "dedup_passed": true
+      },
+      "summary": "A clean single parent-script card: a recognisable scenario as the hook, the workbook's own question as the sub-line, strong contrast and one clear emphasis on 'ask this'. The caption carries the full verbatim script from Section 7. One minor clarity note about who 'you' is on the slide alone; not blocking."
+    }
+  ],
+  "render_report": {
+    "post_id": "post_20261021_01",
+    "template_id": "photo_split",
+    "canvas": [
+      1080,
+      1350
+    ],
+    "slots": {
+      "background": "textured",
+      "accent_color": "crimson",
+      "emphasis_style": "highlight",
+      "imagery_type": "illustration"
+    },
+    "status": "ok",
+    "slides": [
+      {
+        "n": 1,
+        "file": "slide_01.png",
+        "layout": "split_statement",
+        "sha256": "44243a2fae6e0813e6864e78ad17002cf7ef6ebbbfd6aa16b28b943e52adc81b",
+        "boxes": [
+          {
+            "role": "headline",
+            "box": [
+              520,
+              340,
+              975,
+              725
+            ],
+            "size": 70
+          },
+          {
+            "role": "subline",
+            "box": [
+              520,
+              765,
+              958,
+              860
+            ],
+            "size": 36
+          }
+        ],
+        "pairs": [
+          {
+            "role": "brand_mark",
+            "fg": "#1E2559",
+            "bg": "#F5F3EF",
+            "size": 40,
+            "ratio": 12.94
+          },
+          {
+            "role": "headline",
+            "fg": "#1E2559",
+            "bg": "#F5F3EF",
+            "size": 70,
+            "ratio": 12.94
+          },
+          {
+            "role": "subline",
+            "fg": "#1E2559",
+            "bg": "#F5F3EF",
+            "size": 36,
+            "ratio": 12.94
+          }
+        ],
+        "warnings": [],
+        "fonts": [
+          "Anton-Regular.ttf",
+          "Manrope[wght].ttf"
+        ]
+      }
+    ]
+  }
+}

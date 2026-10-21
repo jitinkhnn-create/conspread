@@ -39,3 +39,10 @@ pass read this to find recurring problems.
 - **template:** quote_glyph
 - **issues:** design/s1/art_director: The oversized quote glyph and the growth-ring texture sit in the top-right while the statement starts low on the left, leaving a fairly large empty area top-left. It reads as intentional white space, but the composition is bottom-heavy.
 - **summary:** A verbatim two-sentence quote from the workbook's closing letter, set large with the key phrase underlined, the growth-ring texture and seedling rising from the soil band tying it to the book's identity. The attribution is honest and reads as a source credit, not a pitch. The renderer's word-limit guard caught a 31-word draft and the copy was revised once before rendering. Only a cosmetic composition note remains.
+
+## post_20261021_01 — attempt 1 — 2026-10-21
+- **verdict:** pass
+- **score:** 84
+- **template:** photo_split
+- **issues:** copy/s1/copywriter: Seen without the caption, a parent could read 'you' in the sub-line as themselves rather than as the question to put to their child.
+- **summary:** A clean single parent-script card: a recognisable scenario as the hook, the workbook's own question as the sub-line, strong contrast and one clear emphasis on 'ask this'. The caption carries the full verbatim script from Section 7. One minor clarity note about who 'you' is on the slide alone; not blocking.

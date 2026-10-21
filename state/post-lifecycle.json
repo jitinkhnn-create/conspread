@@ -48,6 +48,30 @@
           "note": "candidate ready"
         }
       ]
+    },
+    "post_20261021_01": {
+      "status": "pending_approval",
+      "atom_id": "bt_ch07_parent_script_new_student",
+      "template_id": "photo_split",
+      "format": "single_post",
+      "audience_track": "parent_teacher",
+      "hook_family": "scenario",
+      "qa_attempts": 1,
+      "final_qa_verdict": "pass",
+      "created_at": "2026-10-21T09:56:06Z",
+      "updated_at": "2026-10-21T09:57:19Z",
+      "history": [
+        {
+          "status": "drafting",
+          "at": "2026-10-21T09:56:06Z",
+          "note": "atom queued"
+        },
+        {
+          "status": "pending_approval",
+          "at": "2026-10-21T09:57:19Z",
+          "note": "candidate ready"
+        }
+      ]
     }
   }
 }
