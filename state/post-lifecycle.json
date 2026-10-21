@@ -50,7 +50,7 @@
       ]
     },
     "post_20261021_01": {
-      "status": "approved",
+      "status": "scheduled",
       "atom_id": "bt_ch07_parent_script_new_student",
       "template_id": "photo_split",
       "format": "single_post",
@@ -59,7 +59,7 @@
       "qa_attempts": 1,
       "final_qa_verdict": "pass",
       "created_at": "2026-10-21T09:56:06Z",
-      "updated_at": "2026-10-21T09:57:22Z",
+      "updated_at": "2026-10-21T10:19:11Z",
       "history": [
         {
           "status": "drafting",
@@ -75,6 +75,11 @@
           "status": "approved",
           "at": "2026-10-21T09:57:22Z",
           "note": "human approved"
+        },
+        {
+          "status": "scheduled",
+          "at": "2026-10-21T10:19:11Z",
+          "note": "Postiz facebook:cmvhymil70652pg0yurg59pse,instagram:cmvhymif50651pg0y09wyq2aw for 2026-10-21 18:00 IST"
         }
       ]
     }

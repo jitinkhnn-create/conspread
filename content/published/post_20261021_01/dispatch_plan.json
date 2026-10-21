@@ -5,7 +5,9 @@
   "files": [
     "content/approved/post_20261021_01/upload/slide_01.jpg"
   ],
-  "media_urls": null,
+  "media_urls": [
+    "https://raw.githubusercontent.com/jitinkhnn-create/conspread/b324c8ed84432fea4469f499531d31a6bacb1cb7/content/approved/post_20261021_01/upload/slide_01.jpg"
+  ],
   "date_utc": "2026-10-21T12:30:00.000Z",
   "date_local": "2026-10-21 18:00 IST",
   "content_html": "<p>Before deciding the quiet new kid is unfriendly, ask this.</p><p></p><p>Sometimes we make quick judgments about people before we know them. Someone is quiet on the first day, and a whole story gets built around it.</p><p></p><p>A short conversation to try with your child or class:</p><p></p><p>“Imagine you’re meeting a new student in your class. What if you decided they weren’t friendly just because they were quiet on the first day? How might that stop you from making a new friend?”</p><p></p><p>Then, once they have thought about it:</p><p></p><p>“So next time, let’s try to learn more about people before deciding what they’re like. Everyone has a story, just like you.”</p><p></p><p>Send this to a parent or teacher who could use it this week.</p><p></p><p>#ParentingTips #TeacherTips #SocialEmotionalLearning #SEL #Empathy #Friendship #RaisingKindKids #ParentingTweens</p>",
@@ -36,5 +38,6 @@
       ]
     }
   ],
-  "prepared_at": "2026-10-21T09:57:31Z"
+  "prepared_at": "2026-10-21T09:57:31Z",
+  "media_commit": "b324c8ed84432fea4469f499531d31a6bacb1cb7"
 }

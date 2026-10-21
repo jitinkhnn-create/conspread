@@ -904,8 +904,9 @@
       },
       "sensitivity": "none",
       "state": {
-        "status": "queued",
-        "post_id": "post_20261021_01"
+        "status": "published",
+        "post_id": "post_20261021_01",
+        "published_date": "2026-10-21"
       }
     },
     {
