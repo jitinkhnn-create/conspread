@@ -16,8 +16,8 @@ distinguish facts from opinions, avoid harmful content, and not fabricate inform
 // models, so they keep working when individual versions are retired.
 const GEMINI_MODELS = [
   'gemini-flash-latest',
-  'gemini-flash-lite-latest',
-  'gemini-2.5-flash'          // pinned version, last-resort backup
+  'gemini-2.5-flash',         // stable backup when the newest Flash is overloaded
+  'gemini-flash-lite-latest'
 ];
 
 // ===================== LENS DEFINITIONS =====================
