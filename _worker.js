@@ -12,24 +12,11 @@
 const SAFE_AI = `You must always: be accurate and honest, acknowledge uncertainty,
 distinguish facts from opinions, avoid harmful content, and not fabricate information.`;
 
-// Older models in these lists (Gemini 1.5/2.0, Qwen2.5, several OpenRouter
-// ":free" models) were retired by their providers in 2026 and now return errors.
-const BUILTIN_MODEL_FALLBACKS = [
-  'Qwen/Qwen3-235B-A22B-Instruct-2507',
-  'Qwen/Qwen3-30B-A3B-Instruct-2507',
-  'deepseek-ai/DeepSeek-V3.2'
-];
-
-const OPENROUTER_FREE_FALLBACKS = [
-  'or:openrouter/free',
-  'or:meta-llama/llama-3.3-70b-instruct:free'
-];
-
-// "-latest" aliases always point at Google's current Flash models,
-// so they keep working when individual versions are retired.
-const GEMINI_FREE_FALLBACKS = [
-  'gm:gemini-flash-latest',
-  'gm:gemini-flash-lite-latest'
+// Gemini only. "-latest" aliases always point at Google's current Flash
+// models, so they keep working when individual versions are retired.
+const GEMINI_MODELS = [
+  'gemini-flash-latest',
+  'gemini-flash-lite-latest'
 ];
 
 // ===================== LENS DEFINITIONS =====================
@@ -85,263 +72,85 @@ function buildLensSystemPromptServerFallback(lenses, position, conf, context) {
     'Rules: Plain language. No jargon. Never start with "Great question!" or any flattery. Do not hedge. Stay focused on the user\'s specific position, not generic talking points. Treat the user as a serious thinker who can handle a real challenge.';
 }
 
-// ===================== MODEL FALLBACK PLUMBING (unchanged) =====================
-
-function uniqueModels(list) {
-  var seen = {};
-  var out = [];
-  (list || []).forEach(function(m) {
-    var v = (typeof m === 'string') ? m.trim() : '';
-    if (!v || seen[v]) return;
-    seen[v] = true;
-    out.push(v);
-  });
-  return out;
-}
-
-function splitCsvModels(raw) {
-  if (!raw || typeof raw !== 'string') return [];
-  return raw.split(',').map(function(s) { return s.trim(); }).filter(Boolean);
-}
-
-function toOrModel(raw) {
-  var v = (typeof raw === 'string') ? raw.trim() : '';
-  if (!v) return '';
-  return v.startsWith('or:') ? v : ('or:' + v);
-}
-
-function isGeminiModel(model) {
-  return typeof model === 'string' && model.startsWith('gm:');
-}
-
-function stripGeminiPrefix(model) {
-  return isGeminiModel(model) ? model.slice(3) : model;
-}
-
-function getModelCandidates(selectedModel, env) {
-  var hasHFToken = !!(env && env.HF_TOKEN);
-  var hasOR = !!(env && env.OPENROUTER_API_KEY);
-  var hasGM = !!(env && env.GEMINI_API_KEY);
-
-  var candidates = selectedModel ? [selectedModel] : [];
-
-  if (hasHFToken) {
-    if (env.HF_MODEL) candidates.push(env.HF_MODEL);
-    candidates = candidates.concat(splitCsvModels(env.HF_MODEL_FALLBACKS));
-    candidates = candidates.concat(BUILTIN_MODEL_FALLBACKS);
-  }
-
-  if (hasOR) {
-    var orCustom = splitCsvModels(env.OPENROUTER_FREE_MODELS).map(toOrModel).filter(Boolean);
-    candidates = candidates.concat(orCustom).concat(OPENROUTER_FREE_FALLBACKS);
-  }
-
-  if (hasGM) {
-    candidates = candidates.concat(GEMINI_FREE_FALLBACKS);
-  }
-
-  return uniqueModels(candidates);
-}
-
-function isModelNotSupported(status, errText) {
-  if (status !== 400) return false;
-  var txt = String(errText || '');
-  return txt.indexOf('model_not_supported') !== -1
-    || txt.indexOf('not supported by any provider') !== -1;
-}
-
-function isRetriableGM(err) {
-  var status = getProviderStatus(err);
-  return status === 429 || status === 500 || status === 502 || status === 503;
-}
-
-function isOpenRouterModel(model) {
-  return typeof model === 'string' && model.startsWith('or:');
-}
-
-function stripOpenRouterPrefix(model) {
-  return isOpenRouterModel(model) ? model.slice(3) : model;
-}
-
-function isRetriableHF(err) {
-  var status = getProviderStatus(err);
-  return status === 408 || status === 409 || status === 425 || status === 429
-    || status === 500 || status === 502 || status === 503 || status === 504;
-}
+// ===================== GEMINI CALL =====================
 
 function sleep(ms) {
   return new Promise(function(resolve) { setTimeout(resolve, ms); });
 }
 
-async function callHFWithRetry(messages, token, model, opts, maxAttempts, env) {
-  var models = Array.isArray(model) ? uniqueModels(model) : [model];
-  var lastErr;
-  for (var m = 0; m < models.length; m++) {
-    var candidate = models[m];
-    var attempts = Math.max(1, maxAttempts || 1);
-    for (var i = 0; i < attempts; i++) {
-      try {
-        return await callHF(messages, token, candidate, opts, env);
-      } catch (err) {
-        lastErr = err;
-        if (isHF401(err)) throw err;
-        if (isModelNotSupportedProvider(err) && m < models.length - 1) break;
-        if (!isRetriableHF(err) || i === attempts - 1) {
-          if (m < models.length - 1) break;
-          throw err;
-        }
-        await sleep(250 * (i + 1));
-      }
-    }
-  }
-  throw lastErr || new Error('LLM request failed');
+function cleanModel(m) {
+  var v = (typeof m === 'string') ? m.trim() : '';
+  if (v.startsWith('gm:')) v = v.slice(3);
+  return /^gemini-[a-z0-9.\-]+$/.test(v) ? v : '';
 }
 
-async function callHF(messages, token, model, opts, env) {
-  opts = opts || {};
-  if (isGeminiModel(model)) {
-    if (!env || !env.GEMINI_API_KEY) throw new Error('GM 500: Gemini is not configured.');
-    var gmModel = stripGeminiPrefix(model);
-    var gmRes = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + env.GEMINI_API_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: gmModel,
-        messages: messages,
-        max_tokens: opts.max_tokens || 600,
-        temperature: opts.temperature || 0.72
-      })
-    });
-    if (!gmRes.ok) {
-      var gmErr = await gmRes.text();
-      throw new Error('GM ' + gmRes.status + ': ' + gmErr.slice(0, 300));
-    }
-    var gmData = await gmRes.json();
-    if (!gmData.choices || !gmData.choices[0]) throw new Error('Unexpected Gemini response');
-    return gmData.choices[0].message.content;
-  }
-  if (isOpenRouterModel(model)) {
-    if (!env || !env.OPENROUTER_API_KEY) throw new Error('OR 500: OpenRouter is not configured.');
-    var orModel = stripOpenRouterPrefix(model);
-    var orRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + env.OPENROUTER_API_KEY,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': env.APP_URL || 'https://conspread.pages.dev',
-        'X-Title': 'Conspread'
-      },
-      body: JSON.stringify({
-        model: orModel,
-        messages: messages,
-        max_tokens: opts.max_tokens || 600,
-        temperature: opts.temperature || 0.72,
-        stream: false
-      })
-    });
-    if (!orRes.ok) {
-      var orErr = await orRes.text();
-      throw new Error('OR ' + orRes.status + ': ' + orErr.slice(0, 300));
-    }
-    var orData = await orRes.json();
-    if (!orData.choices || !orData.choices[0]) throw new Error('Unexpected OpenRouter response');
-    return orData.choices[0].message.content;
-  }
-  // HF Inference — skip gracefully if no server token is configured
-  if (!token) throw new Error('HF 400: model_not_supported');
-  var res = await fetch('https://router.huggingface.co/v1/chat/completions', {
+async function callGeminiOnce(model, messages, opts, env) {
+  var res = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + env.GEMINI_API_KEY,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       model: model,
       messages: messages,
-      max_tokens: opts.max_tokens || 600,
-      temperature: opts.temperature || 0.72,
-      stream: false
+      max_tokens: opts.max_tokens,
+      temperature: opts.temperature,
+      // Newer Flash models "think" before answering, and that thinking uses
+      // up max_tokens. Keep it low so the answer itself isn't cut off.
+      reasoning_effort: 'low'
     })
   });
   if (!res.ok) {
-    var errText = await res.text();
-    if (isModelNotSupported(res.status, errText)) {
-      throw new Error('HF 400: model_not_supported');
-    }
-    throw new Error('HF ' + res.status + ': ' + errText.slice(0, 300));
+    var t = await res.text();
+    var e = new Error('Gemini ' + res.status + ': ' + t.slice(0, 300));
+    e.status = res.status;
+    throw e;
   }
   var d = await res.json();
-  if (!d.choices || !d.choices[0]) throw new Error('Unexpected HF response');
-  return d.choices[0].message.content;
-}
-
-function isHF401(err) {
-  return !!(err && typeof err.message === 'string' && err.message.startsWith('HF 401'));
-}
-
-function getProviderStatus(err) {
-  if (!err || typeof err.message !== 'string') return null;
-  var m = err.message.match(/^(HF|OR|GM) (\d{3}):/);
-  return m ? Number(m[2]) : null;
-}
-
-function isModelNotSupportedProvider(err) {
-  if (!err || typeof err.message !== 'string') return false;
-  if (err.message.indexOf('HF 400: model_not_supported') === 0) return true;
-  if (!/^(OR|GM) (400|404):/.test(err.message)) return false;
-  var msg = err.message.toLowerCase();
-  return msg.indexOf('model') !== -1 || msg.indexOf('no endpoints found') !== -1;
-}
-
-function getHFStatus(err) {
-  return getProviderStatus(err);
-}
-
-function extractHFErrorText(err) {
-  if (!err || typeof err.message !== 'string') return '';
-  var m = err.message.match(/^(HF|OR|GM) \d{3}:\s*(.*)$/);
-  return (m && m[2]) ? m[2] : err.message;
-}
-
-function mapHFErrorToClient(err) {
-  var status = getHFStatus(err);
-  var raw = extractHFErrorText(err);
-  if (!status) return null;
-  if (status === 402) {
-    return {
-      status: 402,
-      error: 'Hugging Face inference credits are exhausted for this account. Add credits or upgrade the HF plan, then try again.'
-    };
+  var text = d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+  if (!text || !String(text).trim()) {
+    var e2 = new Error('Gemini returned an empty answer');
+    e2.status = 502;
+    throw e2;
   }
-  if (status === 429) {
-    return {
-      status: 429,
-      error: 'Inference provider rate limit reached. Please retry in a moment.'
-    };
+  return text;
+}
+
+// Try the chosen model, then the other Gemini models. Retry briefly on
+// rate limits / server errors. Bad API key (400/401/403) stops immediately.
+async function callGemini(messages, selectedModel, opts, env) {
+  if (!env.GEMINI_API_KEY) throw Object.assign(new Error('GEMINI_API_KEY is not set on this deployment.'), { status: 500 });
+  var first = cleanModel(selectedModel);
+  var models = (first ? [first] : []).concat(GEMINI_MODELS.filter(function(m) { return m !== first; }));
+  var lastErr;
+  for (var i = 0; i < models.length; i++) {
+    for (var attempt = 0; attempt < 2; attempt++) {
+      try {
+        return await callGeminiOnce(models[i], messages, opts, env);
+      } catch (err) {
+        lastErr = err;
+        var s = err.status;
+        if (s === 401 || s === 403 || (s === 400 && !/model/i.test(err.message))) throw err;
+        if (s === 429 || s >= 500) { if (attempt === 0) { await sleep(600); continue; } }
+        break; // model not found, or retries used up: try the next model
+      }
+    }
   }
-  if (status === 404 && String(raw).toLowerCase().indexOf('no endpoints found') !== -1) {
-    return {
-      status: 503,
-      error: 'No currently available endpoint for the selected free model. Please retry or choose another free model.'
-    };
-  }
-  if (status >= 400 && status < 500) {
-    return { status: status, error: raw || 'Inference request rejected by provider.' };
-  }
-  if (status >= 500) {
-    return { status: 503, error: 'Inference provider is temporarily unavailable. Please retry shortly.' };
-  }
-  return null;
+  throw lastErr || new Error('Gemini request failed');
+}
+
+function geminiErrorToClient(err) {
+  var s = err && err.status;
+  if (s === 429) return { status: 429, error: 'Gemini rate limit reached. Please wait a minute and try again.' };
+  if (s === 401 || s === 403) return { status: 502, error: 'The Gemini API key was rejected. Check GEMINI_API_KEY in Cloudflare.' };
+  if (s === 400) return { status: 502, error: (err.message || 'Gemini rejected the request.') };
+  return { status: 503, error: 'Gemini is temporarily unavailable. Please retry shortly.' };
 }
 
 // ===================== LENS CALL =====================
 
-async function lensReply(question, options, token, model, env) {
-  // The frontend builds the systemPrompt and sends it. We respect it.
-  // Fallback: if no systemPrompt was provided, we build one server-side.
+async function lensReply(question, options, model, env) {
   var systemPrompt = options.systemPrompt;
   if (!systemPrompt) {
     systemPrompt = buildLensSystemPromptServerFallback(
@@ -357,12 +166,13 @@ async function lensReply(question, options, token, model, env) {
     );
   }
   var lensCount = (Array.isArray(options.lenses) ? options.lenses.length : 1);
-  var maxTokens = Math.min(3000, Math.max(400, lensCount * 220));
+  // Generous budget: room for some thinking plus ~200 words per lens.
+  var maxTokens = Math.min(8192, 1500 + lensCount * 600);
   var msgs = [
     { role: 'system', content: systemPrompt },
     { role: 'user',   content: question }
   ];
-  return callHFWithRetry(msgs, token, model, { max_tokens: maxTokens, temperature: 0.72 }, 2, env);
+  return callGemini(msgs, model, { max_tokens: maxTokens, temperature: 0.72 }, env);
 }
 
 // ===================== SESSION HELPERS (unchanged) =====================
@@ -531,15 +341,9 @@ async function onChat(req, env) {
   // ===== Branch B: a lens model call =====
   var question = body.question;
   var chatId = body.chatId;
-  var mode = body.mode;
   var model = body.model;
   if (!question || !question.trim()) return jres({ error: 'Question required' }, 400);
   if (question.length > 2000) return jres({ error: 'Too long' }, 400);
-
-  // We only accept lens mode from the new frontend. Anything else, we still
-  // try to handle as a lens call to keep things resilient.
-  var defaultModel = env.HF_MODEL || 'gm:gemini-flash-latest';
-  var modelCandidates = getModelCandidates(model || defaultModel, env);
 
   try {
     var cid2 = chatId || crypto.randomUUID();
@@ -555,55 +359,15 @@ async function onChat(req, env) {
         ctxPurpose:      body.ctxPurpose,
         ctxSource:       body.ctxSource
       },
-      env.HF_TOKEN || '',
-      modelCandidates,
+      model,
       env
     );
-    // Note: we don't persist anything on individual lens or pushback calls.
-    // The frontend collects everything and sends save_lens_session at the end.
+    // Nothing is persisted on individual lens or pushback calls.
+    // The frontend sends save_lens_session at the end.
     return jres({ chatId: cid2, reply: replyText });
   } catch (err) {
-    if (isHF401(err)) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: {
-          'Content-Type': 'application/json',
-          'Set-Cookie': 'session=; HttpOnly; Secure; SameSite=Strict; Max-Age=0; Path=/'
-        }
-      });
-    }
-    var hfMapped = mapHFErrorToClient(err);
-    if (hfMapped) return jres({ error: hfMapped.error }, hfMapped.status);
-    return jres({ error: err.message || 'Processing failed' }, 500);
-  }
-}
-
-// ===================== IMAGE (unchanged) =====================
-
-async function onImage(req, env) {
-  if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
-  var s = await getSession(req, env);
-  if (!s) return jres({ error: 'Unauthorized' }, 401);
-  if (!env.HF_TOKEN) return jres({ error: 'Image generation is not available on this deployment.' }, 503);
-  var body;
-  try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
-  if (!body.prompt) return jres({ error: 'Prompt required' }, 400);
-  try {
-    var res = await fetch('https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + env.HF_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ inputs: body.prompt, parameters: { num_inference_steps: 4 } })
-    });
-    if (!res.ok) {
-      var errText = await res.text();
-      return jres({ error: 'Image generation failed: ' + errText.slice(0, 200) }, 502);
-    }
-    var imgBuffer = await res.arrayBuffer();
-    return new Response(imgBuffer, { headers: { 'Content-Type': res.headers.get('content-type') || 'image/jpeg' } });
-  } catch (err) {
-    var hfMapped = mapHFErrorToClient(err);
-    if (hfMapped) return jres({ error: hfMapped.error }, hfMapped.status);
-    return jres({ error: err.message }, 500);
+    var mapped = geminiErrorToClient(err);
+    return jres({ error: mapped.error }, mapped.status);
   }
 }
 
@@ -648,46 +412,7 @@ async function onHistory(req, env) {
   } catch (e) { return jres({ chats: [] }); }
 }
 
-// ===================== ANTHROPIC (unchanged) =====================
-
-async function onAnthropicChat(req, env) {
-  if (req.method !== 'POST') return jres({ error: 'Method not allowed' }, 405);
-  var s = await getSession(req, env);
-  if (!s) return jres({ error: 'Unauthorized' }, 401);
-  var body;
-  try { body = await req.json(); } catch (e) { return jres({ error: 'Invalid JSON' }, 400); }
-  var model = body.model, messages = body.messages, systemPrompt = body.systemPrompt;
-  var maxTokens = Math.min(body.maxTokens || 1024, 2048);
-  if (!model || !model.startsWith('claude-')) return jres({ error: 'Invalid model' }, 400);
-  if (!Array.isArray(messages) || !messages.length) return jres({ error: 'Messages required' }, 400);
-  if (!env.ANTHROPIC_API_KEY) return jres({ error: 'Anthropic not configured on this deployment' }, 503);
-  var reqBody = {
-    model: model,
-    max_tokens: maxTokens,
-    messages: messages.map(function(m) { return { role: m.role, content: m.content }; })
-  };
-  if (systemPrompt) reqBody.system = systemPrompt;
-  try {
-    var resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify(reqBody)
-    });
-    var data = await resp.json();
-    if (!resp.ok) return jres({ error: (data.error && data.error.message) || 'Anthropic API error' }, resp.status);
-    var text = data.content && data.content[0] && data.content[0].text;
-    if (!text) return jres({ error: 'Empty response from Anthropic' }, 502);
-    return jres({ reply: text });
-  } catch (err) {
-    return jres({ error: err.message || 'Anthropic request failed' }, 500);
-  }
-}
-
-// ===================== ROUTER (unchanged) =====================
+// ===================== ROUTER =====================
 
 export default {
   async fetch(request, env) {
@@ -697,8 +422,6 @@ export default {
     if (path === '/api/auth/logout')   return onLogout(request, env);
     if (path === '/api/session')       return onSession(request, env);
     if (path === '/api/chat')          return onChat(request, env);
-    if (path === '/api/anthropic')     return onAnthropicChat(request, env);
-    if (path === '/api/image')         return onImage(request, env);
     if (path === '/api/history')       return onHistory(request, env);
     return env.ASSETS.fetch(request);
   }

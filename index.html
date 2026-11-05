@@ -499,19 +499,8 @@ body::before {
         </button>
         <div class="model-wrap">
           <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
-            <option value="gm:gemini-flash-latest">Gemini Flash (latest) [free]</option>
-            <option value="gm:gemini-flash-lite-latest">Gemini Flash-Lite (latest) [free]</option>
-            <option value="or:openrouter/free">OpenRouter Auto Free</option>
-            <option value="or:meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B [free]</option>
-            <option disabled>── HuggingFace (needs HF_TOKEN) ──</option>
-            <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B</option>
-            <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B</option>
-            <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2</option>
-            <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1</option>
-            <option disabled>── Claude (Anthropic) ──</option>
-            <option value="claude-opus-5-5">Claude Opus 5.5 (sign-in)</option>
-            <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (sign-in)</option>
-            <option value="claude-haiku-5-5">Claude Haiku 5.5 (sign-in)</option>
+            <option value="gm:gemini-flash-latest">Gemini Flash</option>
+            <option value="gm:gemini-flash-lite-latest">Gemini Flash-Lite (faster)</option>
           </select>
         </div>
         <div class="exp-wrap">
@@ -1060,36 +1049,16 @@ async function runLenses() {
   try {
     var lenses = LF.selectedLenses.slice().sort(function(a,b){ return a-b; });
     var systemPrompt = buildLensSystemPrompt(lenses, LF.positionBefore, LF.confBefore);
-    var isClaude = ST.selectedModel.indexOf('claude-') === 0;
-    var maxTok = Math.max(400, lenses.length * 200);
-    var reply;
-    if (isClaude) {
-      var r = await fetch('/api/anthropic', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role: 'user', content: LF.question }], systemPrompt: systemPrompt, maxTokens: maxTok })
-      });
-      var d = await r.json();
-      if (!r.ok) throw new Error(d.error || 'Request failed');
-      reply = d.reply;
-    } else {
-      var r2 = await fetch('/api/chat', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: LF.question, chatId: ST.cid, history: [], mode: 'lens',
-          model: ST.selectedModel, lenses: lenses,
-          userRole: ST.userRole,
-          ctxReason: LF.ctxReason, ctxPurpose: LF.ctxPurpose, ctxSource: LF.ctxSource,
-          positionBefore: LF.positionBefore, confidenceBefore: LF.confBefore,
-          systemPrompt: systemPrompt
-        })
-      });
-      var d2 = await r2.json();
-      if (!r2.ok) throw new Error(d2.error || 'Request failed');
-      reply = d2.reply;
-      if (d2.chatId) ST.cid = d2.chatId;
-    }
+    var d2 = await askModel({
+      question: LF.question, chatId: ST.cid, mode: 'lens',
+      lenses: lenses,
+      userRole: ST.userRole,
+      ctxReason: LF.ctxReason, ctxPurpose: LF.ctxPurpose, ctxSource: LF.ctxSource,
+      positionBefore: LF.positionBefore, confidenceBefore: LF.confBefore,
+      systemPrompt: systemPrompt
+    });
+    var reply = d2.reply;
+    if (d2.chatId) ST.cid = d2.chatId;
     ld.remove();
     var parsed = parseLensResponse(reply, lenses);
     LF.responses = parsed;
@@ -1141,16 +1110,34 @@ function buildLensSystemPrompt(lenses, position, conf) {
     '3. End with exactly one direct question that forces the user to confront the hardest version of what you just said.';
 }
 
+// One place that talks to the backend (Gemini via /api/chat).
+async function askModel(payload) {
+  payload.model = ST.selectedModel;
+  var r = await fetch('/api/chat', {
+    method: 'POST', credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  var d = {};
+  try { d = await r.json(); } catch (e) {}
+  if (!r.ok) throw new Error(d.error || ('Request failed (' + r.status + ')'));
+  if (!d.reply) throw new Error('The model returned an empty answer. Please try again.');
+  return d;
+}
+
+// Pull each lens out of the reply. Models sometimes wrap tags in markdown
+// (**[L1]**), skip closing tags, or ignore the format entirely, so be lenient.
 function parseLensResponse(text, lenses) {
   var out = {};
+  var t = String(text || '').replace(/\*\*\s*(\[\/?L\d\])\s*\*\*/g, '$1');
   (lenses || []).forEach(function(n) {
-    var rx = new RegExp('\\[L' + n + '\\]([\\s\\S]*?)\\[/L' + n + '\\]');
-    var m = (text || '').match(rx);
-    if (m) out[n] = m[1].trim();
+    var m = t.match(new RegExp('\\[L' + n + '\\]([\\s\\S]*?)\\[/L' + n + '\\]'))
+         || t.match(new RegExp('\\[L' + n + '\\]([\\s\\S]*?)(?=\\[/?L\\d\\]|$)'));
+    if (m && m[1].trim()) out[n] = m[1].trim();
   });
-  // Fallback: if nothing parsed but we got text and only 1 lens was asked, use whole reply
-  if (!Object.keys(out).length && lenses.length === 1) {
-    out[lenses[0]] = (text || '').trim();
+  // Nothing matched: show the whole reply under the first lens rather than nothing
+  if (!Object.keys(out).length && t.trim() && lenses && lenses.length) {
+    out[lenses[0]] = t.replace(/\[\/?L\d\]/g, '').trim();
   }
   return out;
 }
@@ -1207,25 +1194,7 @@ function openPushback(card, n) {
         'Your previous response was: "' + LF.responses[n] + '"\n' +
         'User\'s pushback: "' + txt + '"\n\n' +
         'Respond honestly. If the user makes a fair point, acknowledge it specifically — don\'t just concede everything. If their pushback misses something, say so directly. Aim for 60-90 words. Do not flatter. Do not start with "Great point".';
-      var reply;
-      var isClaude = ST.selectedModel.indexOf('claude-') === 0;
-      if (isClaude) {
-        var r = await fetch('/api/anthropic', {
-          method: 'POST', credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: ST.selectedModel, messages: [{ role: 'user', content: txt }], systemPrompt: systemPrompt, maxTokens: 200 })
-        });
-        var d = await r.json(); if (!r.ok) throw new Error(d.error || 'Failed');
-        reply = d.reply;
-      } else {
-        var r2 = await fetch('/api/chat', {
-          method: 'POST', credentials: 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: txt, chatId: ST.cid, history: [], mode: 'lens', model: ST.selectedModel, lenses: [n], systemPrompt: systemPrompt })
-        });
-        var d2 = await r2.json(); if (!r2.ok) throw new Error(d2.error || 'Failed');
-        reply = d2.reply;
-      }
+      var reply = (await askModel({ question: txt, chatId: ST.cid, mode: 'lens', lenses: [n], systemPrompt: systemPrompt })).reply;
       LF.pushbacks[n] = { user: txt, reply: reply };
       var rep = document.createElement('div'); rep.className = 'pushback-reply'; rep.textContent = reply;
       wrap.appendChild(rep);
@@ -1337,32 +1306,13 @@ async function addOneLens(n) {
   var ld = appendLoading('Adding lens...');
   try {
     var systemPrompt = buildLensSystemPrompt([n], LF.positionBefore, LF.confBefore);
-    var isClaude = ST.selectedModel.indexOf('claude-') === 0;
-    var reply;
-    if (isClaude) {
-      var r = await fetch('/api/anthropic', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: ST.selectedModel, messages: [{ role: 'user', content: LF.question }], systemPrompt: systemPrompt, maxTokens: 250 })
-      });
-      var d = await r.json(); if (!r.ok) throw new Error(d.error || 'Failed');
-      reply = d.reply;
-    } else {
-      var r2 = await fetch('/api/chat', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: LF.question, chatId: ST.cid, history: [], mode: 'lens',
-          model: ST.selectedModel, lenses: [n],
-          userRole: ST.userRole,
-          ctxReason: LF.ctxReason, ctxPurpose: LF.ctxPurpose, ctxSource: LF.ctxSource,
-          positionBefore: LF.positionBefore, confidenceBefore: LF.confBefore,
-          systemPrompt: systemPrompt
-        })
-      });
-      var d2 = await r2.json(); if (!r2.ok) throw new Error(d2.error || 'Failed');
-      reply = d2.reply;
-    }
+    var reply = (await askModel({
+      question: LF.question, chatId: ST.cid, mode: 'lens', lenses: [n],
+      userRole: ST.userRole,
+      ctxReason: LF.ctxReason, ctxPurpose: LF.ctxPurpose, ctxSource: LF.ctxSource,
+      positionBefore: LF.positionBefore, confidenceBefore: LF.confBefore,
+      systemPrompt: systemPrompt
+    })).reply;
     ld.remove();
     var parsed = parseLensResponse(reply, [n]);
     if (parsed[n]) {
