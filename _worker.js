@@ -16,7 +16,8 @@ distinguish facts from opinions, avoid harmful content, and not fabricate inform
 // models, so they keep working when individual versions are retired.
 const GEMINI_MODELS = [
   'gemini-flash-latest',
-  'gemini-flash-lite-latest'
+  'gemini-flash-lite-latest',
+  'gemini-2.5-flash'          // pinned version, last-resort backup
 ];
 
 // ===================== LENS DEFINITIONS =====================
@@ -84,68 +85,113 @@ function cleanModel(m) {
   return /^gemini-[a-z0-9.\-]+$/.test(v) ? v : '';
 }
 
-async function callGeminiOnce(model, messages, opts, env) {
+// Pull Google's own error message out of the response body.
+function googleMessage(bodyText) {
+  try {
+    var j = JSON.parse(bodyText);
+    if (Array.isArray(j)) j = j[0];
+    if (j && j.error && j.error.message) return j.error.message;
+  } catch (e) {}
+  return String(bodyText || '').slice(0, 300);
+}
+
+async function callGeminiOnce(model, messages, opts, env, useReasoning) {
+  var payload = {
+    model: model,
+    messages: messages,
+    max_tokens: opts.max_tokens,
+    temperature: opts.temperature
+  };
+  // Newer Flash models "think" before answering, and that thinking uses
+  // up max_tokens. Keep it low so the answer itself isn't cut off.
+  if (useReasoning) payload.reasoning_effort = 'low';
+
   var res = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
     method: 'POST',
     headers: {
       'Authorization': 'Bearer ' + env.GEMINI_API_KEY,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      model: model,
-      messages: messages,
-      max_tokens: opts.max_tokens,
-      temperature: opts.temperature,
-      // Newer Flash models "think" before answering, and that thinking uses
-      // up max_tokens. Keep it low so the answer itself isn't cut off.
-      reasoning_effort: 'low'
-    })
+    body: JSON.stringify(payload)
   });
   if (!res.ok) {
-    var t = await res.text();
-    var e = new Error('Gemini ' + res.status + ': ' + t.slice(0, 300));
+    var e = new Error(googleMessage(await res.text()));
     e.status = res.status;
+    e.model = model;
     throw e;
   }
   var d = await res.json();
-  var text = d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+  var c = d.choices && d.choices[0];
+  var text = c && c.message && c.message.content;
   if (!text || !String(text).trim()) {
-    var e2 = new Error('Gemini returned an empty answer');
+    var e2 = new Error('empty answer (finish_reason: ' + ((c && c.finish_reason) || 'unknown') + ')');
     e2.status = 502;
+    e2.model = model;
     throw e2;
   }
   return text;
 }
 
-// Try the chosen model, then the other Gemini models. Retry briefly on
-// rate limits / server errors. Bad API key (400/401/403) stops immediately.
+function isKeyProblem(err) {
+  return err.status === 401 || err.status === 403 ||
+    (err.status === 400 && /api key|api_key|permission|billing/i.test(err.message));
+}
+
+// Try the chosen model, then the other Gemini models. Retry once on rate
+// limits / server errors. A bad API key stops immediately.
 async function callGemini(messages, selectedModel, opts, env) {
-  if (!env.GEMINI_API_KEY) throw Object.assign(new Error('GEMINI_API_KEY is not set on this deployment.'), { status: 500 });
+  if (!env.GEMINI_API_KEY) {
+    throw Object.assign(new Error('GEMINI_API_KEY is not set in Cloudflare (Settings → Variables), or the site was not redeployed after setting it.'), { status: 500, config: true });
+  }
   var first = cleanModel(selectedModel);
   var models = (first ? [first] : []).concat(GEMINI_MODELS.filter(function(m) { return m !== first; }));
-  var lastErr;
+  var errors = [];
   for (var i = 0; i < models.length; i++) {
-    for (var attempt = 0; attempt < 2; attempt++) {
+    var useReasoning = true;
+    for (var attempt = 0; attempt < 3; attempt++) {
       try {
-        return await callGeminiOnce(models[i], messages, opts, env);
+        return await callGeminiOnce(models[i], messages, opts, env, useReasoning);
       } catch (err) {
-        lastErr = err;
-        var s = err.status;
-        if (s === 401 || s === 403 || (s === 400 && !/model/i.test(err.message))) throw err;
-        if (s === 429 || s >= 500) { if (attempt === 0) { await sleep(600); continue; } }
-        break; // model not found, or retries used up: try the next model
+        if (isKeyProblem(err)) throw err;
+        // Some models don't accept reasoning_effort: retry without it.
+        if (err.status === 400 && useReasoning && /reason|thinking/i.test(err.message)) { useReasoning = false; continue; }
+        if ((err.status === 429 || err.status >= 500) && attempt === 0) { await sleep(800); continue; }
+        errors.push(err);
+        break; // try the next model
       }
     }
   }
-  throw lastErr || new Error('Gemini request failed');
+  var last = errors[errors.length - 1] || new Error('Gemini request failed');
+  last.all = errors;
+  throw last;
 }
 
 function geminiErrorToClient(err) {
   var s = err && err.status;
-  if (s === 429) return { status: 429, error: 'Gemini rate limit reached. Please wait a minute and try again.' };
-  if (s === 401 || s === 403) return { status: 502, error: 'The Gemini API key was rejected. Check GEMINI_API_KEY in Cloudflare.' };
-  if (s === 400) return { status: 502, error: (err.message || 'Gemini rejected the request.') };
-  return { status: 503, error: 'Gemini is temporarily unavailable. Please retry shortly.' };
+  if (err && err.config) return { status: 500, error: err.message };
+  if (isKeyProblem(err)) return { status: 502, error: 'Google rejected the Gemini API key: ' + err.message };
+  if (s === 429) return { status: 429, error: 'Gemini free-tier limit reached (too many requests). Wait a minute and try again. Google says: ' + err.message };
+  // Show what each model said, so the real cause is visible.
+  var detail = (err.all || [err]).map(function(e) {
+    return (e.model || '?') + ' → ' + (e.status || '') + ' ' + e.message;
+  }).join(' | ');
+  return { status: 503, error: 'Gemini request failed. ' + detail };
+}
+
+// Quick self-test: open /api/health in the browser to see which models answer.
+async function onHealth(req, env) {
+  if (!env.GEMINI_API_KEY) return jres({ ok: false, error: 'GEMINI_API_KEY is not set' }, 500);
+  var results = {};
+  for (var i = 0; i < GEMINI_MODELS.length; i++) {
+    var m = GEMINI_MODELS[i];
+    try {
+      var t = await callGeminiOnce(m, [{ role: 'user', content: 'Reply with the single word: ok' }], { max_tokens: 200, temperature: 0 }, env, true);
+      results[m] = 'works: ' + String(t).trim().slice(0, 40);
+    } catch (e) {
+      results[m] = 'FAILED ' + (e.status || '') + ': ' + e.message;
+    }
+  }
+  return jres({ ok: true, results: results });
 }
 
 // ===================== LENS CALL =====================
@@ -423,6 +469,7 @@ export default {
     if (path === '/api/session')       return onSession(request, env);
     if (path === '/api/chat')          return onChat(request, env);
     if (path === '/api/history')       return onHistory(request, env);
+    if (path === '/api/health')        return onHealth(request, env);
     return env.ASSETS.fetch(request);
   }
 };
