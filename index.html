@@ -499,20 +499,19 @@ body::before {
         </button>
         <div class="model-wrap">
           <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
-            <option value="gm:gemini-2.0-flash">Gemini 2.0 Flash [free]</option>
-            <option value="gm:gemini-1.5-flash">Gemini 1.5 Flash [free]</option>
-            <option value="or:meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B [free]</option>
+            <option value="gm:gemini-flash-latest">Gemini Flash (latest) [free]</option>
+            <option value="gm:gemini-flash-lite-latest">Gemini Flash-Lite (latest) [free]</option>
             <option value="or:openrouter/free">OpenRouter Auto Free</option>
-            <option value="or:mistralai/mistral-small-3.1-24b-instruct:free">Mistral Small 3.1 [free]</option>
-            <option value="or:deepseek/deepseek-r1:free">DeepSeek R1 [free]</option>
+            <option value="or:meta-llama/llama-3.3-70b-instruct:free">Llama 3.3 70B [free]</option>
             <option disabled>── HuggingFace (needs HF_TOKEN) ──</option>
             <option value="Qwen/Qwen3-30B-A3B-Instruct-2507">Qwen3 30B</option>
             <option value="Qwen/Qwen3-235B-A22B-Instruct-2507">Qwen3 235B</option>
             <option value="deepseek-ai/DeepSeek-V3.2">DeepSeek V3.2</option>
             <option value="deepseek-ai/DeepSeek-R1-0528">DeepSeek R1</option>
             <option disabled>── Claude (Anthropic) ──</option>
-            <option value="claude-opus-4-6-20250514">Claude Opus 4.6</option>
-            <option value="claude-sonnet-4-6-20250514">Claude Sonnet 4.6</option>
+            <option value="claude-opus-5-5">Claude Opus 5.5 (sign-in)</option>
+            <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (sign-in)</option>
+            <option value="claude-haiku-5-5">Claude Haiku 5.5 (sign-in)</option>
           </select>
         </div>
         <div class="exp-wrap">
@@ -551,7 +550,7 @@ body::before {
 // ===================== STATE =====================
 var ST = {
   user: null, cid: null, busy: false, voiceOn: false,
-  selectedModel: 'gm:gemini-2.0-flash',
+  selectedModel: 'gm:gemini-flash-latest',
   stats: { questions: 0, changed: 0, held: 0, unsure: 0, lensFreq: {}, outcomeByLens: {} },
   userRole: '',   // persistent: "I am a ___"
   anon: false     // true when running as a guest without sign-in
@@ -614,13 +613,13 @@ function showLanding() {
 }
 
 function enterApp() {
-  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-2.0-flash';
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-flash-latest';
   ST.userRole = localStorage.getItem('userRole') || '';
   var ms = document.getElementById('model-select');
   if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
     ms.value = ST.selectedModel;
   } else {
-    ST.selectedModel = 'gm:gemini-2.0-flash';
+    ST.selectedModel = 'gm:gemini-flash-latest';
     ms.value = ST.selectedModel;
   }
   hide('landing'); show('app');
@@ -633,13 +632,13 @@ function enterApp() {
 function enterAppGuest() {
   ST.anon = true;
   ST.user = { name: 'Guest', username: 'guest' };
-  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-2.0-flash';
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-flash-latest';
   ST.userRole = localStorage.getItem('userRole') || '';
   var ms = document.getElementById('model-select');
   if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
     ms.value = ST.selectedModel;
   } else {
-    ST.selectedModel = 'gm:gemini-2.0-flash';
+    ST.selectedModel = 'gm:gemini-flash-latest';
     ms.value = ST.selectedModel;
   }
   hide('lp'); show('app');

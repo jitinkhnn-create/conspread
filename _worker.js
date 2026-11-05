@@ -12,23 +12,24 @@
 const SAFE_AI = `You must always: be accurate and honest, acknowledge uncertainty,
 distinguish facts from opinions, avoid harmful content, and not fabricate information.`;
 
+// Older models in these lists (Gemini 1.5/2.0, Qwen2.5, several OpenRouter
+// ":free" models) were retired by their providers in 2026 and now return errors.
 const BUILTIN_MODEL_FALLBACKS = [
-  'Qwen/Qwen2.5-72B-Instruct',
-  'Qwen/Qwen2.5-Coder-32B-Instruct',
-  'meta-llama/Llama-3.1-70B-Instruct',
-  'mistralai/Mistral-7B-Instruct-v0.3'
+  'Qwen/Qwen3-235B-A22B-Instruct-2507',
+  'Qwen/Qwen3-30B-A3B-Instruct-2507',
+  'deepseek-ai/DeepSeek-V3.2'
 ];
 
 const OPENROUTER_FREE_FALLBACKS = [
   'or:openrouter/free',
-  'or:meta-llama/llama-3.3-70b-instruct:free',
-  'or:mistralai/mistral-small-3.1-24b-instruct:free',
-  'or:deepseek/deepseek-r1:free'
+  'or:meta-llama/llama-3.3-70b-instruct:free'
 ];
 
+// "-latest" aliases always point at Google's current Flash models,
+// so they keep working when individual versions are retired.
 const GEMINI_FREE_FALLBACKS = [
-  'gm:gemini-2.0-flash',
-  'gm:gemini-1.5-flash'
+  'gm:gemini-flash-latest',
+  'gm:gemini-flash-lite-latest'
 ];
 
 // ===================== LENS DEFINITIONS =====================
@@ -537,7 +538,7 @@ async function onChat(req, env) {
 
   // We only accept lens mode from the new frontend. Anything else, we still
   // try to handle as a lens call to keep things resilient.
-  var defaultModel = env.HF_MODEL || 'Qwen/Qwen2.5-72B-Instruct';
+  var defaultModel = env.HF_MODEL || 'gm:gemini-flash-latest';
   var modelCandidates = getModelCandidates(model || defaultModel, env);
 
   try {
