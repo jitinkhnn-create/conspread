@@ -14,9 +14,11 @@ distinguish facts from opinions, avoid harmful content, and not fabricate inform
 
 // Gemini only. "-latest" aliases always point at Google's current Flash
 // models, so they keep working when individual versions are retired.
+// gemini-2.5-flash first: the newest "-latest" models are often overloaded
+// (503 "high demand"), while 2.5 Flash has been reliable.
 const GEMINI_MODELS = [
+  'gemini-2.5-flash',
   'gemini-flash-latest',
-  'gemini-2.5-flash',         // stable backup when the newest Flash is overloaded
   'gemini-flash-lite-latest'
 ];
 

@@ -499,7 +499,8 @@ body::before {
         </button>
         <div class="model-wrap">
           <select id="model-select" onchange="changeModel(this.value)" class="icon-btn">
-            <option value="gm:gemini-flash-latest">Gemini Flash</option>
+            <option value="gm:gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gm:gemini-flash-latest">Gemini Flash (newest)</option>
             <option value="gm:gemini-flash-lite-latest">Gemini Flash-Lite (faster)</option>
           </select>
         </div>
@@ -539,7 +540,7 @@ body::before {
 // ===================== STATE =====================
 var ST = {
   user: null, cid: null, busy: false, voiceOn: false,
-  selectedModel: 'gm:gemini-flash-latest',
+  selectedModel: 'gm:gemini-2.5-flash',
   stats: { questions: 0, changed: 0, held: 0, unsure: 0, lensFreq: {}, outcomeByLens: {} },
   userRole: '',   // persistent: "I am a ___"
   anon: false     // true when running as a guest without sign-in
@@ -602,13 +603,13 @@ function showLanding() {
 }
 
 function enterApp() {
-  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-flash-latest';
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-2.5-flash';
   ST.userRole = localStorage.getItem('userRole') || '';
   var ms = document.getElementById('model-select');
   if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
     ms.value = ST.selectedModel;
   } else {
-    ST.selectedModel = 'gm:gemini-flash-latest';
+    ST.selectedModel = 'gm:gemini-2.5-flash';
     ms.value = ST.selectedModel;
   }
   hide('landing'); show('app');
@@ -621,13 +622,13 @@ function enterApp() {
 function enterAppGuest() {
   ST.anon = true;
   ST.user = { name: 'Guest', username: 'guest' };
-  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-flash-latest';
+  ST.selectedModel = localStorage.getItem('selectedModel') || 'gm:gemini-2.5-flash';
   ST.userRole = localStorage.getItem('userRole') || '';
   var ms = document.getElementById('model-select');
   if (Array.from(ms.options).some(function(o) { return o.value === ST.selectedModel; })) {
     ms.value = ST.selectedModel;
   } else {
-    ST.selectedModel = 'gm:gemini-flash-latest';
+    ST.selectedModel = 'gm:gemini-2.5-flash';
     ms.value = ST.selectedModel;
   }
   hide('lp'); show('app');
